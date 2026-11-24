@@ -21,3 +21,7 @@ Control: https://webrtc.github.io/samples/src/content/getusermedia/gum/ displaye
 | Project HTTPS camera | Pending deployment and device test |
 | Project dual-hand inference | Pending |
 | Project pluck audio and latency | Pending |
+
+## v0.3 regression checks
+- Pure logic assertions executed before commit: four combinations of hand/finger override on both labels, all 13 chord pitch-class sets and six ordered MIDI pitches, 14 pads in each orientation, separation from string region, downward/upward multi-string crossing, outside-span rejection, A4 frequency, dwell persistence/rearm. Inline JS syntax check: passed.
+- Device checks pending: defaults mirror off/numbers on, both global buttons pressed; toggle independently and verify right/left middle/fingertips with strict rules. Press each chord button and verify six displayed frequencies; audition without camera; select via air in portrait bottom and landscape left, then move away and verify retained chord. Verify two fingers cross same string without global suppression, stop and restart camera, rotate while running, and test pinch gate. Verify no accidental chord switching on held fingertip and no spurious strikes during tracking loss.

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3 — 2026-11-24
+- Mirror off and joint labels on by default.
+- Independent global any-hand / any-finger controls, default enabled; per-finger per-string cooldown and audio compression.
+- 13 chords plus standard tuning, six active pitches, selectable via screen or air pads; persistent active chord, frequency display and audition.
+- Portrait bottom / landscape left chord layout, 140 ms dwell, separate pluck area. Pure-logic checks run; device validation pending.
+
 ## v0.2 — 2026-11-24
 - Camera-only test and permission/environment diagnostics.
 - Separate camera-stage and model-stage errors.
