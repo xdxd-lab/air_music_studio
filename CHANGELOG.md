@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4
+- Turn on pluck audio by default and unlock it on camera start. Make the 55 ms per-finger/string cooldown optional and off by default.
+- Add open-palm string damping and chord-hold vibrato for a left-hand grip or a held screen button.
+- Add an experimental flute with locally analysed microphone breath, six camera or screen finger holes, half-hole slides and an octave register.
+
 ## v0.3 — 2026-11-24
 - Mirror off and joint labels on by default.
 - Independent global any-hand / any-finger controls, default enabled; per-finger per-string cooldown and audio compression.
