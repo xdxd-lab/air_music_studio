@@ -3,6 +3,12 @@
 ## Pipeline
 RGB camera → getUserMedia → video frame → MediaPipe Hand Landmarker (VIDEO mode, numHands=2, GPU then CPU fallback) → per-hand landmarks and handedness → gesture/crossing detection → Canvas 2D and Web Audio.
 
+### v0.4.1 processing cadence
+
+- Use a one-shot video-frame callback when supported. The animation-frame fallback reads the media timestamp and returns before inference or drawing if it has already processed that frame. Camera-only preview uses the same drawing schedule. Hidden tabs cancel camera work, and resuming clears transient contacts before scheduling the first fresh frame.
+- Hand inference and playing gestures still run synchronously for each processed frame. Hand count updates on change, coordinate and FPS diagnostics at most once per 120 ms. Share drawing state across each overlay and reuse the per-finger string crossing anchors. [Video frame callback specification](https://wicg.github.io/video-rvfc/) · [MediaPipe Hand Landmarker for Web](https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker?tab=Web)
+- Outside microphone calibration, skip spectrum retrieval and frequency-bin conversions when RMS is below 65% of the opening threshold. Breath feature weights are at most one, so such a frame also stays below the close threshold and reads zero on the meter. [Web Audio analyser specification](https://www.w3.org/TR/webaudio/#AnalyserNode)
+
 ### v0.4 instrument experiments
 
 - String playback uses a shared string gain before the compressor and tracks active buffer sources. The palm gesture detects a spread hand held briefly over the strings, then fades and stops active and scheduled notes. Crossing history clears on mute so release starts with fresh motion.

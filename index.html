@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4</title>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.1</title>
 <style>
-:root{color-scheme:dark;--bg:#0a101a;--panel:#111b2a;--line:#25364b;--text:#e8f0fa;--muted:#9aadc1;--cyan:#51e2ce;--orange:#ffad73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172c40,var(--bg) 52%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:28px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}h1{font-size:35px;letter-spacing:-1.5px;margin:0}h1 span{color:var(--cyan)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}.sub{color:var(--muted);margin:4px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:7px 13px;color:var(--cyan);white-space:nowrap;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}button,select{border:1px solid var(--line);background:#18283c;color:var(--text);border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}button.primary{background:var(--cyan);color:#07251f;border:0;font-weight:700}button:disabled{opacity:.4;cursor:not-allowed}select{max-width:100%;min-width:0}#camera{flex:1}canvas{display:block;width:100%;height:auto;border-radius:12px;background:#080e16}#video{display:none}.stage{position:relative}.placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:20px;color:var(--muted)}.placeholder strong{font-size:22px;color:var(--text)}.placeholder[hidden]{display:none}.status{padding:10px 2px 0;color:var(--muted);overflow-wrap:anywhere}.status.error{color:#ff9e9e}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.metric{padding:10px;background:#0c1521;border-radius:10px}.metric b{font-size:24px;display:block;font-variant-numeric:tabular-nums}.metric small{color:var(--muted)}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);margin:16px 0 8px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;cursor:pointer}input[type=checkbox]{accent-color:var(--cyan);width:17px;height:17px}.hand{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;color:var(--muted);font-size:13px}.hand b{display:block;margin-bottom:4px}.left{color:var(--cyan)}.right{color:var(--orange)}.help{color:var(--muted);font-size:13px;margin:10px 0}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}#note{font-size:22px;color:var(--cyan);font-weight:700}footer{color:var(--muted);font-size:12px;margin-top:16px}label.field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:13px}@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:16px}h1{font-size:29px}}
+:root{color-scheme:dark;--bg:#0a101a;--panel:#111b2a;--line:#25364b;--text:#e8f0fa;--muted:#9aadc1;--cyan:#51e2ce;--orange:#ffad73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172c40,var(--bg) 52%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:28px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}h1{font-size:35px;letter-spacing:-1.5px;margin:0}h1 span{color:var(--cyan)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}.sub{color:var(--muted);margin:4px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:7px 13px;color:var(--cyan);white-space:nowrap;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}button,select{border:1px solid var(--line);background:#18283c;color:var(--text);border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}button.primary{background:var(--cyan);color:#07251f;border:0;font-weight:700}button:disabled{opacity:.4;cursor:not-allowed}select{max-width:100%;min-width:0}#camera{flex:1}canvas{display:block;width:100%;height:auto;border-radius:12px;background:#080e16}#video{display:none}.stage{position:relative}.placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:20px;color:var(--muted)}.placeholder strong{font-size:22px;color:var(--text)}.placeholder[hidden]{display:none}.status{padding:10px 2px 0;color:var(--muted);overflow-wrap:anywhere}.status.error{color:#ff9e9e}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.metric{padding:10px;background:#0c1521;border-radius:10px}.metric b{font-size:24px;display:block;font-variant-numeric:tabular-nums}.metric small{color:var(--muted)}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);margin:16px 0 8px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;cursor:pointer}input[type=checkbox]{accent-color:var(--cyan);width:17px;height:17px}.hand{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;color:var(--muted);font-size:13px}.hand b{display:block;margin-bottom:4px}.left{color:var(--cyan)}.right{color:var(--orange)}.help{color:var(--muted);font-size:13px;margin:10px 0}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}.hand span{white-space:pre-line}#note{font-size:22px;color:var(--cyan);font-weight:700}footer{color:var(--muted);font-size:12px;margin-top:16px}label.field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:13px}@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:16px}h1{font-size:29px}}
 .toggles{display:grid;gap:7px;margin:10px 0}.toggles button[aria-pressed=true],.chordbuttons button[aria-pressed=true]{background:var(--cyan);color:#07251f;border-color:var(--cyan);font-weight:700}.chordpanel{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.chordhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between}.chordhead h2{margin:0}.chordbuttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(53px,1fr));gap:6px;margin-top:8px}.chordbuttons button{padding:8px 4px}.tuning{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:9px}.tuning span{font-size:11px;text-align:center;background:#0b1420;padding:5px 2px;border-radius:5px}.tuning b{display:block;color:var(--cyan);font-size:13px}.placeholder{inset:5px 5px auto;display:block;background:#08101bcc;border-radius:6px;padding:5px;color:#bdc9d8}.placeholder strong{font-size:12px}.placeholder span{display:none}.placeholder[hidden]{display:none}canvas{touch-action:manipulation}@media(max-width:480px){.panel{padding:10px}.tuning{grid-template-columns:repeat(3,1fr)}header .pill{display:none}}
 #chordButtons button{touch-action:none}.flute{margin-top:14px}.flute summary{cursor:pointer;font-weight:bold}
 .flute .bar{margin-top:10px}.flute-holes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
@@ -10,7 +10,7 @@
 .flute-holes [data-state="半"]{background:#655036}#breathMeter{width:50%;accent-color:var(--cyan)}
 #fluteNote,#stringGesture{color:var(--cyan)}#stringGesture:empty{display:none}
 </style></head><body><main>
-<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
+<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.1</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
 <div class="layout"><section class="panel"><div class="bar"><button class="primary" id="start">啟動相機</button><button id="test">僅測試相機</button><button id="stop" disabled>停止</button><select id="camera" aria-label="選擇相機"><option value="">預設相機</option></select><button id="scan" title="重新列出相機">重新掃描</button></div><div class="stage"><video id="video" autoplay playsinline muted></video><canvas id="view" width="960" height="540" aria-label="相機影像與雙手骨架"></canvas><div class="placeholder" id="placeholder"><strong>等待相機啟動</strong><span>按下「啟動相機」並允許瀏覽器使用相機</span></div></div><section class="chordpanel"><div class="chordhead"><h2>和弦測試 · <span id="activeChord">C</span></h2><label class="check"><input id="airChords" type="checkbox" checked>空中選和弦</label><button id="audition" type="button">試聽六弦</button></div><div id="chordButtons" class="chordbuttons"></div><div id="tuning" class="tuning" aria-live="polite"></div><p class="help" id="chordhelp">直式下方、橫式左方為空中和弦區。指尖停留約 140 ms 選擇；移開後保留和弦。</p></section><div class="status" id="status" role="status">尚未啟動。初次載入需連線下載 AI 模型。</div><details open style="margin-top:12px"><summary>相機環境診斷</summary><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:12px;margin:8px 0"></pre><button id="diagnose">重新檢查環境</button><p class="help">若相機權限遭拒，請用獨立 HTTPS 網頁或 localhost；Android content:// 本機檔案曾實測遭拒。測試相機不會下載 AI 模型。</p></details><div class="metrics"><div class="metric"><small>偵測手數</small><b id="count">0 / 2</b></div><div class="metric"><small>骨架點數</small><b id="points">0 / 42</b></div><div class="metric"><small>推論 FPS</small><b id="fps">—</b></div></div></section>
 <aside class="panel"><h2>追蹤設定</h2><label class="check"><input id="mirror" type="checkbox">鏡像顯示</label><label class="check"><input id="bones" type="checkbox" checked>顯示手部骨架</label><label class="check"><input id="indices" type="checkbox" checked>顯示關節編號 0–20</label><label class="check"><input id="swap" type="checkbox">交換左右手標籤</label><div class="toggles"><button id="anyHand" type="button" aria-pressed="true">不限制左右手：開</button><button id="anyFinger" type="button" aria-pressed="true">不限制手指：開</button></div><p class="help">兩個全域開關各自控制撥弦與選和弦。關閉時，指定手的食指撥弦、左手食指選和弦。</p><div class="hand"><b class="left">LEFT · 左手</b><span id="left">尚未偵測</span></div><div class="hand"><b class="right">RIGHT · 右手</b><span id="right">尚未偵測</span></div><div class="help">食指尖座標以畫面左上為原點，X/Y 為正規化位置；Z 為模型相對深度，不代表相機距離。</div><hr class="sep"><h2>六弦</h2>
 <label class="check"><input id="strings" type="checkbox" checked>啟用撥弦音效</label>
@@ -35,25 +35,110 @@ const $=id=>document.getElementById(id), video=$('video'), cv=$('view'), ctx=cv.
 const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21', MODEL='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
 const edges=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
 const CHORDS={"C":[48,55,60,64,67,72],"D":[50,57,62,66,69,74],"E":[40,47,52,56,59,64],"F":[41,48,53,57,60,65],"G":[43,47,50,55,59,67],"A":[45,52,57,61,64,69],"Am":[45,52,57,60,64,69],"Dm":[50,57,62,65,69,74],"Em":[40,47,52,55,59,64],"G7":[43,47,50,55,59,65],"C7":[48,52,55,58,60,64],"D7":[50,54,57,60,62,66],"Bm":[47,54,59,62,66,71],"Open":[40,45,50,55,59,64]}, TIPS=[4,8,12,16,20];
-function eligibleFingers(label,rule,settings){return (settings.anyHand||rule.hand==="Both"||label===rule.hand)?(settings.anyFinger||rule.finger==null?[4,8,12,16,20]:[rule.finger]):[]}
+const INDEX_ONLY = [8], NO_FINGERS = [];
+function eligibleFingers(label, rule, settings) {
+  if (!settings.anyHand && rule.hand !== 'Both' && label !== rule.hand) return NO_FINGERS;
+  if (settings.anyFinger || rule.finger == null) return TIPS;
+  return rule.finger === 8 ? INDEX_ONLY : [rule.finger];
+}
 function layoutFor(portrait){const names=Object.keys(CHORDS),cols=portrait?4:2,rows=Math.ceil(names.length/cols),zone=portrait?{x:.025,y:.70,w:.95,h:.285}:{x:.015,y:.045,w:.32,h:.94},gap=.012,top=portrait?.030:.045,pw=(zone.w-gap*(cols+1))/cols,ph=(zone.h-top-gap*(rows+1))/rows;return {lo:portrait?.14:.43,hi:.96,ys:Array.from({length:6},(_,i)=>(portrait?.12:.16)+i*(portrait?.102:.136)),zone,pads:names.map((name,i)=>({name,x:zone.x+gap+i%cols*(pw+gap),y:zone.y+top+gap+Math.floor(i/cols)*(ph+gap),w:pw,h:ph}))}}
 function inRect(p,r){return p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h}
 function midiNote(m){return [["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"][m%12]+(Math.floor(m/12)-1),440*2**((m-69)/12)]}
-function nextCrossings(prev,p,layout){const sides=prev.sides.slice(),anchors=prev.anchors.slice(),hits=[];const speed=Math.abs(p.y-prev.y)/((p.t-prev.t)/1000);layout.ys.forEach((y,i)=>{const side=Math.abs(p.y-y)>.009?Math.sign(p.y-y):0;if(!side)return;if(sides[i]&&side!==sides[i]){const a=anchors[i]||prev,dy=p.y-a.y,t=dy?(y-a.y)/dy:-1;const x=a.x+(p.x-a.x)*t;if(t>=0&&t<=1&&x>=layout.lo&&x<=layout.hi&&Math.max(speed,Math.abs(dy)/Math.max(.001,(p.t-a.t)/1000))>.10)hits.push(i)}sides[i]=side;anchors[i]=p});if(p.y<prev.y)hits.reverse();return {sides,anchors,hits,speed}}
-function initialCrossing(p,layout){return {...p,sides:layout.ys.map(y=>Math.abs(p.y-y)>.009?Math.sign(p.y-y):0),anchors:layout.ys.map(()=>p)}}
+function advanceCrossings(state, point, layout) {
+  const previous = state.point;
+  const speed = Math.abs(point.y - previous.y) / ((point.t - previous.t) / 1000);
+  let hits = 0;
+  for (let i = 0; i < layout.ys.length; i++) {
+    const y = layout.ys[i], offset = point.y - y;
+    if (Math.abs(offset) <= .009) continue;
+    const side = Math.sign(offset);
+    if (state.sides[i] && side !== state.sides[i]) {
+      const anchor = state.anchors[i];
+      const dy = point.y - anchor.y, fraction = dy ? (y - anchor.y) / dy : -1;
+      const x = anchor.x + (point.x - anchor.x) * fraction;
+      if (fraction >= 0 && fraction <= 1 && x >= layout.lo && x <= layout.hi &&
+          Math.max(speed, Math.abs(dy) / Math.max(.001, (point.t - anchor.t) / 1000)) > .10) hits |= 1 << i;
+    }
+    state.sides[i] = side;
+    state.anchors[i] = point;
+  }
+  state.point = point;
+  return hits;
+}
+function initialCrossing(point, layout) {
+  return {
+    point,
+    sides: layout.ys.map(y => Math.abs(point.y - y) > .009 ? Math.sign(point.y - y) : 0),
+    anchors: layout.ys.map(() => point)
+  };
+}
 function chordDwell(old,pad,now){if(!pad)return null;if(!old||old.name!==pad)return {name:pad,since:now,fired:false};return old}
-let chord="C",notes=CHORDS.C.slice().reverse().map(midiNote),portrait=matchMedia("(orientation: portrait)").matches,geometry=layoutFor(portrait),mix,tracks=[],trackId=0,contacts=new Map(),cooldowns=new Map(),lastChordAt=-Infinity;
+const orientation = matchMedia('(orientation: portrait)');
+const cameraUsesVideoFrames = typeof video.requestVideoFrameCallback === 'function' &&
+  typeof video.cancelVideoFrameCallback === 'function';
+const AIR_RULE = {hand:'Left', finger:8};
+let chord = 'C', notes = CHORDS.C.slice().reverse().map(midiNote), noteHz = notes.map(([, hz]) => hz.toFixed(1) + ' Hz');
+let portrait = orientation.matches, geometry = layoutFor(portrait), mix, tracks = [], trackId = 0;
+let contacts = new Map(), cooldowns = new Map(), lastChordAt = -Infinity;
 const fingerNames={4:"拇指",8:"食指",12:"中指",16:"無名指",20:"小指"};
 const settings=()=>({anyHand:$("anyHand").getAttribute("aria-pressed")==="true",anyFinger:$("anyFinger").getAttribute("aria-pressed")==="true"});
-function setChord(name,source="螢幕"){if(!CHORDS[name])return;chord=name;notes=CHORDS[name].slice().reverse().map(midiNote);$("activeChord").textContent=name;for(const b of $("chordButtons").children)b.setAttribute("aria-pressed",String(b.dataset.chord===name));$("tuning").replaceChildren(...notes.map(([n,f],i)=>{const e=document.createElement("span"),b=document.createElement("b");b.textContent=(i+1)+"弦 "+n;e.append(b, f.toFixed(1)+" Hz");return e}));$("chordhelp").textContent="目前："+name+"（"+source+"） · 六弦皆可發聲；空中按鍵停留約 140 ms。";if(!running)drawIdle()}
+function setChord(name, source = '螢幕') {
+  if (!CHORDS[name]) return;
+  if (name !== chord || !$('tuning').firstChild) {
+    chord = name;
+    notes = CHORDS[name].slice().reverse().map(midiNote);
+    noteHz = notes.map(([, hz]) => hz.toFixed(1) + ' Hz');
+    $('activeChord').textContent = name;
+    for (const button of $('chordButtons').children) button.setAttribute('aria-pressed', String(button.dataset.chord === name));
+    $('tuning').replaceChildren(...notes.map(([note], i) => {
+      const field = document.createElement('span'), label = document.createElement('b');
+      label.textContent = (i + 1) + '弦 ' + note;
+      field.append(label, noteHz[i]);
+      return field;
+    }));
+  }
+  $('chordhelp').textContent = '目前：' + name + '（' + source + '） · 六弦皆可發聲；空中按鍵停留約 140 ms。';
+  if (!running) drawIdle();
+}
 function initChords(){for(const name of Object.keys(CHORDS)){const b=document.createElement("button");b.type="button";b.dataset.chord=name;b.textContent=name==="Open"?"標準調弦":name;b.onclick=()=>setChord(name);bindChordHold(b,name);$("chordButtons").append(b)}setChord("C","預設")}
-function updateGeometry(){const p=matchMedia("(orientation: portrait)").matches;if(p!==portrait){portrait=p;geometry=layoutFor(p);resetMotion();if(!running)drawIdle()}}
+function updateGeometry() {
+  if (orientation.matches === portrait) return;
+  portrait = orientation.matches;
+  geometry = layoutFor(portrait);
+  resetMotion();
+  if (!running) drawIdle();
+}
 function drawIdle(){clear();drawStrings(performance.now());drawPads()}
 function trackHands(r){const next=[],used=new Set(),lm=r.landmarks||[];for(let i=0;i<lm.length;i++){const hand=lm[i],label=handLabel(r,i),wrist=hand[0];let best=null,score=.27;for(const t of tracks){if(used.has(t.id))continue;const d=Math.hypot(t.wrist.x-wrist.x,t.wrist.y-wrist.y)+(t.label!==label?.06:0);if(d<score){score=d;best=t}}const id=best?best.id:++trackId;used.add(id);next.push({id,hand,label,wrist,i})}tracks=next;return next}
-function drawPads(){if(!$("airChords").checked)return;const w=cv.width,h=cv.height,z=geometry.zone;ctx.fillStyle="#101c2de0";ctx.fillRect(z.x*w,z.y*h,z.w*w,z.h*h);ctx.fillStyle="#c3d3e4";ctx.font="bold "+Math.max(9,Math.min(w,h)*.022)+"px system-ui";ctx.fillText("和弦 · "+chord,z.x*w+5,z.y*h+Math.min(h*.026,18));for(const p of geometry.pads){const active=chord===p.name,hover=[...contacts.values()].some(c=>c.name===p.name&&!c.fired);ctx.fillStyle=active?"#51e2ce":hover?"#b18432":"#2c4058";ctx.fillRect(p.x*w,p.y*h,p.w*w,p.h*h);ctx.fillStyle=active?"#082b28":"#f0f6ff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="bold "+Math.max(9,Math.min(p.h*h*.55,p.w*w*.28))+"px system-ui";ctx.fillText(p.name,p.x*w+p.w*w/2,p.y*h+p.h*h/2);ctx.textAlign="start";ctx.textBaseline="alphabetic"}}
+function drawPads() {
+  if (!$('airChords').checked) return;
+  const w = cv.width, h = cv.height, {zone, pads} = geometry, first = pads[0];
+  const hover = new Set();
+  for (const contact of contacts.values()) if (!contact.fired) hover.add(contact.name);
+  ctx.fillStyle = '#101c2de0';
+  ctx.fillRect(zone.x * w, zone.y * h, zone.w * w, zone.h * h);
+  ctx.fillStyle = '#c3d3e4';
+  ctx.font = 'bold ' + Math.max(9, Math.min(w, h) * .022) + 'px system-ui';
+  ctx.fillText('和弦 · ' + chord, zone.x * w + 5, zone.y * h + Math.min(h * .026, 18));
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold ' + Math.max(9, Math.min(first.h * h * .55, first.w * w * .28)) + 'px system-ui';
+  for (const pad of pads) {
+    const active = chord === pad.name;
+    ctx.fillStyle = active ? '#51e2ce' : hover.has(pad.name) ? '#b18432' : '#2c4058';
+    ctx.fillRect(pad.x * w, pad.y * h, pad.w * w, pad.h * h);
+    ctx.fillStyle = active ? '#082b28' : '#f0f6ff';
+    ctx.fillText(pad.name, (pad.x + pad.w / 2) * w, (pad.y + pad.h / 2) * h);
+  }
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'alphabetic';
+}
 
 
-let testOnly=false,detector,delegate='',stream,raf=0,running=false,starting=false,lastVideo=-1,lastTimestamp=-1,frameTimes=[],audio,history=new Map(),flash=Array(6).fill(-Infinity),result=null;
+let testOnly = false, detector, delegate = '', detectorLoading, stream, audio;
+let running = false, starting = false, cameraAttempt = 0, frameEpoch = 0, frameId = null;
+let lastVideo = NaN, lastTimestamp = -1, frameTimes = [], telemetryAt = -Infinity, result = null;
+const history = new Map(), flash = Array(6).fill(-Infinity);
 function status(s,error=false){$('status').textContent=s;$('status').classList.toggle('error',error)}
 function clear(){ctx.fillStyle='#080e16';ctx.fillRect(0,0,cv.width,cv.height)}
 function resetMotion() {
@@ -72,18 +157,216 @@ function resetMotion() {
   showStringGesture();
 }
 function resetUI(){for(const k of ['left','right'])$(k).textContent='尚未偵測';$('count').textContent='0 / 2';$('points').textContent='0 / 42';$('fps').textContent='—';$('note').textContent='—';$('notehelp').textContent='尚未撥弦';$('placeholder').hidden=false;drawIdle()}
-async function scan(){if(!navigator.mediaDevices?.enumerateDevices){status('無法列出相機：請使用 localhost / HTTPS 並確認瀏覽器支援。',true);return}try{const devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput'),sel=$('camera'),prev=sel.value;sel.replaceChildren(new Option('預設相機',''));devices.forEach((d,i)=>{if(d.deviceId)sel.add(new Option(d.label||`相機 ${i+1}`,d.deviceId))});if([...sel.options].some(o=>o.value===prev))sel.value=prev}catch(e){status('無法列出相機：'+e.message,true)}}
-async function init(){if(detector)return;status('正在下載 MediaPipe 程式庫與手部模型…');const {FilesetResolver,HandLandmarker}=await import(CDN+'/vision_bundle.mjs');const vision=await FilesetResolver.forVisionTasks(CDN+'/wasm');for(const d of ['GPU','CPU']){try{detector=await HandLandmarker.createFromOptions(vision,{baseOptions:{modelAssetPath:MODEL,delegate:d},runningMode:'VIDEO',numHands:2,minHandDetectionConfidence:.5,minHandPresenceConfidence:.5,minTrackingConfidence:.5});delegate=d;return}catch(e){if(d==='CPU')throw e;status('GPU 初始化失敗，正在改用 CPU…')}}}
+async function scan(isCurrent = () => true) {
+  if (!navigator.mediaDevices?.enumerateDevices) {
+    status('無法列出相機：請使用 localhost / HTTPS 並確認瀏覽器支援。', true);
+    return;
+  }
+  try {
+    const devices = (await navigator.mediaDevices.enumerateDevices()).filter(device => device.kind === 'videoinput');
+    if (!isCurrent()) return;
+    const select = $('camera'), previous = select.value;
+    const choices = [new Option('預設相機', '')];
+    devices.forEach((device, i) => {
+      if (device.deviceId) choices.push(new Option(device.label || '相機 ' + (i + 1), device.deviceId));
+    });
+    select.replaceChildren(...choices);
+    if (choices.some(option => option.value === previous)) select.value = previous;
+  } catch (error) {
+    if (isCurrent()) status('無法列出相機：' + error.message, true);
+  }
+}
+async function loadDetector() {
+  const {FilesetResolver, HandLandmarker} = await import(CDN + '/vision_bundle.mjs');
+  const vision = await FilesetResolver.forVisionTasks(CDN + '/wasm');
+  for (const candidate of ['GPU', 'CPU']) {
+    try {
+      detector = await HandLandmarker.createFromOptions(vision, {
+        baseOptions:{modelAssetPath:MODEL, delegate:candidate},
+        runningMode:'VIDEO', numHands:2, minHandDetectionConfidence:.5,
+        minHandPresenceConfidence:.5, minTrackingConfidence:.5
+      });
+      delegate = candidate;
+      return;
+    } catch (error) {
+      if (candidate === 'CPU') throw error;
+    }
+  }
+}
+
+async function init() {
+  if (detector) return;
+  if (!detectorLoading) {
+    detectorLoading = loadDetector().finally(() => { detectorLoading = null; });
+  }
+  await detectorLoading;
+}
 function explain(e){return ({NotAllowedError:'相機遭瀏覽器、作業系統或內嵌網頁政策阻擋。請查看下方診斷，並在獨立 Chrome / Edge 網頁允許相機。',NotFoundError:'找不到相機。',NotReadableError:'相機無法讀取，可能被其他程式占用。',OverconstrainedError:'所選相機無法使用，請切換預設相機。'})[e.name]||e.message||String(e)}
 async function diagnostics(){let policy='無法查詢',permission='無法查詢',devices='無法查詢';try{const p=document.permissionsPolicy||document.featurePolicy;if(p?.allowsFeature)policy=p.allowsFeature('camera')?'允許':'禁止'}catch{}try{permission=(await navigator.permissions.query({name:'camera'})).state}catch{}try{devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput').length}catch{}$('diagnostics').textContent=`執行位置：${location.protocol} (${location.hostname||'本機檔案 / 未知來源'})\n獨立網頁：${window.self===window.top?'是':'否（內嵌 iframe）'}\n安全環境：${window.isSecureContext?'是':'否'}\n相機 API：${navigator.mediaDevices?.getUserMedia?'可用':'不可用'}\n網頁相機政策：${policy}\n相機權限：${permission}\n可列出的相機數：${devices}（授權前可能為 0）`;}
-async function start(only=false){if(running||starting)return;starting=true;testOnly=only;$('start').disabled=true;$('test').disabled=true;$('camera').disabled=true;$('stop').disabled=true;let stage='相機權限 / 裝置';try{if(!only&&$('strings').checked)unlockStrings();if(!navigator.mediaDevices?.getUserMedia)throw new Error('相機 API 不可用，請透過 localhost 或 HTTPS 開啟。');const p=document.permissionsPolicy||document.featurePolicy;if(p?.allowsFeature&&!p.allowsFeature('camera'))throw new Error('此網頁的 Permissions Policy 禁止相機，請下載後獨立開啟，不要在 ChatGPT 內嵌預覽中執行。');status('正在要求相機權限…');const id=$('camera').value;stream=await navigator.mediaDevices.getUserMedia({video:{...(id?{deviceId:{exact:id}}:{facingMode:{ideal:'user'}}),width:{ideal:960},height:{ideal:540},frameRate:{ideal:30}},audio:false});stage='相機影像播放';video.srcObject=stream;await video.play();if(!video.videoWidth)throw new Error('相機沒有輸出有效影像');cv.width=video.videoWidth;cv.height=video.videoHeight;$('placeholder').hidden=true;drawVideo();await scan();if(!only){stage='AI 模型載入';await init()}running=true;lastVideo=-1;frameTimes=[];resetMotion();result=null;$('stop').disabled=false;status(only?`相機測試成功 · ${cv.width} × ${cv.height} · 尚未載入 AI`:`追蹤中 · ${delegate} · ${cv.width} × ${cv.height}`);raf=requestAnimationFrame(loop);stream.getVideoTracks()[0].addEventListener('ended',()=>{if(running){stop();status('相機已中斷，請重新啟動。',true)}},{once:true})}catch(e){stop();const detail=stage==='相機權限 / 裝置'?explain(e):e.message||String(e);status(`啟動失敗 [${stage}]：${detail} (${e.name||'Error'})`,true);console.error(e)}finally{starting=false;diagnostics()}}
+async function start(only = false) {
+  if (running || starting) return;
+  const attempt = ++cameraAttempt, isCurrent = () => attempt === cameraAttempt;
+  starting = true;
+  testOnly = only;
+  $('start').disabled = $('test').disabled = $('camera').disabled = $('stop').disabled = true;
+  let stage = '相機權限 / 裝置';
+  try {
+    if (!only && $('strings').checked) unlockStrings();
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('相機 API 不可用，請透過 localhost 或 HTTPS 開啟。');
+    const policy = document.permissionsPolicy || document.featurePolicy;
+    if (policy?.allowsFeature && !policy.allowsFeature('camera')) {
+      throw new Error('此網頁的 Permissions Policy 禁止相機，請用獨立網頁開啟。');
+    }
+    status('正在要求相機權限…');
+    const id = $('camera').value;
+    const acquired = await navigator.mediaDevices.getUserMedia({
+      video:{...(id ? {deviceId:{exact:id}} : {facingMode:{ideal:'user'}}),
+        width:{ideal:960}, height:{ideal:540}, frameRate:{ideal:30}}, audio:false
+    });
+    if (!isCurrent()) {
+      acquired.getTracks().forEach(track => track.stop());
+      return;
+    }
+    stream = acquired;
+    const track = stream.getVideoTracks()[0];
+    track.addEventListener('ended', () => {
+      if (isCurrent()) {
+        stop();
+        status('相機已中斷，請重新啟動。', true);
+      }
+    }, {once:true});
+    stage = '相機影像播放';
+    video.srcObject = stream;
+    await video.play();
+    if (!isCurrent()) return;
+    if (!video.videoWidth) throw new Error('相機沒有輸出有效影像');
+    cv.width = video.videoWidth;
+    cv.height = video.videoHeight;
+    $('placeholder').hidden = true;
+    drawVideo();
+    await scan(isCurrent);
+    if (!isCurrent()) return;
+    if (!only) {
+      stage = 'AI 模型載入';
+      if (!detector) status('正在下載 MediaPipe 程式庫與手部模型…');
+      await init();
+      if (!isCurrent()) return;
+    }
+    running = true;
+    resetFrameTracking();
+    $('stop').disabled = false;
+    status(only ? `相機測試成功 · ${cv.width} × ${cv.height} · 尚未載入 AI` :
+      `追蹤中 · ${delegate} · ${cv.width} × ${cv.height}`);
+    queueCameraFrame();
+  } catch (error) {
+    if (!isCurrent()) return;
+    stop();
+    const detail = stage === '相機權限 / 裝置' ? explain(error) : error.message || String(error);
+    status(`啟動失敗 [${stage}]：${detail} (${error.name || 'Error'})`, true);
+    console.error(error);
+    diagnostics();
+  } finally {
+    if (isCurrent()) {
+      starting = false;
+      diagnostics();
+    }
+  }
+}
 
-function stop(){running=false;cancelAnimationFrame(raf);stream?.getTracks().forEach(t=>t.stop());stream=null;video.pause();video.srcObject=null;result=null;resetMotion();silenceStrings();resetUI();$('start').disabled=false;$('test').disabled=false;$('camera').disabled=false;$('stop').disabled=true;status('相機已停止。')}
-function drawVideo(){ctx.save();if($('mirror').checked){ctx.translate(cv.width,0);ctx.scale(-1,1)}ctx.drawImage(video,0,0,cv.width,cv.height);ctx.restore()}
+function resetFrameTracking() {
+  lastVideo = NaN;
+  frameTimes.length = 0;
+  telemetryAt = -Infinity;
+  result = null;
+  resetMotion();
+}
+
+function stop() {
+  cameraAttempt++;
+  running = starting = false;
+  cancelCameraFrame();
+  stream?.getTracks().forEach(track => track.stop());
+  stream = null;
+  video.pause();
+  video.srcObject = null;
+  resetFrameTracking();
+  silenceStrings();
+  resetUI();
+  $('start').disabled = $('test').disabled = $('camera').disabled = false;
+  $('stop').disabled = true;
+  status('相機已停止。');
+}
+function drawVideo() {
+  if (!$('mirror').checked) {
+    ctx.drawImage(video, 0, 0, cv.width, cv.height);
+    return;
+  }
+  ctx.save();
+  ctx.translate(cv.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, cv.width, cv.height);
+  ctx.restore();
+}
 const px=p=>$('mirror').checked?1-p.x:p.x;
 function handLabel(r,i){let s=(r.handedness?.[i]||r.handednesses?.[i])?.[0]?.categoryName||'Unknown';if($('swap').checked)s=s==='Left'?'Right':s==='Right'?'Left':s;return s}
-function drawHand(lm,label){const color=label==='Left'?'#51e2ce':label==='Right'?'#ffad73':'#e5e7eb',w=cv.width,h=cv.height,s=Math.max(1,w/640);if(!$('bones').checked)return;ctx.strokeStyle=color;ctx.lineWidth=2*s;ctx.lineCap='round';ctx.beginPath();for(const [a,b] of edges){ctx.moveTo(px(lm[a])*w,lm[a].y*h);ctx.lineTo(px(lm[b])*w,lm[b].y*h)}ctx.stroke();lm.forEach((p,i)=>{const x=px(p)*w,y=p.y*h;ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,(i===8?4:2.5)*s,0,Math.PI*2);ctx.fill();if($('indices').checked){ctx.font=`${11*s}px monospace`;ctx.strokeStyle='#08101c';ctx.lineWidth=3;ctx.strokeText(i,x+5*s,y-5*s);ctx.fillText(i,x+5*s,y-5*s)}});ctx.font=`bold ${13*s}px system-ui`;ctx.fillStyle=color;ctx.fillText(label,Math.max(5,Math.min(w-65*s,px(lm[0])*w)),Math.max(15,lm[0].y*h+18*s))}
-function drawStrings(now){const w=cv.width,h=cv.height,{lo,hi,ys}=geometry;ys.forEach((y,i)=>{const age=now-flash[i],active=age<300,amp=active?Math.exp(-age/90)*h*.022*Math.sin(age*.12):0;ctx.beginPath();ctx.moveTo(lo*w,y*h);ctx.quadraticCurveTo((lo+hi)*w/2,y*h+amp,hi*w,y*h);ctx.strokeStyle=active?'#fef08a':'#a5b4cccc';ctx.lineWidth=active?4:1.6;ctx.stroke();ctx.fillStyle=active?'#fef08a':'#f1f5f9';ctx.font= Math.max(9,Math.min(w,h)*.024)+'px system-ui';ctx.textAlign='right';ctx.fillText(notes[i][0],lo*w-5,y*h+4);ctx.textAlign='left';ctx.fillText(notes[i][1].toFixed(1)+' Hz',lo*w+5,y*h-5)})}
+const jointX = new Float32Array(21), jointY = new Float32Array(21);
+
+function drawHand(hand, label, mirrored, showIndices) {
+  const color = label === 'Left' ? '#51e2ce' : label === 'Right' ? '#ffad73' : '#e5e7eb';
+  const w = cv.width, h = cv.height, scale = Math.max(1, w / 640), length = hand.length;
+  for (let i = 0; i < length; i++) {
+    jointX[i] = (mirrored ? 1 - hand[i].x : hand[i].x) * w;
+    jointY[i] = hand[i].y * h;
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2 * scale;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (const [a,b] of edges) {
+    ctx.moveTo(jointX[a], jointY[a]);
+    ctx.lineTo(jointX[b], jointY[b]);
+  }
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  for (let i = 0; i < length; i++) {
+    const radius = (i === 8 ? 4 : 2.5) * scale;
+    ctx.moveTo(jointX[i] + radius, jointY[i]);
+    ctx.arc(jointX[i], jointY[i], radius, 0, Math.PI * 2);
+  }
+  ctx.fill();
+  if (showIndices) {
+    ctx.font = `${11 * scale}px monospace`;
+    ctx.strokeStyle = '#08101c';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < length; i++) {
+      ctx.strokeText(i, jointX[i] + 5 * scale, jointY[i] - 5 * scale);
+      ctx.fillText(i, jointX[i] + 5 * scale, jointY[i] - 5 * scale);
+    }
+  }
+  ctx.font = `bold ${13 * scale}px system-ui`;
+  ctx.fillText(label, Math.max(5, Math.min(w - 65 * scale, jointX[0])), Math.max(15, jointY[0] + 18 * scale));
+}
+function drawStrings(now) {
+  const w = cv.width, h = cv.height, {lo,hi,ys} = geometry;
+  const left = lo * w, right = hi * w;
+  ctx.font = Math.max(9, Math.min(w, h) * .024) + 'px system-ui';
+  for (let i = 0; i < ys.length; i++) {
+    const y = ys[i] * h, age = now - flash[i], active = age < 300;
+    const amplitude = active ? Math.exp(-age / 90) * h * .022 * Math.sin(age * .12) : 0;
+    ctx.beginPath();
+    ctx.moveTo(left, y);
+    ctx.quadraticCurveTo((left + right) / 2, y + amplitude, right, y);
+    ctx.strokeStyle = active ? '#fef08a' : '#a5b4cccc';
+    ctx.lineWidth = active ? 4 : 1.6;
+    ctx.stroke();
+    ctx.fillStyle = active ? '#fef08a' : '#f1f5f9';
+    ctx.textAlign = 'right';
+    ctx.fillText(notes[i][0], left - 5, y + 4);
+    ctx.textAlign = 'left';
+    ctx.fillText(noteHz[i], left + 5, y - 5);
+  }
+}
 function dist(a,b){return Math.hypot((a.x-b.x)*cv.width,(a.y-b.y)*cv.height)}
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 const stringVoices = new Set(), stringBuffers = new Map(), palmCandidates = new Map();
@@ -174,7 +457,7 @@ function showStringGesture() {
 
 function chordPoint(tip) { return {x: px(tip), y: tip.y}; }
 
-function selectAirChords(rows, now) {
+function selectAirChords(rows, now, rules) {
   if (!$('airChords').checked) {
     contacts.clear();
     releaseChordGrip();
@@ -195,7 +478,7 @@ function selectAirChords(rows, now) {
   }
   const seen = new Set(), ready = [];
   for (const row of rows) {
-    for (const finger of eligibleFingers(row.label, {hand:'Left', finger:8}, settings())) {
+    for (const finger of eligibleFingers(row.label, AIR_RULE, rules)) {
       const key = row.id + ':' + finger, point = chordPoint(row.hand[finger]);
       const pad = geometry.pads.find(pad => inRect(point, pad));
       seen.add(key);
@@ -320,9 +603,14 @@ const holeFingers = [8, 12, 16];
 const touchHoles = Array(6).fill(0), holeButtons = [];
 let cameraHoles = null, cameraHolesAt = -Infinity, flute = null, micAttempt = 0, micUiAt = -Infinity;
 
-function breathFeatures(wave, spectrum, sampleRate) {
-  let total = 0, airflow = 0, peak = 0, squares = 0;
+function waveRms(wave) {
+  let squares = 0;
   for (const sample of wave) squares += sample * sample;
+  return Math.sqrt(squares / wave.length);
+}
+
+function breathFeatures(wave, spectrum, sampleRate, rms = waveRms(wave)) {
+  let total = 0, airflow = 0, peak = 0;
   const binHz = sampleRate / (2 * spectrum.length);
   for (let i = Math.ceil(180 / binHz); i < spectrum.length && i * binHz <= 6500; i++) {
     const energy = 10 ** (spectrum[i] / 10);
@@ -331,7 +619,6 @@ function breathFeatures(wave, spectrum, sampleRate) {
     airflow += energy;
     peak = Math.max(peak, energy);
   }
-  const rms = Math.sqrt(squares / wave.length);
   const airShare = total > 0 ? airflow / total : 0;
   const bandwidth = airflow > 0 ? 1 - clamp((peak / airflow - .075) / .22) : 0;
   return rms * clamp((airShare - .14) / .34) * bandwidth;
@@ -467,8 +754,24 @@ function fluteFrame(session, now) {
   if (flute !== session) return;
   const {analyser, wave, spectrum} = session;
   analyser.getFloatTimeDomainData(wave);
-  analyser.getFloatFrequencyData(spectrum);
-  const signal = breathFeatures(wave, spectrum, audio.sampleRate);
+  const rms = waveRms(wave);
+  let signal;
+  if (session.background) {
+    analyser.getFloatFrequencyData(spectrum);
+    signal = breathFeatures(wave, spectrum, audio.sampleRate, rms);
+  } else {
+    const sensitivity = Number($('micSensitivity').value);
+    const openingThreshold = Math.max(.005, session.floor * 1.65 + .002) / sensitivity;
+    if (rms <= openingThreshold * .65) {
+      // breathFeatures is RMS multiplied by two factors in [0, 1]. Below
+      // this bound, signal is too small to open the gate (or keep it open
+      // through its .68 hysteresis) and the displayed level is exactly zero.
+      signal = 0;
+    } else {
+      analyser.getFloatFrequencyData(spectrum);
+      signal = breathFeatures(wave, spectrum, audio.sampleRate, rms);
+    }
+  }
   if (session.background) {
     session.background.push(signal);
     if (now >= session.calibrationEnd) {
@@ -487,7 +790,13 @@ function fluteFrame(session, now) {
       session.tone.frequency.setTargetAtTime(440 * 2 ** ((midi - 69 + cents / 100) / 12), time, wasPlaying ? .019 : .004);
       session.filter.frequency.setTargetAtTime(1200 + 2400 * level, time, .024);
     }
-    session.gain.gain.setTargetAtTime(session.gate ? .035 + .19 * level ** 1.2 : 0, time, session.gate ? .014 : .022);
+    // While gated off, the gain target remains zero. Reissuing that same
+    // automation target every animation frame adds work without changing the
+    // intended envelope; still update on the transition back to silence.
+    if (session.gate || session.gainGate !== session.gate) {
+      session.gain.gain.setTargetAtTime(session.gate ? .035 + .19 * level ** 1.2 : 0, time, session.gate ? .014 : .022);
+      session.gainGate = session.gate;
+    }
     if (now - micUiAt >= 55) {
       micUiAt = now;
       showHoles(holes);
@@ -543,39 +852,133 @@ async function startFlute() {
 }
 
 
-function detectPlucks(row,now,seen){const lm=row.hand,gate=!$("pinch").checked||(dist(lm[0],lm[9])>1&&dist(lm[4],lm[8])/dist(lm[0],lm[9])<.43);if(!gate)return;for(const finger of eligibleFingers(row.label,{hand:$("role").value,finger:8},settings())){const key=row.id+":"+finger,tip=lm[finger],p={x:px(tip),y:tip.y,t:now};seen.add(key);if(inRect(p,geometry.zone)||p.x<geometry.lo-.02||p.x>geometry.hi+.02){history.delete(key);continue}const prev=history.get(key);if(!prev||now-prev.t>180||now<=prev.t){history.set(key,initialCrossing(p,geometry));continue}const n=nextCrossings(prev,p,geometry);for(const i of n.hits)pluck(i,n.speed,now,key,row.label,finger);history.set(key,{...p,sides:n.sides,anchors:n.anchors})}}
+function detectPlucks(row, now, seen, rules) {
+  const hand = row.hand;
+  if (rules.pinch) {
+    const palmLength = dist(hand[0], hand[9]);
+    if (palmLength <= 1 || dist(hand[4], hand[8]) / palmLength >= .43) return;
+  }
+  for (const finger of eligibleFingers(row.label, rules.pluck, rules)) {
+    const key = row.id + ':' + finger, tip = hand[finger], point = {x:px(tip), y:tip.y, t:now};
+    seen.add(key);
+    if (inRect(point, geometry.zone) || point.x < geometry.lo - .02 || point.x > geometry.hi + .02) {
+      history.delete(key);
+      continue;
+    }
+    const state = history.get(key), previous = state?.point;
+    if (!previous || now - previous.t > 180 || now <= previous.t) {
+      history.set(key, initialCrossing(point, geometry));
+      continue;
+    }
+    const hits = advanceCrossings(state, point, geometry);
+    if (!hits) continue;
+    const speed = Math.abs(point.y - previous.y) / ((now - previous.t) / 1000);
+    const direction = point.y < previous.y ? -1 : 1;
+    const count = geometry.ys.length;
+    for (let i = direction > 0 ? 0 : count - 1; i >= 0 && i < count; i += direction) {
+      if (hits & (1 << i)) pluck(i, speed, now, key, row.label, finger);
+    }
+  }
+}
+function setText(id, text) {
+  const element = $(id);
+  if (element.textContent !== text) element.textContent = text;
+}
+
+function reportTracking(rows, r, now) {
+  const count = rows.length;
+  setText('count', count + ' / 2');
+  setText('points', count * 21 + ' / 42');
+  frameTimes.push(now);
+  while (frameTimes.length && frameTimes[0] < now - 1000) frameTimes.shift();
+  if (now < telemetryAt) return;
+  telemetryAt = now + 120;
+  setText('fps', frameTimes.length > 1 ?
+    ((frameTimes.length - 1) * 1000 / Math.max(1, now - frameTimes[0])).toFixed(1) : '—');
+  for (const side of ['Left','Right']) {
+    const row = rows.find(row => row.label === side);
+    const id = side.toLowerCase();
+    if (!row) {
+      setText(id, '尚未偵測');
+      continue;
+    }
+    const point = row.hand[8], confidence = (r.handedness?.[row.i] || r.handednesses?.[row.i])?.[0]?.score;
+    setText(id, '21 點 · ' + (confidence == null ? '—' : Math.round(confidence * 100) + '%') +
+      ' 分類信心\n食指 X ' + px(point).toFixed(2) + ' / Y ' + point.y.toFixed(2) + ' / Z ' + point.z.toFixed(2));
+  }
+}
+
 function report(r, now) {
-  const landmarks = r.landmarks || [], labels = {Left:[], Right:[]}, rows = trackHands(r), seen = new Set();
-  $('count').textContent = landmarks.length + ' / 2';
-  $('points').textContent = landmarks.length * 21 + ' / 42';
+  const rows = trackHands(r), seen = new Set();
   if (flute) {
     updateCameraHoles(rows, now);
   } else {
-    selectAirChords(rows, now);
+    const rules = {...settings(), pluck:{hand:$('role').value, finger:8}, pinch:$('pinch').checked};
+    selectAirChords(rows, now, rules);
     const settling = updatePalmMute(rows, now);
     if ($('strings').checked && !stringsMuted) {
       for (const row of rows) {
-        if (row.id !== chordGrip?.id && !settling.has(row.id)) detectPlucks(row, now, seen);
+        if (row.id !== chordGrip?.id && !settling.has(row.id)) detectPlucks(row, now, seen, rules);
       }
     }
     showStringGesture();
   }
   for (const key of history.keys()) if (!seen.has(key)) history.delete(key);
   for (const key of cooldowns.keys()) if (!seen.has(key.slice(0, key.lastIndexOf(':')))) cooldowns.delete(key);
-  for (const row of rows) if (labels[row.label]) labels[row.label].push(row);
-  for (const side of ['Left','Right']) {
-    const row = labels[side][0], el = $(side.toLowerCase());
-    if (!row) {
-      el.textContent = '尚未偵測';
-      continue;
-    }
-    const p = row.hand[8], conf = (r.handedness?.[row.i] || r.handednesses?.[row.i])?.[0]?.score;
-    el.textContent = '21 點 · ' + (conf == null ? '—' : Math.round(conf * 100) + '%') +
-      ' 分類信心\n食指 X ' + px(p).toFixed(2) + ' / Y ' + p.y.toFixed(2) + ' / Z ' + p.z.toFixed(2);
-    el.style.whiteSpace = 'pre-line';
+  reportTracking(rows, r, now);
+}
+
+function drawCameraOverlay(now) {
+  drawVideo();
+  drawStrings(now);
+  drawPads();
+  if (result && $('bones').checked) {
+    const mirrored = $('mirror').checked, indices = $('indices').checked;
+    result.landmarks.forEach((hand, i) => drawHand(hand, handLabel(result, i), mirrored, indices));
   }
 }
-function loop(now){if(!running)return;try{if(video.readyState>=2){updateGeometry();if(!testOnly&&video.currentTime!==lastVideo){lastVideo=video.currentTime;const stamp=Math.max(performance.now(),lastTimestamp+.01);lastTimestamp=stamp;result=detector.detectForVideo(video,stamp);const done=performance.now();frameTimes.push(done);while(frameTimes.length&&frameTimes[0]<done-1000)frameTimes.shift();$('fps').textContent=frameTimes.length>1?((frameTimes.length-1)*1000/Math.max(1,done-frameTimes[0])).toFixed(1):'—';report(result,done)}drawVideo();drawStrings(performance.now());drawPads();if(result)result.landmarks.forEach((lm,i)=>drawHand(lm,handLabel(result,i)))}raf=requestAnimationFrame(loop)}catch(e){stop();status('追蹤中斷：'+explain(e),true);console.error(e)}}
+
+function cancelCameraFrame() {
+  frameEpoch++;
+  if (frameId === null) return;
+  if (cameraUsesVideoFrames) video.cancelVideoFrameCallback(frameId);
+  else cancelAnimationFrame(frameId);
+  frameId = null;
+}
+
+function queueCameraFrame() {
+  if (!running || document.hidden || frameId !== null) return;
+  const epoch = frameEpoch;
+  const render = (_now, metadata) => {
+    if (epoch !== frameEpoch) return;
+    frameId = null;
+    if (!running || document.hidden) return;
+    try {
+      const mediaTime = metadata?.mediaTime ?? video.currentTime;
+      if (video.readyState >= 2 && mediaTime !== lastVideo) {
+        lastVideo = mediaTime;
+        if (video.videoWidth && video.videoHeight &&
+            (cv.width !== video.videoWidth || cv.height !== video.videoHeight)) {
+          cv.width = video.videoWidth;
+          cv.height = video.videoHeight;
+          resetMotion();
+        }
+        if (!testOnly) {
+          lastTimestamp = Math.max(performance.now(), lastTimestamp + .01);
+          result = detector.detectForVideo(video, lastTimestamp);
+          report(result, performance.now());
+        }
+        drawCameraOverlay(performance.now());
+      }
+      queueCameraFrame();
+    } catch (error) {
+      stop();
+      status('追蹤中斷：' + explain(error), true);
+      console.error(error);
+    }
+  };
+  frameId = cameraUsesVideoFrames ? video.requestVideoFrameCallback(render) : requestAnimationFrame(render);
+}
 function unlockStrings() {
   return enableSound().then(() => {
     if (!stringsMuted) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
@@ -588,7 +991,7 @@ $('start').onclick = () => start(false);
 $('test').onclick = () => start(true);
 $('stop').onclick = stop;
 $('diagnose').onclick = diagnostics;
-$('scan').onclick = scan;
+$('scan').onclick = () => scan();
 for (const id of ['mirror','swap','role','pinch','airChords','palmMute','chordVibrato']) {
   $(id).onchange = () => {
     resetMotion();
@@ -630,15 +1033,21 @@ cv.addEventListener('pointerup', event => {
   const pad = geometry.pads.find(pad => inRect(point, pad));
   if (pad) setChord(pad.name, '畫面觸控');
 });
-window.addEventListener('resize', updateGeometry);
+if (typeof orientation.addEventListener === 'function') orientation.addEventListener('change', updateGeometry);
+else window.addEventListener('resize', updateGeometry);
 window.addEventListener('pagehide', () => {
   if ($('startMic').disabled) stopFlute();
-  if (running) stop();
-  else stream?.getTracks().forEach(track => track.stop());
-  silenceStrings();
+  if (running || starting) stop();
+  else silenceStrings();
 });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && $('startMic').disabled) stopFlute('離開頁面，麥克風已停止。');
+  if (document.hidden) {
+    if ($('startMic').disabled) stopFlute('離開頁面，麥克風已停止。');
+    cancelCameraFrame();
+  } else if (running) {
+    resetFrameTracking();
+    queueCameraFrame();
+  }
 });
 $('startMic').onclick = startFlute;
 $('stopMic').onclick = () => stopFlute();
