@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.1
+- Process and paint fresh camera frames, with a fallback for browsers without video frame callbacks. Pause camera processing in hidden tabs and discard stale gesture state before resuming.
+- Reuse crossing state and group landmark drawing operations. Update tracking diagnostics less often than hand gestures.
+- Skip flute frequency analysis for samples that cannot open or hold the breath gate. Keep full frequency analysis during calibration.
+- Guard camera startup and frame callbacks against a completed stop or page navigation.
+
 ## v0.4
 - Turn on pluck audio by default and unlock it on camera start. Make the 55 ms per-finger/string cooldown optional and off by default.
 - Add open-palm string damping and chord-hold vibrato for a left-hand grip or a held screen button.
