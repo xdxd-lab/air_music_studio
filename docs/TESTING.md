@@ -18,7 +18,8 @@ Control: https://webrtc.github.io/samples/src/content/getusermedia/gum/ displaye
 |---|---|
 | Android Chrome HTTPS WebRTC control | PASS |
 | Android downloaded content:// v0.2 camera | FAIL: NotAllowedError |
-| Project HTTPS camera | Pending deployment and device test |
+| GitHub Pages v0.3 | Deployed. Served HTML matches the repository entrypoint. |
+| Project HTTPS camera | Pending device test |
 | Project dual-hand inference | Pending |
 | Project pluck audio and latency | Pending |
 

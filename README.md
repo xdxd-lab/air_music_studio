@@ -9,7 +9,7 @@ A browser-based gesture-controlled music studio with local hand tracking and exp
 - 請透過 HTTPS 網頁或 localhost 使用。GitHub 的原始碼預覽不等於可執行網站。
 - Android Chrome：先關閉其他使用相機的分頁，再按「僅測試相機」。成功後停止，按「啟動相機」，授權並等待模型下載。將雙手放進畫面，確認 2/2 hands、42/42 points，再啟用六弦與合成音效。
 - 桌面本機：在 repo 根目錄執行 `python -m http.server 8000`，瀏覽 http://localhost:8000/。
-- GitHub Pages：Settings → Pages → Deploy from a branch → main → /(root) → Save。正式網址 https://xdxd-lab.github.io/air_music_studio/ 。v0.2 已部署成功，v0.3 提交後由 Pages 自動部署。
+- 正式網站：[GitHub Pages](https://xdxd-lab.github.io/air_music_studio/)（v0.3）。由 `main` 根目錄自動部署。
 
 ## v0.3 使用方式
 - 預設關閉鏡像、顯示關節編號、兩個全域解除限制開關均開啟。
@@ -21,7 +21,8 @@ A browser-based gesture-controlled music studio with local hand tracking and exp
 - [v0.3](versions/Air-Music_Studio_v0.3.html)：全域手別／指尖規則、十指撥弦、和弦切換與自適應空中和弦區。
 - [v0.1](versions/Air-Music_Studio_v0.1.html)：初始雙手追蹤、六弦與撥弦合成。
 - [v0.2](versions/Air-Music_Studio_v0.2.html)：加入相機專用測試、權限診斷及分階段錯誤報告。
-- [工程架構與開發交接](docs/ARCHITECTURE.md)
+- [開發對話交接與未完成項目](docs/HANDOFF.md)
+- [工程架構](docs/ARCHITECTURE.md)
 - [Android 實測與驗收](docs/TESTING.md)
 - [參考資料與致謝 / References & acknowledgments](REFERENCES.md)
 - [版本紀錄](CHANGELOG.md)

@@ -18,10 +18,10 @@ RGB camera → getUserMedia → video frame → MediaPipe Hand Landmarker (VIDEO
 - Source is currently single-file HTML; both historical versions retained with updated project branding. Historical v0.2 snapshot remains available.
 
 ## Limits and roadmap
-1. P0: deploy HTTPS, validate camera-only then AI tracking on Android Chrome and desktop, verify front/back camera choice and portrait/landscape aspect ratio.
+1. P0: validate camera-only then AI tracking on the deployed HTTPS site in Android Chrome and desktop. Verify front/back camera choice and portrait/landscape aspect ratio.
 2. P1: improve track continuity, mirrored handedness, occlusion, jitter, cooldown and crossing interpolation; measure missed and false triggers. Avoid treating FPS as end-to-end latency.
-3. P2: left hand chords/pitch and right hand pluck; configurable gesture thresholds, calibration, touch sound test, velocity and strum timing.
+3. P2: build on the v0.3 air chord selector, six-string audition and configurable plucking hand. Add configurable gesture thresholds and calibration, then tune velocity response and strum timing.
 4. P3: dynamic string creation by two-hand pinch, tension/length and release, physically inspired vibration; investigate related work and cite any adopted material.
-5. P4: modular instruments, scales, MIDI, recording with explicit consent, Web Worker/AudioWorklet performance work.
+5. P4: modular instruments, scales, MIDI, recording with explicit consent, and Web Worker/AudioWorklet performance work. See the [platform direction and pending features](HANDOFF.md) for the development conversation handoff.
 
 Monocular RGB provides no reliable absolute depth between hands. Start with 2D/2.5D interaction; calibrated stereo/depth sensors are optional future work. No performance or recognition accuracy claims without measurement.
