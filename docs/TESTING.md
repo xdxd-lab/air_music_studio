@@ -38,7 +38,7 @@ Control: https://webrtc.github.io/samples/src/content/getusermedia/gum/ displaye
 ## v0.4.1 performance checks
 
 - Count inference and drawing calls in both scheduling paths. With 60 display callbacks and 30 new video frames in a second, expect 30 inference calls and 30 paints during tracking, or 30 paints and no inference in camera-only mode.
-- Hide the tab while holding a chord contact and return. Verify suspended callbacks resume without inheriting the held gesture. Stop or leave while camera permission is pending, then confirm a late result releases the camera.
+- Hide the tab while holding a chord contact and return. Verify suspended callbacks resume without inheriting the held gesture. Leave while camera permission is pending, then confirm a late result releases the camera. In an active preview, check that Stop cancels further callbacks.
 - Compare strum order and note triggers against v0.4 near the string deadband and at both horizontal bounds. Repeat with the per-finger cooldown enabled.
 - During flute calibration and audible breath, frequency data should still be analysed. Very quiet frames after calibration should keep the gate and meter at zero while skipping frequency data.
 - On an actual Android and desktop device, record camera cadence, inference FPS, interaction delay and dropped frames. Simulated callback counts do not measure device FPS or power consumption.
