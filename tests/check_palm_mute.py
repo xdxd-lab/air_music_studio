@@ -65,7 +65,26 @@ elements.palmMute.checked = false;
 tick(1052);
 assert(!stringsMuted && restores === 2, 'Switching off palm mute must restore output');
 
-(typeof print === 'function' ? print : console.log)('PASS: open-palm hold, pluck routing, tracking loss, and release');
+elements.palmMute.checked = true;
+const outside = hand.map(point => ({...point, x: point.x - .4}));
+for (const time of [2000, 2100, 2200, 2300, 2400]) tick(time);
+report({rows: [{...rows[0], hand: outside}]}, 2450);
+for (const time of [2500, 2600, 2700, 2800, 2900, 2999]) tick(time);
+assert(!stringsMuted && silences === 2, 'Leaving the string area must restart the hold');
+tick(3000);
+assert(stringsMuted && silences === 3, 'A full new hold in the string area must mute');
+report({rows: []}, 3099);
+assert(stringsMuted, 'Release grace must hold before 100 ms since the last qualifying frame');
+report({rows: []}, 3100);
+assert(!stringsMuted && restores === 3, 'Release grace must end at 100 ms');
+
+for (const time of [4000, 4100, 4200, 4300, 4400]) tick(time);
+for (const time of [4600, 4700, 4800, 4900, 5000, 5099]) tick(time);
+assert(!stringsMuted, 'A gap with no new frames must not count toward the hold');
+tick(5100);
+assert(stringsMuted && silences === 4, 'A continuous hold after the frame gap must mute');
+
+(typeof print === 'function' ? print : console.log)('PASS: 500 ms hold, pluck routing, tracking and area resets, and release grace');
 """
 
 
