@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.2
+- Add a bottom six-hole touch surface. Multi-touch presses update the panel buttons while the fingers are held, then restore the selected hole positions.
+- Make half holes optional and off by default in both camera and screen modes.
+- Use breath strength for volume and the octave harmonic while the selected holes determine the fundamental.
+- Release the microphone and restore string playback and hand tracking when stopping or closing the flute panel. Preserve the selected string settings.
+
 ## v0.4.1
 - Process and paint fresh camera frames, with a fallback for browsers without video frame callbacks. Pause camera processing in hidden tabs and discard stale gesture state before resuming.
 - Reuse crossing state and group landmark drawing operations. Update tracking diagnostics less often than hand gestures.

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.1</title>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.2</title>
 <style>
 :root{color-scheme:dark;--bg:#0a101a;--panel:#111b2a;--line:#25364b;--text:#e8f0fa;--muted:#9aadc1;--cyan:#51e2ce;--orange:#ffad73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172c40,var(--bg) 52%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:28px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}h1{font-size:35px;letter-spacing:-1.5px;margin:0}h1 span{color:var(--cyan)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}.sub{color:var(--muted);margin:4px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:7px 13px;color:var(--cyan);white-space:nowrap;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}button,select{border:1px solid var(--line);background:#18283c;color:var(--text);border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}button.primary{background:var(--cyan);color:#07251f;border:0;font-weight:700}button:disabled{opacity:.4;cursor:not-allowed}select{max-width:100%;min-width:0}#camera{flex:1}canvas{display:block;width:100%;height:auto;border-radius:12px;background:#080e16}#video{display:none}.stage{position:relative}.placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:20px;color:var(--muted)}.placeholder strong{font-size:22px;color:var(--text)}.placeholder[hidden]{display:none}.status{padding:10px 2px 0;color:var(--muted);overflow-wrap:anywhere}.status.error{color:#ff9e9e}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.metric{padding:10px;background:#0c1521;border-radius:10px}.metric b{font-size:24px;display:block;font-variant-numeric:tabular-nums}.metric small{color:var(--muted)}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);margin:16px 0 8px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;cursor:pointer}input[type=checkbox]{accent-color:var(--cyan);width:17px;height:17px}.hand{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;color:var(--muted);font-size:13px}.hand b{display:block;margin-bottom:4px}.left{color:var(--cyan)}.right{color:var(--orange)}.help{color:var(--muted);font-size:13px;margin:10px 0}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}.hand span{white-space:pre-line}#note{font-size:22px;color:var(--cyan);font-weight:700}footer{color:var(--muted);font-size:12px;margin-top:16px}label.field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:13px}@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:16px}h1{font-size:29px}}
 .toggles{display:grid;gap:7px;margin:10px 0}.toggles button[aria-pressed=true],.chordbuttons button[aria-pressed=true]{background:var(--cyan);color:#07251f;border-color:var(--cyan);font-weight:700}.chordpanel{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.chordhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between}.chordhead h2{margin:0}.chordbuttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(53px,1fr));gap:6px;margin-top:8px}.chordbuttons button{padding:8px 4px}.tuning{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:9px}.tuning span{font-size:11px;text-align:center;background:#0b1420;padding:5px 2px;border-radius:5px}.tuning b{display:block;color:var(--cyan);font-size:13px}.placeholder{inset:5px 5px auto;display:block;background:#08101bcc;border-radius:6px;padding:5px;color:#bdc9d8}.placeholder strong{font-size:12px}.placeholder span{display:none}.placeholder[hidden]{display:none}canvas{touch-action:manipulation}@media(max-width:480px){.panel{padding:10px}.tuning{grid-template-columns:repeat(3,1fr)}header .pill{display:none}}
@@ -9,8 +9,29 @@
 .flute-holes button:disabled{opacity:1;cursor:default}.flute-holes [data-state="閉"]{background:#28564e}
 .flute-holes [data-state="半"]{background:#655036}#breathMeter{width:50%;accent-color:var(--cyan)}
 #fluteNote,#stringGesture{color:var(--cyan)}#stringGesture:empty{display:none}
+.flute-touch-dock {
+  --hole-height:clamp(56px, 14vh, 110px);
+  position:fixed; inset:auto 0 0; z-index:10;
+  padding:8px max(6px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left));
+  background:#111b2a; border-top:1px solid var(--line);
+}
+.flute-touch-dock .flute-holes {gap:3px}
+.flute-touch-dock .flute-holes button {
+  min-height:var(--hole-height); width:100%; min-width:0;
+  background:#1b354a; font-size:clamp(11px, 2.7vw, 14px); touch-action:none; user-select:none;
+}
+.flute-touch-dock .flute-holes button::before {content:attr(data-hole); display:block; color:var(--muted); font-size:10px}
+.flute-touch-dock .flute-holes button:first-child {background:#21465d; border-color:var(--cyan)}
+.flute-touch-dock .flute-holes button[data-state="半"] {background:#655036}
+.flute-touch-dock .flute-holes button[data-state="閉"] {background:#28564e}
+.flute-touch-dock[data-half="true"] .flute-holes button {
+  background-image:linear-gradient(#ffffff18 36%, transparent 36%);
+}
+.flute-touch-dock button:focus-visible {outline:2px solid var(--cyan); outline-offset:-3px}
+.flute-mouthpiece {margin:4px 0 0; text-align:left; color:var(--cyan); font-size:12px}
+main.flute-dock-open {padding-bottom:calc(clamp(56px, 14vh, 110px) + 64px + env(safe-area-inset-bottom, 0px))}
 </style></head><body><main>
-<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.1</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
+<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.2</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
 <div class="layout"><section class="panel"><div class="bar"><button class="primary" id="start">啟動相機</button><button id="test">僅測試相機</button><button id="stop" disabled>停止</button><select id="camera" aria-label="選擇相機"><option value="">預設相機</option></select><button id="scan" title="重新列出相機">重新掃描</button></div><div class="stage"><video id="video" autoplay playsinline muted></video><canvas id="view" width="960" height="540" aria-label="相機影像與雙手骨架"></canvas><div class="placeholder" id="placeholder"><strong>等待相機啟動</strong><span>按下「啟動相機」並允許瀏覽器使用相機</span></div></div><section class="chordpanel"><div class="chordhead"><h2>和弦測試 · <span id="activeChord">C</span></h2><label class="check"><input id="airChords" type="checkbox" checked>空中選和弦</label><button id="audition" type="button">試聽六弦</button></div><div id="chordButtons" class="chordbuttons"></div><div id="tuning" class="tuning" aria-live="polite"></div><p class="help" id="chordhelp">直式下方、橫式左方為空中和弦區。指尖停留約 140 ms 選擇；移開後保留和弦。</p></section><div class="status" id="status" role="status">尚未啟動。初次載入需連線下載 AI 模型。</div><details open style="margin-top:12px"><summary>相機環境診斷</summary><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:12px;margin:8px 0"></pre><button id="diagnose">重新檢查環境</button><p class="help">若相機權限遭拒，請用獨立 HTTPS 網頁或 localhost；Android content:// 本機檔案曾實測遭拒。測試相機不會下載 AI 模型。</p></details><div class="metrics"><div class="metric"><small>偵測手數</small><b id="count">0 / 2</b></div><div class="metric"><small>骨架點數</small><b id="points">0 / 42</b></div><div class="metric"><small>推論 FPS</small><b id="fps">—</b></div></div></section>
 <aside class="panel"><h2>追蹤設定</h2><label class="check"><input id="mirror" type="checkbox">鏡像顯示</label><label class="check"><input id="bones" type="checkbox" checked>顯示手部骨架</label><label class="check"><input id="indices" type="checkbox" checked>顯示關節編號 0–20</label><label class="check"><input id="swap" type="checkbox">交換左右手標籤</label><div class="toggles"><button id="anyHand" type="button" aria-pressed="true">不限制左右手：開</button><button id="anyFinger" type="button" aria-pressed="true">不限制手指：開</button></div><p class="help">兩個全域開關各自控制撥弦與選和弦。關閉時，指定手的食指撥弦、左手食指選和弦。</p><div class="hand"><b class="left">LEFT · 左手</b><span id="left">尚未偵測</span></div><div class="hand"><b class="right">RIGHT · 右手</b><span id="right">尚未偵測</span></div><div class="help">食指尖座標以畫面左上為原點，X/Y 為正規化位置；Z 為模型相對深度，不代表相機距離。</div><hr class="sep"><h2>六弦</h2>
 <label class="check"><input id="strings" type="checkbox" checked>啟用撥弦音效</label>
@@ -18,18 +39,23 @@
 <label class="check"><input id="palmMute" type="checkbox" checked>張掌止弦</label>
 <label class="check"><input id="chordVibrato" type="checkbox" checked>按弦搖韻</label>
 <p class="help">在弦區張開手掌稍停，止住六弦。用左手停在空中和弦格內並輕輕左右搖，右手撥弦。也可按住螢幕上的和弦鍵左右拖動。</p>
-<p class="help" id="stringGesture"></p><label class="field">撥弦手<select id="role"><option value="Both">雙手皆可</option><option value="Right" selected>右手</option><option value="Left">左手</option></select></label><label class="check"><input id="pinch" type="checkbox">撥弦需拇指與食指捏合（整手條件）</label><div class="help">任一符合規則的指尖上下穿越琴弦即撥弦。每根指尖獨立觸發。可另外要求整手先捏合。</div><div id="note">—</div><div class="help" id="notehelp">尚未撥弦</div><details class="flute">
+<p class="help" id="stringGesture"></p><label class="field">撥弦手<select id="role"><option value="Both">雙手皆可</option><option value="Right" selected>右手</option><option value="Left">左手</option></select></label><label class="check"><input id="pinch" type="checkbox">撥弦需拇指與食指捏合（整手條件）</label><div class="help">任一符合規則的指尖上下穿越琴弦即撥弦。每根指尖獨立觸發。可另外要求整手先捏合。</div><div id="note">—</div><div class="help" id="notehelp">尚未撥弦</div><details class="flute" id="flutePanel">
 <summary>曲笛實驗</summary>
 <div class="bar"><button type="button" id="startMic">啟用麥克風</button><button type="button" id="stopMic" disabled>停用麥克風</button><button type="button" id="fluteCalibrate" disabled>重測背景音</button></div>
 <label class="field">按孔方式<select id="fluteFingering"><option value="camera">相機手勢</option><option value="touch">螢幕按孔</option></select></label>
+<label class="check"><input id="fluteHalfHoles" type="checkbox">啟用半孔</label>
 <p class="help" id="fluteGuide"></p>
-<div class="flute-holes" id="fluteHoles" aria-label="六個指孔"></div>
+<div class="flute-holes" id="fluteHoles" role="group" aria-label="六孔狀態與切換"></div>
 <label class="field">吹氣靈敏度<input id="micSensitivity" type="range" min=".5" max="2.5" step=".1" value="1"></label>
 <label class="field">氣聲強度<meter id="breathMeter" min="0" max="1" value="0"></meter></label>
 <div class="field">目前音高 <b id="fluteNote">—</b></div>
 <p class="help" id="micStatus" role="status">麥克風未啟用。</p>
-<p class="help">用輕吹控制音量，短氣分音，強吹可試高八度。麥克風資料在本機分析。啟用麥克風後暫停手勢撥弦，建議戴耳機。</p>
+<p class="help">吹氣強弱控制音量與八度泛音，按孔決定基音，短氣可分音。麥克風資料在本機分析。啟用麥克風後暫停手勢撥弦，建議戴耳機。</p>
 </details></aside></div><footer>MediaPipe Hand Landmarker · Web Audio API · 不錄影、不錄音、不上傳相機或麥克風資料；模型與程式庫從 CDN 下載。請以 Chrome / Edge 開啟，建議 localhost 或 HTTPS。</footer>
+<section class="flute-touch-dock" id="fluteTouchDock" aria-label="曲笛螢幕按孔" hidden>
+<div class="flute-holes" id="fluteDockHoles" role="group" aria-label="按住色塊遮孔"></div>
+<p class="flute-mouthpiece">↓ 吹氣端 · 對準裝置下方的麥克風</p>
+</section>
 </main><script type="module">
 const $=id=>document.getElementById(id), video=$('video'), cv=$('view'), ctx=cv.getContext('2d');
 const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21', MODEL='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
@@ -148,8 +174,9 @@ function resetMotion() {
   palmCandidates.clear();
   tracks = [];
   lastChordAt = mutedUntil = -Infinity;
-  if (stringsMuted && stringBus) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
+  const wasMuted = stringsMuted;
   stringsMuted = false;
+  if (wasMuted && $('strings').checked) restoreStringOutput();
   pointerGrip = null;
   releaseChordGrip();
   cameraHoles = null;
@@ -396,6 +423,10 @@ function silenceStrings() {
   stringVoices.clear();
 }
 
+function restoreStringOutput() {
+  if (stringBus && !flute && !stringsMuted) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
+}
+
 function updatePalmMute(rows, now) {
   const seen = new Set(), candidates = new Set();
   for (const {id, hand} of $('palmMute').checked ? rows : []) {
@@ -423,8 +454,8 @@ function updatePalmMute(rows, now) {
       flash.fill(-Infinity);
       history.clear();
       cooldowns.clear();
-    } else if (stringBus && $('strings').checked) {
-      stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
+    } else if ($('strings').checked) {
+      restoreStringOutput();
     }
   }
   return candidates;
@@ -568,7 +599,7 @@ function stringBuffer(freq) {
 }
 
 function sound(freq, velocity, delay = 0) {
-  if (!audio || audio.state !== 'running' || stringsMuted) return;
+  if (!audio || audio.state !== 'running' || stringsMuted || flute) return;
   const voice = audio.createBufferSource(), gain = audio.createGain();
   voice.buffer = stringBuffer(freq);
   voice.detune.value = stringCents;
@@ -600,7 +631,10 @@ function pluck(i, velocity, now, key, label, finger) {
 
 const fluteScale = [67, 69, 71, 72, 74, 76, 78];
 const holeFingers = [8, 12, 16];
-const touchHoles = Array(6).fill(0), holeButtons = [];
+const touchHoles = Array(6).fill(0), screenHoles = touchHoles.slice(), holeButtons = [], dockButtons = [];
+const heldFluteHoles = new Map();
+const HALF_HOLE_EDGE = .36;
+const halfHolesEnabled = () => $('fluteHalfHoles').checked;
 let cameraHoles = null, cameraHolesAt = -Infinity, flute = null, micAttempt = 0, micUiAt = -Infinity;
 
 function waveRms(wave) {
@@ -624,14 +658,14 @@ function breathFeatures(wave, spectrum, sampleRate, rms = waveRms(wave)) {
   return rms * clamp((airShare - .14) / .34) * bandwidth;
 }
 
-function flutePitch(holes, highRegister) {
+function flutePitch(holes) {
   let pitch = fluteScale[0];
   // The open hole nearest the mouth dominates. A partial opening blends toward it.
   for (let i = holes.length - 1; i >= 0; i--) {
     const openness = holes[i] >= .95 ? 0 : 1 - holes[i];
     pitch += (fluteScale[holes.length - i] - pitch) * openness;
   }
-  return pitch + (highRegister ? 12 : 0);
+  return pitch;
 }
 
 function updateCameraHoles(rows, now) {
@@ -643,64 +677,143 @@ function updateCameraHoles(rows, now) {
     cameraHoles = null;
     return;
   }
+  const previous = now - cameraHolesAt < 200 ? cameraHoles : null;
+  const half = halfHolesEnabled();
   cameraHolesAt = now;
-  cameraHoles = [left, right].flatMap(row => holeFingers.map(tip => {
+  cameraHoles = [left, right].flatMap((row, hand) => holeFingers.map((tip, finger) => {
     const closure = clamp((.94 - fingerExtension(row.hand, tip, aspect)) / .23);
+    if (!half) return closure >= (previous?.[hand * 3 + finger] === 1 ? .45 : .55) ? 1 : 0;
     return closure < .12 ? 0 : closure > .84 ? 1 : (closure - .12) / .72;
   }));
 }
 
 function showHoles(holes) {
-  holeButtons.forEach((button, i) => {
+  for (let i = 0; i < holeButtons.length; i++) {
     const hole = holes?.[i];
     const text = hole == null ? '—' : hole >= .95 ? '閉' : hole <= .05 ? '開' : '半';
-    if (button.dataset.state === text) return;
-    button.dataset.state = text;
-    button.lastChild.textContent = text;
-    button.setAttribute('aria-label', button.firstChild.textContent + ' · ' + text);
-  });
+    for (const button of [holeButtons[i], dockButtons[i]]) {
+      if (button.dataset.state === text) continue;
+      button.dataset.state = text;
+      button.lastChild.textContent = text;
+      button.setAttribute('aria-label', '第' + (i + 1) + '孔 ' + button.firstChild.textContent + ' · ' + text);
+    }
+  }
+}
+
+function syncTouchHoles() {
+  for (let i = 0; i < touchHoles.length; i++) screenHoles[i] = touchHoles[i];
+  // Finger contact takes priority over the latched state while it is held.
+  const held = Array(touchHoles.length).fill(null);
+  for (const {index, closure} of heldFluteHoles.values()) {
+    if (index !== -1) held[index] = Math.max(held[index] ?? 0, closure);
+  }
+  for (let i = 0; i < held.length; i++) if (held[i] !== null) screenHoles[i] = held[i];
+  if ($('fluteFingering').value === 'touch') showHoles(screenHoles);
+}
+
+function clearFluteTouches() {
+  if (!heldFluteHoles.size) return;
+  heldFluteHoles.clear();
+  syncTouchHoles();
+}
+
+function updateFluteDock() {
+  const visible = $('fluteFingering').value === 'touch' && $('flutePanel').open;
+  const dock = $('fluteTouchDock');
+  dock.hidden = !visible;
+  dock.dataset.half = String(halfHolesEnabled());
+  document.querySelector('main').classList.toggle('flute-dock-open', visible);
+  if (!visible) clearFluteTouches();
 }
 
 function refreshFluteMode() {
-  const touch = $('fluteFingering').value === 'touch';
+  const touch = $('fluteFingering').value === 'touch', half = halfHolesEnabled();
+  clearFluteTouches();
+  updateFluteDock();
   cameraHoles = null;
   for (const button of holeButtons) button.disabled = !touch;
-  showHoles(touch ? touchHoles : null);
+  showHoles(touch ? screenHoles : null);
   $('fluteGuide').textContent = touch
-    ? '點選孔位輪流切換開、半、閉，再對麥克風輕吹。'
-    : '啟動手部相機，兩手各用食指、中指、無名指。伸直為開、略彎為半、彎下為閉。';
+    ? '按住底部色塊閉孔，放開恢復孔位按鈕的設定。' + (half ? '按色塊上段可按半孔。' : '')
+    : '兩手各用食指、中指、無名指。伸直為開、彎下為閉。' + (half ? '略彎可按半孔。' : '');
+}
+
+function toggleFluteHole(index) {
+  const current = touchHoles[index];
+  touchHoles[index] = halfHolesEnabled() ? (current + .5) % 1.5 : current === 0 ? 1 : 0;
+  syncTouchHoles();
 }
 
 function initFluteHoles() {
   for (const side of ['左', '右']) for (const finger of ['食', '中', '無名']) {
-    const button = document.createElement('button'), index = holeButtons.length;
-    const name = document.createElement('span'), value = document.createElement('b');
-    button.type = 'button';
-    name.textContent = side + finger;
-    button.append(name, value);
-    button.onclick = () => {
-      touchHoles[index] = (touchHoles[index] + .5) % 1.5;
-      showHoles(touchHoles);
-    };
-    holeButtons.push(button);
-    $('fluteHoles').append(button);
+    const index = holeButtons.length;
+    for (const [container, buttons] of [['fluteHoles', holeButtons], ['fluteDockHoles', dockButtons]]) {
+      const button = document.createElement('button');
+      const name = document.createElement('span'), value = document.createElement('b');
+      button.type = 'button';
+      name.textContent = side + finger;
+      button.dataset.hole = index + 1;
+      button.append(name, value);
+      button.onclick = event => {
+        if (container === 'fluteHoles' || (event.detail === 0 && !event.pointerType)) toggleFluteHole(index);
+      };
+      buttons.push(button);
+      $(container).append(button);
+    }
+  }
+
+  const grid = $('fluteDockHoles');
+  function updateContact(event) {
+    const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('button[data-hole]');
+    const index = button && grid.contains(button) ? Number(button.dataset.hole) - 1 : -1;
+    let closure = 1;
+    if (index !== -1 && halfHolesEnabled()) {
+      const {top, height} = button.getBoundingClientRect();
+      if (event.clientY < top + height * HALF_HOLE_EDGE) closure = .5;
+    }
+    const previous = heldFluteHoles.get(event.pointerId);
+    if (previous?.index === index && previous.closure === closure) return;
+    heldFluteHoles.set(event.pointerId, {index, closure});
+    syncTouchHoles();
+  }
+  grid.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    grid.setPointerCapture(event.pointerId);
+    updateContact(event);
+  });
+  grid.addEventListener('pointermove', event => {
+    if (heldFluteHoles.has(event.pointerId)) updateContact(event);
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    grid.addEventListener(type, event => {
+      if (type === 'lostpointercapture' && event.target !== grid) return;
+      if (heldFluteHoles.delete(event.pointerId)) syncTouchHoles();
+    });
   }
   refreshFluteMode();
 }
 
 function makeFluteVoice() {
-  const tone = audio.createOscillator(), filter = audio.createBiquadFilter(), gain = audio.createGain();
+  const tone = audio.createOscillator(), octave = audio.createOscillator();
+  const octaveGain = audio.createGain(), filter = audio.createBiquadFilter(), gain = audio.createGain();
   tone.frequency.value = 440;
-  tone.setPeriodicWave(audio.createPeriodicWave(new Float32Array(7), Float32Array.of(0, 1, .30, .24, .10, .16, .06)));
+  octave.frequency.value = 880;
+  tone.setPeriodicWave(audio.createPeriodicWave(
+    new Float32Array(7), Float32Array.of(0, 1, 0, .24, .10, .16, .06), {disableNormalization: true}
+  ));
+  octaveGain.gain.value = .27;
   filter.type = 'lowpass';
   filter.frequency.value = 1800;
   gain.gain.value = 0;
   tone.connect(filter).connect(gain).connect(mix);
-  tone.start();
-  return {tone, filter, gain};
+  octave.connect(octaveGain).connect(filter);
+  const time = audio.currentTime;
+  tone.start(time);
+  octave.start(time);
+  return {tone, octave, octaveGain, filter, gain};
 }
 
-function stopFlute(message = '麥克風已停止。') {
+function stopFlute(message = '麥克風已停止。', resumeStrings = false) {
   micAttempt++;
   const session = flute;
   flute = null;
@@ -713,11 +826,21 @@ function stopFlute(message = '麥克風已停止。') {
     session.gain.gain.setTargetAtTime(0, time, .012);
     session.tone.onended = () => {
       session.tone.disconnect();
+      session.octave.disconnect();
+      session.octaveGain.disconnect();
       session.filter.disconnect();
       session.gain.disconnect();
     };
     session.tone.stop(time + .07);
+    session.octave.stop(time + .07);
+    resetMotion();
+    if ($('strings').checked) {
+      restoreStringOutput();
+      if (resumeStrings && audio.state !== 'running') unlockStrings();
+    }
   }
+  clearFluteTouches();
+  $('audition').disabled = false;
   $('startMic').disabled = false;
   $('stopMic').disabled = true;
   $('fluteCalibrate').disabled = true;
@@ -725,17 +848,13 @@ function stopFlute(message = '麥克風已停止。') {
   $('fluteNote').textContent = '—';
   $('micStatus').textContent = message;
   cameraHoles = null;
-  showHoles($('fluteFingering').value === 'touch' ? touchHoles : null);
-  history.clear();
-  cooldowns.clear();
-  if (stringBus && $('strings').checked) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
+  showHoles($('fluteFingering').value === 'touch' ? screenHoles : null);
 }
 
 function calibrateFlute(now) {
   flute.calibrationEnd = now + 1100;
   flute.background = [];
   flute.gate = false;
-  flute.high = false;
   flute.gain.gain.setTargetAtTime(0, audio.currentTime, .01);
   $('breathMeter').value = 0;
   $('fluteNote').textContent = '—';
@@ -746,7 +865,6 @@ function breathState(state, signal, sensitivity, hasFingering) {
   const threshold = Math.max(.005, state.floor * 1.65 + .002) / sensitivity;
   state.gate = hasFingering && signal > threshold * (state.gate ? .68 : 1);
   const level = clamp((signal - threshold * .65) / Math.max(.035, threshold * 3));
-  state.high = state.gate && level >= (state.high ? .66 : .89);
   return level;
 }
 
@@ -780,14 +898,20 @@ function fluteFrame(session, now) {
       session.background = null;
     }
   } else {
-    const holes = $('fluteFingering').value === 'touch' ? touchHoles : now - cameraHolesAt < 200 ? cameraHoles : null;
+    const holes = $('fluteFingering').value === 'touch' ? screenHoles : now - cameraHolesAt < 200 ? cameraHoles : null;
     const wasPlaying = session.gate;
     const level = breathState(session, signal, Number($('micSensitivity').value), Boolean(holes));
-    const midi = holes ? flutePitch(holes, session.high) : 67;
+    const midi = holes ? flutePitch(holes) : fluteScale[0];
     const time = audio.currentTime;
     if (session.gate) {
-      const cents = (level - .42) * 16;
-      session.tone.frequency.setTargetAtTime(440 * 2 ** ((midi - 69 + cents / 100) / 12), time, wasPlaying ? .019 : .004);
+      if (session.midi !== midi) {
+        const frequency = 440 * 2 ** ((midi - 69) / 12);
+        const glide = wasPlaying ? .019 : .004;
+        session.tone.frequency.setTargetAtTime(frequency, time, glide);
+        session.octave.frequency.setTargetAtTime(frequency * 2, time, glide);
+        session.midi = midi;
+      }
+      session.octaveGain.gain.setTargetAtTime(.27 + .55 * level, time, .024);
       session.filter.frequency.setTargetAtTime(1200 + 2400 * level, time, .024);
     }
     // While gated off, the gain target remains zero. Reissuing that same
@@ -801,7 +925,7 @@ function fluteFrame(session, now) {
       micUiAt = now;
       showHoles(holes);
       $('breathMeter').value = level;
-      $('fluteNote').textContent = session.gate ? midiNote(Math.round(midi))[0] + (session.high ? ' · 高音' : '') : '—';
+      $('fluteNote').textContent = session.gate ? midiNote(Math.round(midi))[0] : '—';
       $('micStatus').textContent = !holes ? '等待相機辨識左右手。' : session.gate ? '吹奏中' : '等待氣聲';
     }
   }
@@ -832,14 +956,15 @@ async function startFlute() {
     analyser.smoothingTimeConstant = .15;
     input.connect(analyser);
     flute = {
-      stream, input, analyser, ...makeFluteVoice(), floor:0, gate:false, high:false,
+      stream, input, analyser, ...makeFluteVoice(), floor:0, gate:false,
       wave:new Float32Array(analyser.fftSize), spectrum:new Float32Array(analyser.frequencyBinCount)
     };
     stream.getAudioTracks()[0].addEventListener('ended', () => {
       if (flute?.stream === stream) stopFlute('麥克風已中斷。');
     }, {once:true});
-    silenceStrings();
     resetMotion();
+    silenceStrings();
+    $('audition').disabled = true;
     $('fluteCalibrate').disabled = false;
     calibrateFlute(performance.now());
     fluteFrame(flute, performance.now());
@@ -980,9 +1105,7 @@ function queueCameraFrame() {
   frameId = cameraUsesVideoFrames ? video.requestVideoFrameCallback(render) : requestAnimationFrame(render);
 }
 function unlockStrings() {
-  return enableSound().then(() => {
-    if (!stringsMuted) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
-  }).catch(error => {
+  return enableSound().then(restoreStringOutput).catch(error => {
     status('音效啟動失敗：' + explain(error), true);
   });
 }
@@ -1009,15 +1132,16 @@ for (const id of ['anyHand','anyFinger']) {
 $('pluckCooldown').onchange = () => cooldowns.clear();
 $('strings').onchange = () => {
   resetMotion();
-  if ($('strings').checked) unlockStrings();
-  else silenceStrings();
+  if ($('strings').checked) {
+    if (!flute) unlockStrings();
+  } else silenceStrings();
 };
 $('audition').onclick = async () => {
-  if (stringsMuted) return;
+  if (stringsMuted || flute) return;
   try {
     await enableSound();
-    if (stringsMuted) return;
-    stringBus.gain.setTargetAtTime(1, audio.currentTime, .008);
+    if (stringsMuted || flute) return;
+    restoreStringOutput();
     const now = performance.now();
     notes.slice().reverse().forEach((note, i) => sound(note[1], .45, i * .065));
     flash.fill(now);
@@ -1042,17 +1166,33 @@ window.addEventListener('pagehide', () => {
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
+    clearFluteTouches();
     if ($('startMic').disabled) stopFlute('離開頁面，麥克風已停止。');
     cancelCameraFrame();
   } else if (running) {
     resetFrameTracking();
+    if (!testOnly && $('strings').checked && audio && audio.state !== 'running') {
+      audio.resume().then(restoreStringOutput).catch(() => {});
+    }
     queueCameraFrame();
   }
 });
+window.addEventListener('blur', clearFluteTouches);
 $('startMic').onclick = startFlute;
-$('stopMic').onclick = () => stopFlute();
+$('stopMic').onclick = () => stopFlute(undefined, true);
 $('fluteCalibrate').onclick = () => { if (flute) calibrateFlute(performance.now()); };
 $('fluteFingering').onchange = refreshFluteMode;
+$('fluteHalfHoles').onchange = () => {
+  if (!halfHolesEnabled()) {
+    for (let i = 0; i < touchHoles.length; i++) if (touchHoles[i] === .5) touchHoles[i] = 0;
+  }
+  refreshFluteMode();
+  syncTouchHoles();
+};
+$('flutePanel').addEventListener('toggle', () => {
+  updateFluteDock();
+  if (!$('flutePanel').open && $('startMic').disabled) stopFlute('曲笛已關閉，麥克風已停止。', true);
+});
 initFluteHoles();
 initChords();
 drawIdle();

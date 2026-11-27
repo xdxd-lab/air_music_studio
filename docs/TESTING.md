@@ -42,3 +42,10 @@ Control: https://webrtc.github.io/samples/src/content/getusermedia/gum/ displaye
 - Compare strum order and note triggers against v0.4 near the string deadband and at both horizontal bounds. Repeat with the per-finger cooldown enabled.
 - During flute calibration and audible breath, frequency data should still be analysed. Very quiet frames after calibration should keep the gate and meter at zero while skipping frequency data.
 - On an actual Android and desktop device, record camera cadence, inference FPS, interaction delay and dropped frames. Simulated callback counts do not measure device FPS or power consumption.
+
+## v0.4.2 touch and instrument switching
+
+- In screen mode, hold three bottom holes at once and confirm that the panel reports all three closed. Release one finger or slide to another pad and check each displayed state. Restore the latched state on release, cancel and panel collapse.
+- Test with half holes off and on. With the switch off, every pad closes a hole and the panel toggles open or closed. With it on, the upper part of each pad can cover half a hole. The camera mode should also report half holes only with the switch on.
+- Start the flute with hand tracking active. Stop the microphone and repeat after collapsing the panel. Confirm that microphone tracks close, the camera continues tracking, and pluck audio, hand and finger policies, chord hold, and palm-mute settings keep their selected values.
+- Confirm equal fingering keeps the same fundamental with soft and strong breath, with a louder octave harmonic at higher breath levels.
