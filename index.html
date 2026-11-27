@@ -38,7 +38,7 @@ main.flute-dock-open {padding-bottom:calc(clamp(56px, 14vh, 110px) + 64px + env(
 <label class="check"><input id="pluckCooldown" type="checkbox">同一指撥同一弦間隔 55 ms</label>
 <label class="check"><input id="palmMute" type="checkbox" checked>張掌止弦</label>
 <label class="check"><input id="chordVibrato" type="checkbox" checked>按弦搖韻</label>
-<p class="help">在弦區張開手掌稍停，止住六弦。用左手停在空中和弦格內並輕輕左右搖，右手撥弦。也可按住螢幕上的和弦鍵左右拖動。</p>
+<p class="help">在弦區張開手掌並維持 0.5 秒，止住六弦。用左手停在空中和弦格內並輕輕左右搖，右手撥弦。也可按住螢幕上的和弦鍵左右拖動。</p>
 <p class="help" id="stringGesture"></p><label class="field">撥弦手<select id="role"><option value="Both">雙手皆可</option><option value="Right" selected>右手</option><option value="Left">左手</option></select></label><label class="check"><input id="pinch" type="checkbox">撥弦需拇指與食指捏合（整手條件）</label><div class="help">任一符合規則的指尖上下穿越琴弦即撥弦。每根指尖獨立觸發。可另外要求整手先捏合。</div><div id="note">—</div><div class="help" id="notehelp">尚未撥弦</div><details class="flute" id="flutePanel">
 <summary>曲笛實驗</summary>
 <div class="bar"><button type="button" id="startMic">啟用麥克風</button><button type="button" id="stopMic" disabled>停用麥克風</button><button type="button" id="fluteCalibrate" disabled>重測背景音</button></div>
@@ -397,6 +397,7 @@ function drawStrings(now) {
 function dist(a,b){return Math.hypot((a.x-b.x)*cv.width,(a.y-b.y)*cv.height)}
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 const stringVoices = new Set(), stringBuffers = new Map(), palmCandidates = new Map();
+const PALM_MUTE_HOLD_MS = 500;
 let stringBus, mutedUntil = -Infinity, stringsMuted = false, chordGrip = null, pointerGrip = null, stringCents = 0;
 
 function fingerExtension(hand, tip, aspect) {
@@ -428,7 +429,7 @@ function restoreStringOutput() {
 }
 
 function updatePalmMute(rows, now) {
-  const seen = new Set(), candidates = new Set();
+  const seen = new Set();
   for (const {id, hand} of $('palmMute').checked ? rows : []) {
     const palm = [0, 5, 9, 13, 17].map(i => hand[i]);
     const x = palm.reduce((sum, p) => sum + px(p), 0) / palm.length;
@@ -442,8 +443,7 @@ function updatePalmMute(rows, now) {
       continue;
     }
     old.last = now;
-    if (now - old.since >= 75) candidates.add(id);
-    if (now - old.since >= 160) mutedUntil = now + 100;
+    if (now - old.since >= PALM_MUTE_HOLD_MS) mutedUntil = now + 100;
   }
   for (const id of palmCandidates.keys()) if (!seen.has(id)) palmCandidates.delete(id);
   const muted = $('palmMute').checked && now < mutedUntil;
@@ -458,7 +458,6 @@ function updatePalmMute(rows, now) {
       restoreStringOutput();
     }
   }
-  return candidates;
 }
 
 function rockingCents(grip, point, now, span) {
@@ -1040,10 +1039,10 @@ function report(r, now) {
   } else {
     const rules = {...settings(), pluck:{hand:$('role').value, finger:8}, pinch:$('pinch').checked};
     selectAirChords(rows, now, rules);
-    const settling = updatePalmMute(rows, now);
+    updatePalmMute(rows, now);
     if ($('strings').checked && !stringsMuted) {
       for (const row of rows) {
-        if (row.id !== chordGrip?.id && !settling.has(row.id)) detectPlucks(row, now, seen, rules);
+        if (row.id !== chordGrip?.id) detectPlucks(row, now, seen, rules);
       }
     }
     showStringGesture();
