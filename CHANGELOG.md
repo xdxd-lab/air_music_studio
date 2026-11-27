@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.4
+- Set flute touch width at 100% to 148.8 CSS px per normal band and 223.2 px for the left index. Preserve the 50–150% engineering adjustment and intentional overflow.
+- Replace octave thresholds with 1/4 to 1/32 in steps of four in the denominator; default to 1/4.
+- Suppress webpage touch-selection, drag and context-menu gestures, without disabling Android system navigation or native form controls.
+- Clarify that the 55 ms same-finger and same-string interval is opt-in.
+- Show front/rear camera presets before permission, then expose available device choices after permission.
+
 ## v0.4.3
 - Open the experimental flute panel by default without requesting microphone access.
 - Show the live microphone spectrum and a configurable high-to-mid frequency power threshold for sounding an octave higher with the same fingering.

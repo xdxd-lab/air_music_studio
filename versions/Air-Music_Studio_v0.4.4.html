@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.4</title>
+<style>
+:root{color-scheme:dark;--bg:#0a101a;--panel:#111b2a;--line:#25364b;--text:#e8f0fa;--muted:#9aadc1;--cyan:#51e2ce;--orange:#ffad73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172c40,var(--bg) 52%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:28px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}h1{font-size:35px;letter-spacing:-1.5px;margin:0}h1 span{color:var(--cyan)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}.sub{color:var(--muted);margin:4px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:7px 13px;color:var(--cyan);white-space:nowrap;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}button,select{border:1px solid var(--line);background:#18283c;color:var(--text);border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}button.primary{background:var(--cyan);color:#07251f;border:0;font-weight:700}button:disabled{opacity:.4;cursor:not-allowed}select{max-width:100%;min-width:0}#camera{flex:1}canvas{display:block;width:100%;height:auto;border-radius:12px;background:#080e16}#video{display:none}.stage{position:relative}.placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:20px;color:var(--muted)}.placeholder strong{font-size:22px;color:var(--text)}.placeholder[hidden]{display:none}.status{padding:10px 2px 0;color:var(--muted);overflow-wrap:anywhere}.status.error{color:#ff9e9e}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.metric{padding:10px;background:#0c1521;border-radius:10px}.metric b{font-size:24px;display:block;font-variant-numeric:tabular-nums}.metric small{color:var(--muted)}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);margin:16px 0 8px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;cursor:pointer}input[type=checkbox]{accent-color:var(--cyan);width:17px;height:17px}.hand{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;color:var(--muted);font-size:13px}.hand b{display:block;margin-bottom:4px}.left{color:var(--cyan)}.right{color:var(--orange)}.help{color:var(--muted);font-size:13px;margin:10px 0}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}.hand span{white-space:pre-line}#note{font-size:22px;color:var(--cyan);font-weight:700}footer{color:var(--muted);font-size:12px;margin-top:16px}label.field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:13px}@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:16px}h1{font-size:29px}}
+.toggles{display:grid;gap:7px;margin:10px 0}.toggles button[aria-pressed=true],.chordbuttons button[aria-pressed=true]{background:var(--cyan);color:#07251f;border-color:var(--cyan);font-weight:700}.chordpanel{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.chordhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between}.chordhead h2{margin:0}.chordbuttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(53px,1fr));gap:6px;margin-top:8px}.chordbuttons button{padding:8px 4px}.tuning{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:9px}.tuning span{font-size:11px;text-align:center;background:#0b1420;padding:5px 2px;border-radius:5px}.tuning b{display:block;color:var(--cyan);font-size:13px}.placeholder{inset:5px 5px auto;display:block;background:#08101bcc;border-radius:6px;padding:5px;color:#bdc9d8}.placeholder strong{font-size:12px}.placeholder span{display:none}.placeholder[hidden]{display:none}canvas{touch-action:manipulation}@media(max-width:480px){.panel{padding:10px}.tuning{grid-template-columns:repeat(3,1fr)}header .pill{display:none}}
+#chordButtons button{touch-action:none}.flute{margin-top:14px}.flute summary{cursor:pointer;font-weight:bold}
+@media (pointer:coarse){
+  main,footer,#fluteTouchStage{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+  :is(main,footer,#fluteTouchStage) :is(textarea,[contenteditable]:not([contenteditable="false"])){user-select:text;-webkit-user-select:text}
+}
+.flute .bar{margin-top:10px}
+.flute-holes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.flute-holes span{min-width:0;padding:5px 1px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:11px}
+.flute-holes b{display:block;color:var(--cyan);font-size:15px}
+.flute-holes [data-state="閉"]{background:#28564e}.flute-holes [data-state="半"]{background:#655036}
+#breathMeter{width:50%;accent-color:var(--cyan)}
+#fluteNote,#stringGesture{color:var(--cyan)}#stringGesture:empty{display:none}
+.spectrum-card{margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:10px}
+.spectrum-card figcaption{margin-bottom:6px;font-weight:600;font-size:13px}
+.spectrum-legend{margin:5px 0;color:var(--muted);font-size:12px}
+.spectrum-legend span:first-child{color:var(--cyan)}.spectrum-legend span:last-child{color:var(--orange)}
+#registerReadout{display:block;min-height:1.5em;font-variant-numeric:tabular-nums;color:var(--text);font-size:13px}
+/* The stage holds its own spare controls; the playing grid ends at band six. */
+.flute-touch-stage {
+  position:fixed; inset:0; width:100%; height:100%; height:100dvh;
+  max-width:none; max-height:none; margin:0; padding:0; border:0;
+  color:var(--text); background:radial-gradient(ellipse at top left,#172c40,#0a101a 68%);
+  overflow:hidden;
+}
+.flute-touch-stage[open]{display:flex}
+.flute-stage-controls {
+  order:1; flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-end;
+  padding:max(5px, env(safe-area-inset-top)) max(6px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) 6px;
+  overflow:auto;
+}
+.flute-stage-bar{width:min(100%,150px); display:grid; gap:5px}
+.flute-stage-bar button,.flute-stage-bar select{width:100%; padding:5px 4px; min-height:42px; font-size:clamp(12px,2.5vmin,15px)}
+.flute-width-label{display:grid;gap:2px;color:var(--muted);font-size:12px}
+#fluteStageNote{color:var(--cyan);font-variant-numeric:tabular-nums}
+.flute-mouthpiece{margin:6px 0 0;color:var(--muted);font-size:12px;width:min(100%,150px)}
+.flute-portrait-hint{display:none}
+.flute-touch-bands {
+  flex:0 0 var(--flute-band-span);
+  min-width:0; min-height:0; display:grid;
+  grid-template-columns:minmax(0,1.5fr) repeat(5,minmax(0,1fr));
+  touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+}
+.flute-band {
+  display:flex; flex-direction:column; align-items:center; justify-content:space-around;
+  padding:max(4px,env(safe-area-inset-top)) 0 max(4px,env(safe-area-inset-bottom));
+  background:#b8d7e433; box-shadow:inset -1px 0 #c9dff659; font-size:clamp(11px,2.2vmin,15px);
+  min-width:0; min-height:0; overflow:hidden;
+}
+.flute-band span{writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap}
+.flute-band:nth-child(even){background:#cde5f53e}
+.flute-band[data-hole="0"]{background:#f1e3c744}
+.flute-band[data-state="閉"]{background:#317669d9}
+.flute-band[data-state="半"]{background:#8d6c41db}
+.flute-band b{font-size:.85em;font-weight:600}
+@media (orientation:portrait){
+  .flute-touch-stage[open]{flex-direction:column}
+  .flute-stage-controls{order:-1;flex:1 0 auto;align-items:stretch}
+  .flute-stage-bar{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end}
+  .flute-mouthpiece{width:100%}.flute-landscape-hint{display:none}.flute-portrait-hint{display:inline}
+  .flute-touch-bands {
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:repeat(5,minmax(0,1fr)) minmax(0,1.5fr);
+  }
+  .flute-band{
+    grid-row:var(--portrait-row); flex-direction:row; justify-content:space-between;
+    padding:0 max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));
+    box-shadow:inset 0 1px #c9dff659;
+  }
+  .flute-band span{writing-mode:horizontal-tb}
+  .flute-band[data-hole="0"]{padding-bottom:env(safe-area-inset-bottom)}
+}
+/* At calibration widths that leave little spare room, only the control
+   position changes. The strip endpoints and touch widths never scale down. */
+.flute-touch-stage[data-compact="true"] .flute-stage-controls{
+  position:absolute;z-index:1;
+  top:max(4px,env(safe-area-inset-top));right:max(4px,env(safe-area-inset-right));
+  background:#101c2bf0;border:1px solid var(--line);border-radius:8px;padding:3px;
+  max-width:calc(100% - 8px);
+}
+.flute-touch-stage[data-compact="true"] .flute-stage-bar{
+  width:auto;grid-template-columns:repeat(3,minmax(0,auto));align-items:end;gap:3px;
+}
+.flute-touch-stage[data-compact="true"] .flute-stage-bar button,
+.flute-touch-stage[data-compact="true"] .flute-stage-bar select{min-height:34px;padding:3px 5px}
+.flute-touch-stage[data-compact="true"] .flute-stage-note,
+.flute-touch-stage[data-compact="true"] .flute-mouthpiece{display:none}
+@media (orientation:portrait){.flute-touch-stage[data-compact="true"]{justify-content:flex-end}}
+@media (max-height:275px){.flute-stage-bar button,.flute-stage-bar select{min-height:32px}.flute-mouthpiece{font-size:11px}}
+</style></head><body><main>
+<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.4</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
+<div class="layout"><section class="panel"><div class="bar"><button class="primary" id="start">啟動相機</button><button id="test">僅測試相機</button><button id="stop" disabled>停止</button><select id="camera" aria-label="選擇相機" aria-describedby="cameraHelp"><option value="">自動（裝置預設）</option><option value="facing:user">前鏡頭優先</option><option value="facing:environment">後鏡頭優先</option></select><button id="scan" title="重新列出相機">重新掃描</button></div><p class="help" id="cameraHelp">不必先測試，可直接選前／後鏡頭再啟動。若沒有對應鏡頭，瀏覽器可能改用其他鏡頭；授權後可從清單指定裝置。</p><div class="stage"><video id="video" autoplay playsinline muted></video><canvas id="view" width="960" height="540" aria-label="相機影像與雙手骨架"></canvas><div class="placeholder" id="placeholder"><strong>等待相機啟動</strong><span>按下「啟動相機」並允許瀏覽器使用相機</span></div></div><section class="chordpanel"><div class="chordhead"><h2>和弦測試 · <span id="activeChord">C</span></h2><label class="check"><input id="airChords" type="checkbox" checked>空中選和弦</label><button id="audition" type="button">試聽六弦</button></div><div id="chordButtons" class="chordbuttons"></div><div id="tuning" class="tuning" aria-live="polite"></div><p class="help" id="chordhelp">直式下方、橫式左方為空中和弦區。指尖停留約 140 ms 選擇；移開後保留和弦。</p></section><div class="status" id="status" role="status">尚未啟動。初次載入需連線下載 AI 模型。</div><details open style="margin-top:12px"><summary>相機環境診斷</summary><p class="help" id="cameraInfo"></p><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:12px;margin:8px 0"></pre><button id="diagnose">重新檢查環境</button><p class="help">若相機權限遭拒，請用獨立 HTTPS 網頁或 localhost；Android content:// 本機檔案曾實測遭拒。測試相機不會下載 AI 模型。</p></details><div class="metrics"><div class="metric"><small>偵測手數</small><b id="count">0 / 2</b></div><div class="metric"><small>骨架點數</small><b id="points">0 / 42</b></div><div class="metric"><small>推論 FPS</small><b id="fps">—</b></div></div></section>
+<aside class="panel"><h2>追蹤設定</h2><label class="check"><input id="mirror" type="checkbox">鏡像顯示</label><label class="check"><input id="bones" type="checkbox" checked>顯示手部骨架</label><label class="check"><input id="indices" type="checkbox" checked>顯示關節編號 0–20</label><label class="check"><input id="swap" type="checkbox">交換左右手標籤</label><div class="toggles"><button id="anyHand" type="button" aria-pressed="true">不限制左右手：開</button><button id="anyFinger" type="button" aria-pressed="true">不限制手指：開</button></div><p class="help">兩個全域開關各自控制撥弦與選和弦。關閉時，指定手的食指撥弦、左手食指選和弦。</p><div class="hand"><b class="left">LEFT · 左手</b><span id="left">尚未偵測</span></div><div class="hand"><b class="right">RIGHT · 右手</b><span id="right">尚未偵測</span></div><div class="help">食指尖座標以畫面左上為原點，X/Y 為正規化位置；Z 為模型相對深度，不代表相機距離。</div><hr class="sep"><h2>六弦</h2>
+<label class="check"><input id="strings" type="checkbox" checked>啟用撥弦音效</label>
+<label class="check"><input id="pluckCooldown" type="checkbox">限制同一指、同一弦至少間隔 55 ms（預設不限制）</label>
+<label class="check"><input id="palmMute" type="checkbox" checked>張掌止弦</label>
+<label class="check"><input id="chordVibrato" type="checkbox" checked>按弦搖韻</label>
+<p class="help">在弦區張開手掌並維持 0.5 秒，止住六弦。用左手停在空中和弦格內並輕輕左右搖，右手撥弦。也可按住螢幕上的和弦鍵左右拖動。</p>
+<p class="help" id="stringGesture"></p><label class="field">撥弦手<select id="role"><option value="Both">雙手皆可</option><option value="Right" selected>右手</option><option value="Left">左手</option></select></label><label class="check"><input id="pinch" type="checkbox">撥弦需拇指與食指捏合（整手條件）</label><div class="help">任一符合規則的指尖上下穿越琴弦即撥弦。每根指尖獨立觸發。可另外要求整手先捏合。</div><div id="note">—</div><div class="help" id="notehelp">尚未撥弦</div><details class="flute" id="flutePanel" open>
+<summary>曲笛實驗</summary>
+<div class="bar"><button type="button" id="startMic">啟用麥克風</button><button type="button" id="stopMic" disabled>停用麥克風</button><button type="button" id="fluteCalibrate" disabled>重測背景音</button></div>
+<label class="field">按孔方式<select id="fluteFingering"><option value="camera">相機手勢</option><option value="touch">螢幕按孔</option></select></label>
+<p class="help" id="fluteGuide"></p>
+<button type="button" id="openTouchStage" hidden>進入螢幕演奏區</button>
+<div class="flute-holes" id="fluteHoles" role="group" aria-label="六孔狀態"></div>
+<label class="field">吹氣靈敏度<input id="micSensitivity" type="range" min=".5" max="2.5" step=".1" value="1"></label>
+<label class="field">氣聲強度<meter id="breathMeter" min="0" max="1" value="0"></meter></label>
+<figure class="spectrum-card">
+<figcaption>麥克風即時頻譜 · dBFS</figcaption>
+<canvas id="fluteSpectrum" width="480" height="176" aria-label="麥克風頻譜分佈，橫軸為頻率，縱軸為數位訊號分貝（dBFS）">頻譜資訊請見下方的中高頻比。</canvas>
+<div class="spectrum-legend"><span>● 中頻 1–3 kHz</span> · <span>● 高頻 3–6 kHz</span></div>
+<div id="registerReadout">麥克風未啟用</div>
+</figure>
+<label class="field">高八度門檻（高頻／中頻）<select id="octaveThreshold">
+<option value="4" selected>1/4</option><option value="8">1/8</option><option value="12">1/12</option><option value="16">1/16</option>
+<option value="20">1/20</option><option value="24">1/24</option><option value="28">1/28</option><option value="32">1/32</option>
+</select></label>
+<div class="field">目前音高 <b id="fluteNote">—</b></div>
+<p class="help" id="micStatus" role="status">麥克風未啟用。</p>
+<p class="help">按孔決定音名，氣量控制音量。吹氣時，高頻相對中頻達門檻並稍微保持，同一指法就會高一個八度。預設 1/4；分母愈大（如 32），愈容易升八度。圖上是各區峰值，判定比值則用扣除背景後的平均功率。麥克風資料在本機分析。啟用麥克風後暫停手勢撥弦，建議戴耳機。</p>
+</details></aside></div><footer>MediaPipe Hand Landmarker · Web Audio API · 不錄影、不錄音、不上傳相機或麥克風資料；模型與程式庫從 CDN 下載。請以 Chrome / Edge 開啟，建議 localhost 或 HTTPS。</footer>
+<dialog class="flute-touch-stage" id="fluteTouchStage" aria-label="曲笛螢幕演奏區">
+<div class="flute-stage-controls">
+<div class="flute-stage-bar">
+<button type="button" id="closeTouchStage" autofocus>返回設定</button>
+<button type="button" id="stageMic">啟用麥克風</button>
+<label class="flute-width-label">色帶寬度<select id="stageWidth">
+<option value="50">50%</option><option value="60">60%</option><option value="70">70%</option>
+<option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option>
+<option value="110">110%</option><option value="120">120%</option><option value="130">130%</option>
+<option value="140">140%</option><option value="150">150%</option>
+</select></label>
+<span class="flute-width-label flute-stage-note">目前音高 <b id="fluteStageNote">—</b></span>
+</div>
+<p class="flute-mouthpiece"><span class="flute-landscape-hint">← 吹氣端 · 主麥克風朝左。</span><span class="flute-portrait-hint">↓ 吹氣端 · 主麥克風朝下。</span>按住色帶遮孔，放開即開。色帶被裁切時，可調低寬度。</p>
+</div>
+<section class="flute-touch-bands" id="fluteTouchBands" aria-label="六條觸控指孔；也可按住數字 1 到 6 鍵"></section>
+</dialog>
+</main><script type="module">
+const $=id=>document.getElementById(id), video=$('video'), cv=$('view'), ctx=cv.getContext('2d');
+const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.21', MODEL='https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
+const edges=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
+const CHORDS={"C":[48,55,60,64,67,72],"D":[50,57,62,66,69,74],"E":[40,47,52,56,59,64],"F":[41,48,53,57,60,65],"G":[43,47,50,55,59,67],"A":[45,52,57,61,64,69],"Am":[45,52,57,60,64,69],"Dm":[50,57,62,65,69,74],"Em":[40,47,52,55,59,64],"G7":[43,47,50,55,59,65],"C7":[48,52,55,58,60,64],"D7":[50,54,57,60,62,66],"Bm":[47,54,59,62,66,71],"Open":[40,45,50,55,59,64]}, TIPS=[4,8,12,16,20];
+const INDEX_ONLY = [8], NO_FINGERS = [];
+function eligibleFingers(label, rule, settings) {
+  if (!settings.anyHand && rule.hand !== 'Both' && label !== rule.hand) return NO_FINGERS;
+  if (settings.anyFinger || rule.finger == null) return TIPS;
+  return rule.finger === 8 ? INDEX_ONLY : [rule.finger];
+}
+function layoutFor(portrait){const names=Object.keys(CHORDS),cols=portrait?4:2,rows=Math.ceil(names.length/cols),zone=portrait?{x:.025,y:.70,w:.95,h:.285}:{x:.015,y:.045,w:.32,h:.94},gap=.012,top=portrait?.030:.045,pw=(zone.w-gap*(cols+1))/cols,ph=(zone.h-top-gap*(rows+1))/rows;return {lo:portrait?.14:.43,hi:.96,ys:Array.from({length:6},(_,i)=>(portrait?.12:.16)+i*(portrait?.102:.136)),zone,pads:names.map((name,i)=>({name,x:zone.x+gap+i%cols*(pw+gap),y:zone.y+top+gap+Math.floor(i/cols)*(ph+gap),w:pw,h:ph}))}}
+function inRect(p,r){return p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h}
+function midiNote(m){return [["C","C♯","D","E♭","E","F","F♯","G","A♭","A","B♭","B"][m%12]+(Math.floor(m/12)-1),440*2**((m-69)/12)]}
+function advanceCrossings(state, point, layout) {
+  const previous = state.point;
+  const speed = Math.abs(point.y - previous.y) / ((point.t - previous.t) / 1000);
+  let hits = 0;
+  for (let i = 0; i < layout.ys.length; i++) {
+    const y = layout.ys[i], offset = point.y - y;
+    if (Math.abs(offset) <= .009) continue;
+    const side = Math.sign(offset);
+    if (state.sides[i] && side !== state.sides[i]) {
+      const anchor = state.anchors[i];
+      const dy = point.y - anchor.y, fraction = dy ? (y - anchor.y) / dy : -1;
+      const x = anchor.x + (point.x - anchor.x) * fraction;
+      if (fraction >= 0 && fraction <= 1 && x >= layout.lo && x <= layout.hi &&
+          Math.max(speed, Math.abs(dy) / Math.max(.001, (point.t - anchor.t) / 1000)) > .10) hits |= 1 << i;
+    }
+    state.sides[i] = side;
+    state.anchors[i] = point;
+  }
+  state.point = point;
+  return hits;
+}
+function initialCrossing(point, layout) {
+  return {
+    point,
+    sides: layout.ys.map(y => Math.abs(point.y - y) > .009 ? Math.sign(point.y - y) : 0),
+    anchors: layout.ys.map(() => point)
+  };
+}
+function chordDwell(old,pad,now){if(!pad)return null;if(!old||old.name!==pad)return {name:pad,since:now,fired:false};return old}
+const orientation = matchMedia('(orientation: portrait)');
+const cameraUsesVideoFrames = typeof video.requestVideoFrameCallback === 'function' &&
+  typeof video.cancelVideoFrameCallback === 'function';
+const AIR_RULE = {hand:'Left', finger:8};
+let chord = 'C', notes = CHORDS.C.slice().reverse().map(midiNote), noteHz = notes.map(([, hz]) => hz.toFixed(1) + ' Hz');
+let portrait = orientation.matches, geometry = layoutFor(portrait), mix, tracks = [], trackId = 0;
+let contacts = new Map(), cooldowns = new Map(), lastChordAt = -Infinity;
+const fingerNames={4:"拇指",8:"食指",12:"中指",16:"無名指",20:"小指"};
+const settings=()=>({anyHand:$("anyHand").getAttribute("aria-pressed")==="true",anyFinger:$("anyFinger").getAttribute("aria-pressed")==="true"});
+function setChord(name, source = '螢幕') {
+  if (!CHORDS[name]) return;
+  if (name !== chord || !$('tuning').firstChild) {
+    chord = name;
+    notes = CHORDS[name].slice().reverse().map(midiNote);
+    noteHz = notes.map(([, hz]) => hz.toFixed(1) + ' Hz');
+    $('activeChord').textContent = name;
+    for (const button of $('chordButtons').children) button.setAttribute('aria-pressed', String(button.dataset.chord === name));
+    $('tuning').replaceChildren(...notes.map(([note], i) => {
+      const field = document.createElement('span'), label = document.createElement('b');
+      label.textContent = (i + 1) + '弦 ' + note;
+      field.append(label, noteHz[i]);
+      return field;
+    }));
+  }
+  $('chordhelp').textContent = '目前：' + name + '（' + source + '） · 六弦皆可發聲；空中按鍵停留約 140 ms。';
+  if (!running) drawIdle();
+}
+function initChords(){for(const name of Object.keys(CHORDS)){const b=document.createElement("button");b.type="button";b.dataset.chord=name;b.textContent=name==="Open"?"標準調弦":name;b.onclick=()=>setChord(name);bindChordHold(b,name);$("chordButtons").append(b)}setChord("C","預設")}
+function updateGeometry() {
+  if (orientation.matches === portrait) return;
+  portrait = orientation.matches;
+  geometry = layoutFor(portrait);
+  resetMotion();
+  if (!running) drawIdle();
+}
+function drawIdle(){clear();drawStrings(performance.now());drawPads()}
+function trackHands(r){const next=[],used=new Set(),lm=r.landmarks||[];for(let i=0;i<lm.length;i++){const hand=lm[i],label=handLabel(r,i),wrist=hand[0];let best=null,score=.27;for(const t of tracks){if(used.has(t.id))continue;const d=Math.hypot(t.wrist.x-wrist.x,t.wrist.y-wrist.y)+(t.label!==label?.06:0);if(d<score){score=d;best=t}}const id=best?best.id:++trackId;used.add(id);next.push({id,hand,label,wrist,i})}tracks=next;return next}
+function drawPads() {
+  if (!$('airChords').checked) return;
+  const w = cv.width, h = cv.height, {zone, pads} = geometry, first = pads[0];
+  const hover = new Set();
+  for (const contact of contacts.values()) if (!contact.fired) hover.add(contact.name);
+  ctx.fillStyle = '#101c2de0';
+  ctx.fillRect(zone.x * w, zone.y * h, zone.w * w, zone.h * h);
+  ctx.fillStyle = '#c3d3e4';
+  ctx.font = 'bold ' + Math.max(9, Math.min(w, h) * .022) + 'px system-ui';
+  ctx.fillText('和弦 · ' + chord, zone.x * w + 5, zone.y * h + Math.min(h * .026, 18));
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold ' + Math.max(9, Math.min(first.h * h * .55, first.w * w * .28)) + 'px system-ui';
+  for (const pad of pads) {
+    const active = chord === pad.name;
+    ctx.fillStyle = active ? '#51e2ce' : hover.has(pad.name) ? '#b18432' : '#2c4058';
+    ctx.fillRect(pad.x * w, pad.y * h, pad.w * w, pad.h * h);
+    ctx.fillStyle = active ? '#082b28' : '#f0f6ff';
+    ctx.fillText(pad.name, (pad.x + pad.w / 2) * w, (pad.y + pad.h / 2) * h);
+  }
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'alphabetic';
+}
+
+
+let testOnly = false, detector, delegate = '', detectorLoading, stream, audio;
+let running = false, starting = false, cameraAttempt = 0, frameEpoch = 0, frameId = null;
+let lastVideo = NaN, lastTimestamp = -1, frameTimes = [], telemetryAt = -Infinity, result = null;
+const history = new Map(), flash = Array(6).fill(-Infinity);
+function status(s,error=false){$('status').textContent=s;$('status').classList.toggle('error',error)}
+function clear(){ctx.fillStyle='#080e16';ctx.fillRect(0,0,cv.width,cv.height)}
+function resetMotion() {
+  history.clear();
+  contacts.clear();
+  cooldowns.clear();
+  palmCandidates.clear();
+  tracks = [];
+  lastChordAt = mutedUntil = -Infinity;
+  const wasMuted = stringsMuted;
+  stringsMuted = false;
+  if (wasMuted && $('strings').checked) restoreStringOutput();
+  pointerGrip = null;
+  releaseChordGrip();
+  cameraHoles = null;
+  flash.fill(-Infinity);
+  showStringGesture();
+}
+function resetUI(){for(const k of ['left','right'])$(k).textContent='尚未偵測';$('count').textContent='0 / 2';$('points').textContent='0 / 42';$('fps').textContent='—';$('note').textContent='—';$('notehelp').textContent='尚未撥弦';$('placeholder').hidden=false;drawIdle()}
+// These three choices exist even when device enumeration is empty, restricted, or delayed.
+const cameraMenu = $('camera'), cameraPresets = [...cameraMenu.children];
+const preferredDirections = new Map([['facing:user','user'], ['facing:environment','environment']]);
+const directionNames = new Map([['user','前鏡頭'], ['environment','後鏡頭'], ['left','左側鏡頭'], ['right','右側鏡頭']]);
+const cameraPreferenceKey = 'airMusicStudio.cameraFacing';
+try {
+  const saved = window.localStorage.getItem(cameraPreferenceKey);
+  if (preferredDirections.has(saved)) cameraMenu.value = saved;
+} catch { /* Storage can be unavailable in private or embedded contexts. */ }
+
+function cameraConstraints(choice) {
+  const video = {width:{ideal:960}, height:{ideal:540}, frameRate:{ideal:30}};
+  if (preferredDirections.has(choice)) video.facingMode = {ideal:preferredDirections.get(choice)};
+  else if (choice.startsWith('device:')) video.deviceId = {exact:choice.slice(7)};
+  return {audio:false, video};
+}
+function cameraReport(choice, track) {
+  const requested = preferredDirections.get(choice), wanted = directionNames.get(requested);
+  const selection = wanted ? wanted + '優先' : choice.startsWith('device:') ? '指定裝置' : '自動';
+  if (!track) return '相機選擇：' + selection + '；尚未啟動';
+  const actual = track.getSettings?.().facingMode, actualName = directionNames.get(actual);
+  if (!actualName) return '相機選擇：' + selection + '；瀏覽器未回報實際方向';
+  if (requested && actual !== requested) return '未使用' + wanted + '；實際使用：' + actualName;
+  return '實際使用：' + actualName;
+}
+
+let cameraScanRevision = 0;
+async function scan(isCurrent = () => true) {
+  const revision = ++cameraScanRevision;
+  const mayApply = () => revision === cameraScanRevision && isCurrent();
+  if (!navigator.mediaDevices?.enumerateDevices) {
+    status('無法列出相機：請使用 localhost / HTTPS 並確認瀏覽器支援。', true);
+    return;
+  }
+  try {
+    const devices = (await navigator.mediaDevices.enumerateDevices()).filter(device => device.kind === 'videoinput');
+    if (!mayApply()) return;
+    const previous = cameraMenu.value, choices = [...cameraPresets];
+    devices.forEach((device, i) => {
+      if (device.deviceId) choices.push(new Option(device.label || '相機 ' + (i + 1), 'device:' + device.deviceId));
+    });
+    // If a chosen device disappears, never silently open a different camera.
+    if (previous.startsWith('device:') && !choices.some(option => option.value === previous)) {
+      choices.push(new Option('先前選用的鏡頭（目前未列出）', previous));
+    }
+    cameraMenu.replaceChildren(...choices);
+    cameraMenu.value = previous;
+  } catch (error) {
+    if (mayApply()) status('無法列出相機：' + error.message, true);
+  }
+}
+async function loadDetector() {
+  const {FilesetResolver, HandLandmarker} = await import(CDN + '/vision_bundle.mjs');
+  const vision = await FilesetResolver.forVisionTasks(CDN + '/wasm');
+  for (const candidate of ['GPU', 'CPU']) {
+    try {
+      detector = await HandLandmarker.createFromOptions(vision, {
+        baseOptions:{modelAssetPath:MODEL, delegate:candidate},
+        runningMode:'VIDEO', numHands:2, minHandDetectionConfidence:.5,
+        minHandPresenceConfidence:.5, minTrackingConfidence:.5
+      });
+      delegate = candidate;
+      return;
+    } catch (error) {
+      if (candidate === 'CPU') throw error;
+    }
+  }
+}
+
+async function init() {
+  if (detector) return;
+  if (!detectorLoading) {
+    detectorLoading = loadDetector().finally(() => { detectorLoading = null; });
+  }
+  await detectorLoading;
+}
+function explain(e){return ({NotAllowedError:'相機遭瀏覽器、作業系統或內嵌網頁政策阻擋。請查看下方診斷，並在獨立 Chrome / Edge 網頁允許相機。',NotFoundError:'找不到可用的相機裝置。',NotReadableError:'相機無法讀取，可能被其他程式占用。',OverconstrainedError:'所選相機無法使用，請切換「自動」或其他鏡頭。'})[e.name]||e.message||String(e)}
+async function diagnostics(){let policy='無法查詢',permission='無法查詢',devices='無法查詢';try{const p=document.permissionsPolicy||document.featurePolicy;if(p?.allowsFeature)policy=p.allowsFeature('camera')?'允許':'禁止'}catch{}try{permission=(await navigator.permissions.query({name:'camera'})).state}catch{}try{devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput').length}catch{}$('diagnostics').textContent=`執行位置：${location.protocol} (${location.hostname||'本機檔案 / 未知來源'})\n獨立網頁：${window.self===window.top?'是':'否（內嵌 iframe）'}\n安全環境：${window.isSecureContext?'是':'否'}\n相機 API：${navigator.mediaDevices?.getUserMedia?'可用':'不可用'}\n網頁相機政策：${policy}\n相機權限：${permission}\n可列出的相機數：${devices}（授權前可能為 0）`;}
+async function start(only = false) {
+  if (running || starting) return;
+  const attempt = ++cameraAttempt, isCurrent = () => attempt === cameraAttempt;
+  starting = true;
+  testOnly = only;
+  $('start').disabled = $('test').disabled = $('camera').disabled = $('stop').disabled = true;
+  let stage = '相機權限 / 裝置';
+  try {
+    if (!only && $('strings').checked) unlockStrings();
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('相機 API 不可用，請透過 localhost 或 HTTPS 開啟。');
+    const policy = document.permissionsPolicy || document.featurePolicy;
+    if (policy?.allowsFeature && !policy.allowsFeature('camera')) {
+      throw new Error('此網頁的 Permissions Policy 禁止相機，請用獨立網頁開啟。');
+    }
+    status('正在要求相機權限…');
+    const choice = cameraMenu.value;
+    const acquired = await navigator.mediaDevices.getUserMedia(cameraConstraints(choice));
+    if (!isCurrent()) {
+      acquired.getTracks().forEach(track => track.stop());
+      return;
+    }
+    stream = acquired;
+    const track = stream.getVideoTracks()[0];
+    track.addEventListener('ended', () => {
+      if (isCurrent()) {
+        stop();
+        status('相機已中斷，請重新啟動。', true);
+      }
+    }, {once:true});
+    stage = '相機影像播放';
+    video.srcObject = stream;
+    await video.play();
+    if (!isCurrent()) return;
+    if (!video.videoWidth) throw new Error('相機沒有輸出有效影像');
+    cv.width = video.videoWidth;
+    cv.height = video.videoHeight;
+    $('placeholder').hidden = true;
+    drawVideo();
+    await scan(isCurrent);
+    if (!isCurrent()) return;
+    if (!only) {
+      stage = 'AI 模型載入';
+      if (!detector) status('正在下載 MediaPipe 程式庫與手部模型…');
+      await init();
+      if (!isCurrent()) return;
+    }
+    running = true;
+    resetFrameTracking();
+    $('stop').disabled = false;
+    const report = cameraReport(choice, track);
+    $('cameraInfo').textContent = report;
+    status((only ? `相機測試成功 · ${cv.width} × ${cv.height} · 尚未載入 AI` :
+      `追蹤中 · ${delegate} · ${cv.width} × ${cv.height}`) + ' · ' + report);
+    queueCameraFrame();
+  } catch (error) {
+    if (!isCurrent()) return;
+    stop();
+    const detail = stage === '相機權限 / 裝置' ? explain(error) : error.message || String(error);
+    status(`啟動失敗 [${stage}]：${detail} (${error.name || 'Error'})`, true);
+    console.error(error);
+    diagnostics();
+  } finally {
+    if (isCurrent()) {
+      starting = false;
+      diagnostics();
+    }
+  }
+}
+
+function resetFrameTracking() {
+  lastVideo = NaN;
+  frameTimes.length = 0;
+  telemetryAt = -Infinity;
+  result = null;
+  resetMotion();
+}
+
+function stop() {
+  cameraAttempt++;
+  running = starting = false;
+  cancelCameraFrame();
+  stream?.getTracks().forEach(track => track.stop());
+  stream = null;
+  video.pause();
+  video.srcObject = null;
+  resetFrameTracking();
+  silenceStrings();
+  resetUI();
+  $('start').disabled = $('test').disabled = $('camera').disabled = false;
+  $('stop').disabled = true;
+  $('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
+  status('相機已停止。');
+}
+function drawVideo() {
+  if (!$('mirror').checked) {
+    ctx.drawImage(video, 0, 0, cv.width, cv.height);
+    return;
+  }
+  ctx.save();
+  ctx.translate(cv.width, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, 0, 0, cv.width, cv.height);
+  ctx.restore();
+}
+const px=p=>$('mirror').checked?1-p.x:p.x;
+function handLabel(r,i){let s=(r.handedness?.[i]||r.handednesses?.[i])?.[0]?.categoryName||'Unknown';if($('swap').checked)s=s==='Left'?'Right':s==='Right'?'Left':s;return s}
+const jointX = new Float32Array(21), jointY = new Float32Array(21);
+
+function drawHand(hand, label, mirrored, showIndices) {
+  const color = label === 'Left' ? '#51e2ce' : label === 'Right' ? '#ffad73' : '#e5e7eb';
+  const w = cv.width, h = cv.height, scale = Math.max(1, w / 640), length = hand.length;
+  for (let i = 0; i < length; i++) {
+    jointX[i] = (mirrored ? 1 - hand[i].x : hand[i].x) * w;
+    jointY[i] = hand[i].y * h;
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2 * scale;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (const [a,b] of edges) {
+    ctx.moveTo(jointX[a], jointY[a]);
+    ctx.lineTo(jointX[b], jointY[b]);
+  }
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  for (let i = 0; i < length; i++) {
+    const radius = (i === 8 ? 4 : 2.5) * scale;
+    ctx.moveTo(jointX[i] + radius, jointY[i]);
+    ctx.arc(jointX[i], jointY[i], radius, 0, Math.PI * 2);
+  }
+  ctx.fill();
+  if (showIndices) {
+    ctx.font = `${11 * scale}px monospace`;
+    ctx.strokeStyle = '#08101c';
+    ctx.lineWidth = 3;
+    for (let i = 0; i < length; i++) {
+      ctx.strokeText(i, jointX[i] + 5 * scale, jointY[i] - 5 * scale);
+      ctx.fillText(i, jointX[i] + 5 * scale, jointY[i] - 5 * scale);
+    }
+  }
+  ctx.font = `bold ${13 * scale}px system-ui`;
+  ctx.fillText(label, Math.max(5, Math.min(w - 65 * scale, jointX[0])), Math.max(15, jointY[0] + 18 * scale));
+}
+function drawStrings(now) {
+  const w = cv.width, h = cv.height, {lo,hi,ys} = geometry;
+  const left = lo * w, right = hi * w;
+  ctx.font = Math.max(9, Math.min(w, h) * .024) + 'px system-ui';
+  for (let i = 0; i < ys.length; i++) {
+    const y = ys[i] * h, age = now - flash[i], active = age < 300;
+    const amplitude = active ? Math.exp(-age / 90) * h * .022 * Math.sin(age * .12) : 0;
+    ctx.beginPath();
+    ctx.moveTo(left, y);
+    ctx.quadraticCurveTo((left + right) / 2, y + amplitude, right, y);
+    ctx.strokeStyle = active ? '#fef08a' : '#a5b4cccc';
+    ctx.lineWidth = active ? 4 : 1.6;
+    ctx.stroke();
+    ctx.fillStyle = active ? '#fef08a' : '#f1f5f9';
+    ctx.textAlign = 'right';
+    ctx.fillText(notes[i][0], left - 5, y + 4);
+    ctx.textAlign = 'left';
+    ctx.fillText(noteHz[i], left + 5, y - 5);
+  }
+}
+function dist(a,b){return Math.hypot((a.x-b.x)*cv.width,(a.y-b.y)*cv.height)}
+const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
+const stringVoices = new Set(), stringBuffers = new Map(), palmCandidates = new Map();
+const PALM_MUTE_HOLD_MS = 500;
+let stringBus, mutedUntil = -Infinity, stringsMuted = false, chordGrip = null, pointerGrip = null, stringCents = 0;
+
+function fingerExtension(hand, tip, aspect) {
+  const joints = hand.slice(tip - 3, tip + 1);
+  const distance = (a, b) => Math.hypot(a.x - b.x, (a.y - b.y) / aspect, (a.z ?? 0) - (b.z ?? 0));
+  const length = distance(joints[0], joints[1]) + distance(joints[1], joints[2]) + distance(joints[2], joints[3]);
+  return length > .001 ? distance(joints[0], joints[3]) / length : 1;
+}
+
+function isOpenPalm(hand, aspect) {
+  const distance = (a, b) => Math.hypot(a.x - b.x, (a.y - b.y) / aspect);
+  const width = distance(hand[5], hand[17]);
+  if (width < .025 || distance(hand[8], hand[20]) < width * 1.18 || distance(hand[4], hand[8]) < width * .65) return false;
+  const fingers = [8, 12, 16, 20];
+  return fingers.every((tip, i) => fingerExtension(hand, tip, aspect) >= .9 &&
+    (!i || distance(hand[tip], hand[fingers[i - 1]]) >= width * .18));
+}
+
+function silenceStrings() {
+  if (!stringBus) return;
+  const time = audio.currentTime;
+  stringBus.gain.setTargetAtTime(0, time, .004);
+  for (const voice of stringVoices) voice.stop(time + .018);
+  stringVoices.clear();
+}
+
+function restoreStringOutput() {
+  if (stringBus && !flute && !stringsMuted) stringBus.gain.setTargetAtTime(1, audio.currentTime, .015);
+}
+
+function updatePalmMute(rows, now) {
+  const seen = new Set();
+  for (const {id, hand} of $('palmMute').checked ? rows : []) {
+    const palm = [0, 5, 9, 13, 17].map(i => hand[i]);
+    const x = palm.reduce((sum, p) => sum + px(p), 0) / palm.length;
+    const y = palm.reduce((sum, p) => sum + p.y, 0) / palm.length;
+    if (x < geometry.lo || x > geometry.hi || y < geometry.ys[0] - .03 || y > geometry.ys[5] + .03 ||
+        !isOpenPalm(hand, cv.width / cv.height)) continue;
+    const reach = dist(hand[0], hand[9]), old = palmCandidates.get(id);
+    seen.add(id);
+    if (!old || now - old.last > 140 || Math.hypot((x - old.x) * cv.width, (y - old.y) * cv.height) > reach * .3) {
+      palmCandidates.set(id, {x, y, since: now, last: now});
+      continue;
+    }
+    old.last = now;
+    if (now - old.since >= PALM_MUTE_HOLD_MS) mutedUntil = now + 100;
+  }
+  for (const id of palmCandidates.keys()) if (!seen.has(id)) palmCandidates.delete(id);
+  const muted = $('palmMute').checked && now < mutedUntil;
+  if (muted !== stringsMuted) {
+    stringsMuted = muted;
+    if (muted) {
+      silenceStrings();
+      flash.fill(-Infinity);
+      history.clear();
+      cooldowns.clear();
+    } else if ($('strings').checked) {
+      restoreStringOutput();
+    }
+  }
+}
+
+function rockingCents(grip, point, now, span) {
+  const elapsed = Math.max(0, now - grip.last);
+  grip.center += (point - grip.center) * (1 - Math.exp(-elapsed / 260));
+  grip.last = now;
+  const offset = (point - grip.center) / Math.max(.001, span);
+  return Math.sign(offset) * clamp((Math.abs(offset) - .025) * 260, 0, 45);
+}
+
+function setStringCents(cents) {
+  if (Math.abs(stringCents - cents) < .25 && cents !== 0) return;
+  if (stringCents === cents) return;
+  stringCents = cents;
+  for (const voice of stringVoices) voice.detune.setTargetAtTime(cents, audio.currentTime, .028);
+}
+
+function releaseChordGrip() {
+  chordGrip = null;
+  if (!pointerGrip) setStringCents(0);
+}
+
+function showStringGesture() {
+  const text = stringsMuted ? '張掌止弦中' : chordGrip || pointerGrip ? '按弦搖韻 · ' + Math.round(stringCents) + ' 音分' : '';
+  if ($('stringGesture').textContent !== text) $('stringGesture').textContent = text;
+}
+
+function chordPoint(tip) { return {x: px(tip), y: tip.y}; }
+
+function selectAirChords(rows, now, rules) {
+  if (!$('airChords').checked) {
+    contacts.clear();
+    releaseChordGrip();
+    return;
+  }
+  if (chordGrip) {
+    const row = rows.find(row => row.id === chordGrip.id && row.label === 'Left');
+    const {pad, finger, last} = chordGrip;
+    const point = row && chordPoint(row.hand[finger]);
+    if (point && now - last <= 140 && chord === pad.name &&
+        inRect(point, {x: pad.x - pad.w * .35, y: pad.y - pad.h * .25, w: pad.w * 1.7, h: pad.h * 1.5})) {
+      if (!pointerGrip) setStringCents(rockingCents(chordGrip, point.x, now, pad.w));
+      else chordGrip.last = now;
+      return;
+    }
+    releaseChordGrip();
+    contacts.clear();
+  }
+  const seen = new Set(), ready = [];
+  for (const row of rows) {
+    for (const finger of eligibleFingers(row.label, AIR_RULE, rules)) {
+      const key = row.id + ':' + finger, point = chordPoint(row.hand[finger]);
+      const pad = geometry.pads.find(pad => inRect(point, pad));
+      seen.add(key);
+      const contact = chordDwell(contacts.get(key), pad?.name, now);
+      if (!contact) {
+        contacts.delete(key);
+        continue;
+      }
+      contacts.set(key, contact);
+      if (!contact.fired && now - contact.since >= 140) ready.push({contact, row, finger, pad, point});
+    }
+  }
+  for (const key of contacts.keys()) if (!seen.has(key)) contacts.delete(key);
+  if (!ready.length || now - lastChordAt < 180) return;
+  ready.sort((a, b) => a.contact.since - b.contact.since || a.row.id - b.row.id || a.finger - b.finger);
+  const {row, finger, pad, point} = ready[0];
+  setChord(pad.name, row.label + ' ' + fingerNames[finger]);
+  lastChordAt = now;
+  for (const contact of contacts.values()) contact.fired = true;
+  if (row.label === 'Left' && $('chordVibrato').checked) {
+    chordGrip = {id: row.id, finger, pad, center: point.x, last: now};
+  }
+}
+
+function bindChordHold(button, name) {
+  button.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || flute || pointerGrip || !$('chordVibrato').checked) return;
+    const target = event.currentTarget;
+    const now = performance.now();
+    const grip = {id: event.pointerId, center: event.clientX, point: event.clientX, last: now, since: now, span: target.offsetWidth};
+    pointerGrip = grip;
+    target.setPointerCapture(event.pointerId);
+    setChord(name, '螢幕');
+    function animateHold(time) {
+      if (pointerGrip !== grip) return;
+      if (time - grip.since >= 140) setStringCents(rockingCents(grip, grip.point, time, grip.span));
+      showStringGesture();
+      requestAnimationFrame(animateHold);
+    }
+    requestAnimationFrame(animateHold);
+  });
+  button.addEventListener('pointermove', event => {
+    if (event.pointerId === pointerGrip?.id) pointerGrip.point = event.clientX;
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    button.addEventListener(type, event => {
+      if (event.pointerId !== pointerGrip?.id) return;
+      pointerGrip = null;
+      setStringCents(0);
+      showStringGesture();
+    });
+  }
+}
+
+async function enableSound() {
+  if (!audio) {
+    const Audio = window.AudioContext || window.webkitAudioContext;
+    if (!Audio) throw new Error('瀏覽器不支援 Web Audio');
+    audio = new Audio({latencyHint:'interactive'});
+    mix = audio.createDynamicsCompressor();
+    mix.threshold.value = -18;
+    mix.ratio.value = 8;
+    mix.connect(audio.destination);
+    stringBus = audio.createGain();
+    stringBus.gain.value = stringsMuted ? 0 : 1;
+    stringBus.connect(mix);
+  }
+  if (audio.state !== 'running') await audio.resume();
+}
+
+function stringBuffer(freq) {
+  let buffer = stringBuffers.get(freq);
+  if (buffer) return buffer;
+  const sr = audio.sampleRate, n = Math.floor(sr * 1.5);
+  buffer = audio.createBuffer(1, n, sr);
+  const out = buffer.getChannelData(0), period = Math.max(2, Math.round(sr / freq - .5)), ring = new Float32Array(period);
+  for (let i = 0; i < period; i++) ring[i] = Math.random() * 2 - 1;
+  let k = 0;
+  for (let i = 0; i < n; i++) {
+    const sample = ring[k], next = (k + 1) % period;
+    ring[k] = .992 * .5 * (sample + ring[next]);
+    out[i] = sample * Math.min(1, i / 12) * (1 - i / n);
+    k = next;
+  }
+  stringBuffers.set(freq, buffer);
+  return buffer;
+}
+
+function sound(freq, velocity, delay = 0) {
+  if (!audio || audio.state !== 'running' || stringsMuted || flute) return;
+  const voice = audio.createBufferSource(), gain = audio.createGain();
+  voice.buffer = stringBuffer(freq);
+  voice.detune.value = stringCents;
+  gain.gain.value = Math.min(.28, .06 + velocity * .09);
+  voice.connect(gain).connect(stringBus);
+  voice.onended = () => {
+    stringVoices.delete(voice);
+    voice.disconnect();
+    gain.disconnect();
+  };
+  stringVoices.add(voice);
+  voice.start(audio.currentTime + delay);
+}
+
+function passesCooldown(key, now) {
+  if (!$('pluckCooldown').checked) return true;
+  if (now - (cooldowns.get(key) ?? -Infinity) < 55) return false;
+  cooldowns.set(key, now);
+  return true;
+}
+
+function suppressTouchLongPress(event) {
+  const target = event.target;
+  if (!target?.closest?.('main, footer, #fluteTouchStage') ||
+      target.closest('input, textarea, select, option, [contenteditable]:not([contenteditable="false"])')) return;
+  const touch = event.pointerType
+    ? event.pointerType === 'touch'
+    : event.sourceCapabilities?.firesTouchEvents ?? matchMedia('(pointer:coarse)').matches;
+  if (touch) event.preventDefault();
+}
+
+function pluck(i, velocity, now, key, label, finger) {
+  if (!passesCooldown(key + ':' + i, now)) return;
+  flash[i] = now;
+  sound(notes[i][1], velocity);
+  $('note').textContent = notes[i][0];
+  $('notehelp').textContent = notes[i][1].toFixed(1) + ' Hz · ' + label + ' ' + fingerNames[finger] + ' · ' + velocity.toFixed(2) + ' 高度/秒';
+}
+
+const fluteScale = [67, 69, 71, 72, 74, 76, 78];
+// Calibrated nominal width of any of the five identical bands at 100%.
+const FLUTE_BAND_BASE_PX = 48 * 3.10;
+const FLUTE_WIDTH_UNITS = 5 + 1.5;
+let fluteBandSpan = FLUTE_BAND_BASE_PX * FLUTE_WIDTH_UNITS;
+const holeFingers = [8, 12, 16];
+const screenHoles = Array(6).fill(0), holeDisplays = [], bandDisplays = [];
+const heldFluteHoles = new Map(), heldFluteKeys = new Set();
+const holeCoverage = index => index === 0 ? .5 : 1;
+let cameraHoles = null, cameraHolesAt = -Infinity, flute = null, micAttempt = 0, micUiAt = -Infinity;
+
+function waveRms(wave) {
+  let squares = 0;
+  for (const sample of wave) squares += sample * sample;
+  return Math.sqrt(squares / wave.length);
+}
+
+// Band means are computed in linear power, not ratios of decibels. A mean
+// keeps the wider high band from winning merely because it contains more bins.
+const MID_LO = 1000, BAND_SPLIT = 3000, HIGH_HI = 6000;
+function breathFeatures(spectrum, sampleRate, rms) {
+  let total = 0, airflow = 0, peak = 0, mid = 0, high = 0, midBins = 0, highBins = 0;
+  const binHz = sampleRate / (2 * spectrum.length);
+  for (let i = Math.ceil(180 / binHz); i < spectrum.length && i * binHz <= 6500; i++) {
+    const hz = i * binHz, energy = 10 ** (spectrum[i] / 10);
+    total += energy;
+    if (hz < 900) continue;
+    airflow += energy;
+    peak = Math.max(peak, energy);
+    if (hz >= MID_LO && hz < BAND_SPLIT) { mid += energy; midBins++; }
+    else if (hz >= BAND_SPLIT && hz < HIGH_HI) { high += energy; highBins++; }
+  }
+  const airShare = total > 0 ? airflow / total : 0;
+  const bandwidth = airflow > 0 ? 1 - clamp((peak / airflow - .075) / .22) : 0;
+  return {signal:rms * clamp((airShare - .14) / .34) * bandwidth,
+    mid:mid / Math.max(1, midBins), high:high / Math.max(1, highBins)};
+}
+
+function resetRegister(session) {
+  session.upperRegister = false;
+  session.registerSince = null;
+  session.registerLast = null;
+}
+
+function registerRatio(mid, high, midFloor, highFloor) {
+  // Require a credible denominator, not a huge ratio between two near-zeros.
+  if (mid <= Math.max(1e-10, midFloor * 2)) return null;
+  return Math.max(0, high - highFloor) / (mid - midFloor);
+}
+
+function updateRegister(session, ratio, threshold, now) {
+  if (!session.gate || ratio == null || !Number.isFinite(ratio)) {
+    resetRegister(session);
+    return 0;
+  }
+  // Do not accumulate the hold time across a stalled frame loop.
+  if (session.registerLast == null || now - session.registerLast > 160) session.registerSince = null;
+  session.registerLast = now;
+  const switchNeeded = session.upperRegister ? ratio < threshold * .75 : ratio >= threshold;
+  if (!switchNeeded) session.registerSince = null;
+  else if (session.registerSince == null) session.registerSince = now;
+  else if (now - session.registerSince >= (session.upperRegister ? 100 : 75)) {
+    session.upperRegister = !session.upperRegister;
+    session.registerSince = null;
+  }
+  return session.upperRegister ? 12 : 0;
+}
+
+const spectrumCanvas = $('fluteSpectrum'), spectrumCtx = spectrumCanvas.getContext('2d');
+function drawSpectrum(values, sampleRate = 48000) {
+  const c = spectrumCtx;
+  if (!c) return;
+  const w = spectrumCanvas.width, h = spectrumCanvas.height;
+  const l = 40, r = w - 15, t = 16, b = h - 27, maxHz = Math.min(8000, sampleRate / 2);
+  const axisX = hz => l + clamp(hz / maxHz) * (r - l);
+  const axisY = db => b - clamp((db + 90) / 90) * (b - t);
+  c.clearRect(0, 0, w, h);
+  c.fillStyle = '#153536'; c.fillRect(axisX(MID_LO), t, axisX(BAND_SPLIT)-axisX(MID_LO), b-t);
+  c.fillStyle = '#392d28'; c.fillRect(axisX(BAND_SPLIT), t, axisX(HIGH_HI)-axisX(BAND_SPLIT), b-t);
+  c.font = '16px system-ui'; c.textAlign = 'right'; c.textBaseline = 'middle';
+  for (const db of [-90, -60, -30, 0]) {
+    const y = axisY(db);
+    c.fillStyle = '#344658'; c.fillRect(l, y, r-l, 1);
+    c.fillStyle = '#a9baca'; c.fillText(String(db), l-5, y);
+  }
+  if (values) {
+    const binHz = sampleRate / (2 * values.length), bars = 56;
+    for (let j = 0; j < bars; j++) {
+      const from = Math.ceil(j * maxHz / bars / binHz);
+      const to = Math.min(values.length, Math.ceil((j + 1) * maxHz / bars / binHz));
+      let db = -Infinity;
+      for (let i = from; i < to; i++) db = Math.max(db, values[i]);
+      const hz = (j + .5) * maxHz / bars;
+      c.fillStyle = hz < MID_LO || hz >= HIGH_HI ? '#8198ac' : hz < BAND_SPLIT ? '#51e2ce' : '#ffad73';
+      const y = axisY(db);
+      c.fillRect(l + j * (r-l)/bars, y, Math.max(1, (r-l)/bars - 1), b-y);
+    }
+  }
+  c.fillStyle = '#becddd'; c.textBaseline = 'top'; c.textAlign = 'center';
+  for (const hz of [0, 1000, 3000, 6000]) {
+    if (hz >= maxHz * .95) continue;
+    c.fillText(hz ? (hz/1000)+'k' : '0', axisX(hz), b+5);
+  }
+  c.textAlign = 'right'; c.fillText((maxHz/1000)+' kHz', w-1, b+5);
+}
+
+function flutePitch(holes) {
+  // In this fingering the left index intentionally covers half the first
+  // hole. Count that press as closed for the scale, not a pitch interpolation.
+  const firstOpen = holes.findIndex(coverage => coverage === 0);
+  return fluteScale[firstOpen < 0 ? 0 : holes.length - firstOpen];
+}
+
+function updateCameraHoles(rows, now) {
+  if (!flute || $('fluteFingering').value !== 'camera') return;
+  const left = rows.find(row => row.label === 'Left'), right = rows.find(row => row.label === 'Right');
+  const aspect = cv.width / cv.height;
+  const visible = row => row && dist(row.hand[0], row.hand[9]) >= Math.min(cv.width, cv.height) * .04;
+  if (!visible(left) || !visible(right)) {
+    cameraHoles = null;
+    return;
+  }
+  const previous = now - cameraHolesAt < 200 ? cameraHoles : null;
+  cameraHolesAt = now;
+  cameraHoles = [left, right].flatMap((row, hand) => holeFingers.map((tip, finger) => {
+    const index = hand * 3 + finger;
+    const closure = clamp((.94 - fingerExtension(row.hand, tip, aspect)) / .23);
+    const threshold = previous?.[index] > 0 ? .45 : .55;
+    return closure >= threshold ? holeCoverage(index) : 0;
+  }));
+}
+
+function showHoles(holes) {
+  for (let i = 0; i < holeDisplays.length; i++) {
+    const hole = holes?.[i];
+    const text = hole == null ? '—' : hole === 1 ? '閉' : hole === .5 ? '半' : '開';
+    for (const display of [holeDisplays[i], bandDisplays[i]]) {
+      if (display.dataset.state === text) continue;
+      display.dataset.state = text;
+      display.lastChild.textContent = text;
+      display.setAttribute('aria-label', '第' + (i + 1) + '孔 ' + display.firstChild.textContent + ' · ' + text);
+    }
+  }
+}
+
+function syncTouchHoles() {
+  screenHoles.fill(0);
+  for (const index of heldFluteHoles.values()) if (index >= 0) screenHoles[index] = holeCoverage(index);
+  for (const index of heldFluteKeys) screenHoles[index] = holeCoverage(index);
+  if ($('fluteFingering').value === 'touch') showHoles(screenHoles);
+}
+
+function clearFluteTouches() {
+  if (!heldFluteHoles.size && !heldFluteKeys.size) return;
+  heldFluteHoles.clear();
+  heldFluteKeys.clear();
+  syncTouchHoles();
+}
+
+function openTouchStage() {
+  const stage = $('fluteTouchStage');
+  if (!stage.open && $('fluteFingering').value === 'touch' && $('flutePanel').open) {
+    stage.showModal();
+    positionTouchStageControls();
+  }
+}
+
+function positionTouchStageControls() {
+  const stage = $('fluteTouchStage');
+  if (!stage.open) return;
+  const spare = (orientation.matches ? stage.clientHeight : stage.clientWidth) - fluteBandSpan;
+  stage.dataset.compact = String(spare < (orientation.matches ? 96 : 120));
+}
+
+function closeTouchStage() {
+  clearFluteTouches();
+  if ($('fluteTouchStage').open) $('fluteTouchStage').close();
+}
+
+function refreshTouchStageMic() {
+  const requested = $('startMic').disabled;
+  const button = $('stageMic');
+  const text = requested ? '停用麥克風' : '啟用麥克風';
+  if (button.textContent !== text) button.textContent = text;
+}
+
+function refreshFluteMode() {
+  const touch = $('fluteFingering').value === 'touch';
+  clearFluteTouches();
+  if (!touch || !$('flutePanel').open) closeTouchStage();
+  $('openTouchStage').hidden = !touch;
+  cameraHoles = null;
+  showHoles(touch ? screenHoles : null);
+  $('fluteGuide').textContent = touch
+    ? '進入演奏區，橫向從左到右按孔。左食指固定半孔；其他五指按住為閉孔。可調整色帶寬度。'
+    : '兩手各用食指、中指、無名指。伸直為開；彎下時左食指固定半孔，其他五指閉孔。';
+}
+
+function initFluteHoles() {
+  const grid = $('fluteTouchBands'), stage = $('fluteTouchStage');
+  for (const side of ['左', '右']) for (const finger of ['食指', '中指', '無名指']) {
+    const index = holeDisplays.length;
+    for (const [container, displays, tag] of [[$('fluteHoles'), holeDisplays, 'span'], [grid, bandDisplays, 'div']]) {
+      const display = document.createElement(tag);
+      const name = document.createElement(tag === 'span' ? 'small' : 'span'), value = document.createElement('b');
+      name.textContent = side + finger;
+      display.append(name, value);
+      displays.push(display);
+      if (container === grid) {
+        display.className = 'flute-band';
+        display.dataset.hole = index;
+        display.style.setProperty('--portrait-row', String(6 - index));
+        grid.append(display); // left to right in landscape; bottom up in portrait
+      } else container.append(display);
+    }
+  }
+
+  function updateContact(event) {
+    const band = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-hole]');
+    const index = band && grid.contains(band) ? Number(band.dataset.hole) : -1;
+    if (heldFluteHoles.get(event.pointerId) === index) return;
+    heldFluteHoles.set(event.pointerId, index);
+    syncTouchHoles();
+  }
+  grid.addEventListener('pointerdown', event => {
+    if (!stage.open || event.button !== 0) return;
+    event.preventDefault();
+    grid.setPointerCapture(event.pointerId);
+    updateContact(event);
+  });
+  grid.addEventListener('pointermove', event => {
+    if (heldFluteHoles.has(event.pointerId)) updateContact(event);
+  });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    grid.addEventListener(type, event => {
+      if (type === 'lostpointercapture' && event.target !== grid) return;
+      if (heldFluteHoles.delete(event.pointerId)) syncTouchHoles();
+    });
+  }
+  for (const type of ['contextmenu', 'selectstart']) {
+    grid.addEventListener(type, event => event.preventDefault());
+  }
+  stage.addEventListener('close', clearFluteTouches);
+  const widthChoice = $('stageWidth');
+  const updateWidth = () => {
+    clearFluteTouches();
+    const chosen = Number(widthChoice.value);
+    const scale = chosen >= 50 && chosen <= 150 && chosen % 10 === 0 ? chosen / 100 : 1;
+    fluteBandSpan = FLUTE_BAND_BASE_PX * FLUTE_WIDTH_UNITS * scale;
+    grid.style.setProperty('--flute-band-span', fluteBandSpan.toFixed(3) + 'px');
+    positionTouchStageControls();
+  };
+  widthChoice.onchange = updateWidth;
+  widthChoice.addEventListener('focus', clearFluteTouches);
+  updateWidth();
+  for (const type of ['keydown', 'keyup']) stage.addEventListener(type, event => {
+    if (event.ctrlKey || event.metaKey || event.altKey || !/^[1-6]$/.test(event.key) ||
+        (type === 'keydown' && event.target === widthChoice)) return;
+    event.preventDefault();
+    const index = Number(event.key) - 1;
+    if (type === 'keydown') {
+      if (event.repeat) return;
+      heldFluteKeys.add(index);
+    } else heldFluteKeys.delete(index);
+    syncTouchHoles();
+  });
+  $('openTouchStage').onclick = openTouchStage;
+  $('closeTouchStage').onclick = closeTouchStage;
+  $('stageMic').onclick = () => $('startMic').disabled ? stopFlute(undefined, true) : startFlute();
+  refreshTouchStageMic();
+  refreshFluteMode();
+}
+
+function makeFluteVoice() {
+  const tone = audio.createOscillator(), octave = audio.createOscillator();
+  const octaveGain = audio.createGain(), filter = audio.createBiquadFilter(), gain = audio.createGain();
+  tone.frequency.value = 440;
+  octave.frequency.value = 880;
+  tone.setPeriodicWave(audio.createPeriodicWave(
+    new Float32Array(7), Float32Array.of(0, 1, 0, .24, .10, .16, .06), {disableNormalization: true}
+  ));
+  octaveGain.gain.value = .27;
+  filter.type = 'lowpass';
+  filter.frequency.value = 1800;
+  gain.gain.value = 0;
+  tone.connect(filter).connect(gain).connect(mix);
+  octave.connect(octaveGain).connect(filter);
+  const time = audio.currentTime;
+  tone.start(time);
+  octave.start(time);
+  return {tone, octave, octaveGain, filter, gain};
+}
+
+function setFluteNote(note) {
+  setText('fluteNote', note);
+  setText('fluteStageNote', note);
+}
+
+function stopFlute(message = '麥克風已停止。', resumeStrings = false) {
+  micAttempt++;
+  const session = flute;
+  flute = null;
+  if (session) {
+    cancelAnimationFrame(session.raf);
+    session.input.disconnect();
+    session.analyser.disconnect();
+    session.stream.getTracks().forEach(track => track.stop());
+    const time = audio.currentTime;
+    session.gain.gain.setTargetAtTime(0, time, .012);
+    session.tone.onended = () => {
+      session.tone.disconnect();
+      session.octave.disconnect();
+      session.octaveGain.disconnect();
+      session.filter.disconnect();
+      session.gain.disconnect();
+    };
+    session.tone.stop(time + .07);
+    session.octave.stop(time + .07);
+    resetMotion();
+    if ($('strings').checked) {
+      restoreStringOutput();
+      if (resumeStrings && audio.state !== 'running') unlockStrings();
+    }
+  }
+  clearFluteTouches();
+  $('audition').disabled = false;
+  $('startMic').disabled = false;
+  $('stopMic').disabled = true;
+  $('fluteCalibrate').disabled = true;
+  refreshTouchStageMic();
+  $('breathMeter').value = 0;
+  setFluteNote('—');
+  $('micStatus').textContent = message;
+  $('registerReadout').textContent = '麥克風未啟用';
+  drawSpectrum(null);
+  cameraHoles = null;
+  showHoles($('fluteFingering').value === 'touch' ? screenHoles : null);
+}
+
+function calibrateFlute(now) {
+  flute.calibrationEnd = now + 1100;
+  flute.background = [];
+  flute.midBackground = [];
+  flute.highBackground = [];
+  resetRegister(flute);
+  micUiAt = -Infinity;
+  $('registerReadout').textContent = '背景校正中';
+  drawSpectrum(null, audio.sampleRate);
+  flute.gate = false;
+  flute.gain.gain.setTargetAtTime(0, audio.currentTime, .01);
+  $('breathMeter').value = 0;
+  setFluteNote('—');
+  $('micStatus').textContent = '校正背景音約一秒，請先安靜。';
+}
+
+function breathState(state, signal, sensitivity, hasFingering) {
+  const threshold = Math.max(.005, state.floor * 1.65 + .002) / sensitivity;
+  state.gate = hasFingering && signal > threshold * (state.gate ? .68 : 1);
+  const level = clamp((signal - threshold * .65) / Math.max(.035, threshold * 3));
+  return level;
+}
+
+function fluteFrame(session, now) {
+  if (flute !== session) return;
+  const {analyser, wave, spectrum} = session;
+  analyser.getFloatTimeDomainData(wave);
+  const rms = waveRms(wave);
+  const uiDue = now - micUiAt >= 90;
+  if (uiDue) micUiAt = now;
+  const sensitivity = Number($('micSensitivity').value);
+  const openingThreshold = Math.max(.005, session.floor * 1.65 + .002) / sensitivity;
+  const analyse = session.background || rms > openingThreshold * .65;
+  let features = null;
+  // Quiet frames cannot open the gate. Only fetch their spectrum at display
+  // cadence so that the plot still shows the actual microphone noise floor.
+  if (analyse || uiDue) {
+    analyser.getFloatFrequencyData(spectrum);
+    if (analyse) features = breathFeatures(spectrum, audio.sampleRate, rms);
+    if (uiDue) drawSpectrum(spectrum, audio.sampleRate);
+  }
+  const signal = features ? features.signal : 0;
+  if (session.background) {
+    session.background.push(signal);
+    session.midBackground.push(features.mid);
+    session.highBackground.push(features.high);
+    if (now >= session.calibrationEnd) {
+      const floor85 = samples => samples.sort((a,b) => a-b)[Math.floor(.85 * (samples.length - 1))];
+      session.floor = floor85(session.background);
+      session.midFloor = floor85(session.midBackground);
+      session.highFloor = floor85(session.highBackground);
+      session.background = session.midBackground = session.highBackground = null;
+    }
+  } else {
+    const holes = $('fluteFingering').value === 'touch' ? screenHoles : now - cameraHolesAt < 200 ? cameraHoles : null;
+    const wasPlaying = session.gate;
+    const level = breathState(session, signal, sensitivity, Boolean(holes));
+    const ratio = features && audio.sampleRate >= 2 * HIGH_HI
+      ? registerRatio(features.mid, features.high, session.midFloor, session.highFloor) : null;
+    const shift = updateRegister(session, ratio, 1 / Number($('octaveThreshold').value), now);
+    const midi = (holes ? flutePitch(holes) : fluteScale[0]) + shift;
+    const time = audio.currentTime;
+    if (session.gate) {
+      if (session.midi !== midi) {
+        const frequency = 440 * 2 ** ((midi - 69) / 12);
+        const glide = wasPlaying ? .019 : .004;
+        session.tone.frequency.setTargetAtTime(frequency, time, glide);
+        session.octave.frequency.setTargetAtTime(frequency * 2, time, glide);
+        session.midi = midi;
+      }
+      session.octaveGain.gain.setTargetAtTime(.27 + .55 * level, time, .024);
+      session.filter.frequency.setTargetAtTime(1200 + 2400 * level, time, .024);
+    }
+    // While gated off, the gain target remains zero. Reissuing that same
+    // automation target every animation frame adds work without changing the
+    // intended envelope; still update on the transition back to silence.
+    if (session.gate || session.gainGate !== session.gate) {
+      session.gain.gain.setTargetAtTime(session.gate ? .035 + .19 * level ** 1.2 : 0, time, session.gate ? .014 : .022);
+      session.gainGate = session.gate;
+    }
+    if (uiDue) {
+      const register = session.gate ? (shift ? '高八度' : '本音') : '未發聲';
+      $('registerReadout').textContent = '高／中頻功率 ' + (ratio == null ? '—' : ratio.toFixed(3)) + ' · ' + register;
+      showHoles(holes);
+      $('breathMeter').value = level;
+      setFluteNote(session.gate ? midiNote(midi)[0] : '—');
+      $('micStatus').textContent = !holes ? '等待相機辨識左右手。' : session.gate ? '吹奏中' : '等待氣聲';
+    }
+  }
+  session.raf = requestAnimationFrame(next => fluteFrame(session, next));
+}
+
+async function startFlute() {
+  if (flute || $('startMic').disabled) return;
+  const attempt = ++micAttempt;
+  $('startMic').disabled = true;
+  $('stopMic').disabled = false;
+  refreshTouchStageMic();
+  $('micStatus').textContent = '正在要求麥克風權限…';
+  let stream;
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('請用 HTTPS 或 localhost 開啟。');
+    await enableSound();
+    if (attempt !== micAttempt) return;
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: false,
+      audio: {channelCount:{ideal:1}, echoCancellation:{ideal:false}, noiseSuppression:{ideal:false}, autoGainControl:{ideal:false}}
+    });
+    if (attempt !== micAttempt) {
+      stream.getTracks().forEach(track => track.stop());
+      return;
+    }
+    const input = audio.createMediaStreamSource(stream), analyser = audio.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = .15;
+    input.connect(analyser);
+    flute = {
+      stream, input, analyser, ...makeFluteVoice(), floor:0, gate:false,
+      wave:new Float32Array(analyser.fftSize), spectrum:new Float32Array(analyser.frequencyBinCount)
+    };
+    stream.getAudioTracks()[0].addEventListener('ended', () => {
+      if (flute?.stream === stream) stopFlute('麥克風已中斷。');
+    }, {once:true});
+    resetMotion();
+    silenceStrings();
+    $('audition').disabled = true;
+    $('fluteCalibrate').disabled = false;
+    calibrateFlute(performance.now());
+    fluteFrame(flute, performance.now());
+  } catch (error) {
+    stream?.getTracks().forEach(track => track.stop());
+    if (attempt === micAttempt) {
+      stopFlute(error.name === 'NotAllowedError' ? '麥克風授權遭拒，請檢查網站與系統權限。' : '無法啟動麥克風 · ' + error.message);
+    }
+  }
+}
+
+
+function detectPlucks(row, now, seen, rules) {
+  const hand = row.hand;
+  if (rules.pinch) {
+    const palmLength = dist(hand[0], hand[9]);
+    if (palmLength <= 1 || dist(hand[4], hand[8]) / palmLength >= .43) return;
+  }
+  for (const finger of eligibleFingers(row.label, rules.pluck, rules)) {
+    const key = row.id + ':' + finger, tip = hand[finger], point = {x:px(tip), y:tip.y, t:now};
+    seen.add(key);
+    if (inRect(point, geometry.zone) || point.x < geometry.lo - .02 || point.x > geometry.hi + .02) {
+      history.delete(key);
+      continue;
+    }
+    const state = history.get(key), previous = state?.point;
+    if (!previous || now - previous.t > 180 || now <= previous.t) {
+      history.set(key, initialCrossing(point, geometry));
+      continue;
+    }
+    const hits = advanceCrossings(state, point, geometry);
+    if (!hits) continue;
+    const speed = Math.abs(point.y - previous.y) / ((now - previous.t) / 1000);
+    const direction = point.y < previous.y ? -1 : 1;
+    const count = geometry.ys.length;
+    for (let i = direction > 0 ? 0 : count - 1; i >= 0 && i < count; i += direction) {
+      if (hits & (1 << i)) pluck(i, speed, now, key, row.label, finger);
+    }
+  }
+}
+function setText(id, text) {
+  const element = $(id);
+  if (element.textContent !== text) element.textContent = text;
+}
+
+function reportTracking(rows, r, now) {
+  const count = rows.length;
+  setText('count', count + ' / 2');
+  setText('points', count * 21 + ' / 42');
+  frameTimes.push(now);
+  while (frameTimes.length && frameTimes[0] < now - 1000) frameTimes.shift();
+  if (now < telemetryAt) return;
+  telemetryAt = now + 120;
+  setText('fps', frameTimes.length > 1 ?
+    ((frameTimes.length - 1) * 1000 / Math.max(1, now - frameTimes[0])).toFixed(1) : '—');
+  for (const side of ['Left','Right']) {
+    const row = rows.find(row => row.label === side);
+    const id = side.toLowerCase();
+    if (!row) {
+      setText(id, '尚未偵測');
+      continue;
+    }
+    const point = row.hand[8], confidence = (r.handedness?.[row.i] || r.handednesses?.[row.i])?.[0]?.score;
+    setText(id, '21 點 · ' + (confidence == null ? '—' : Math.round(confidence * 100) + '%') +
+      ' 分類信心\n食指 X ' + px(point).toFixed(2) + ' / Y ' + point.y.toFixed(2) + ' / Z ' + point.z.toFixed(2));
+  }
+}
+
+function report(r, now) {
+  const rows = trackHands(r), seen = new Set();
+  if (flute) {
+    updateCameraHoles(rows, now);
+  } else {
+    const rules = {...settings(), pluck:{hand:$('role').value, finger:8}, pinch:$('pinch').checked};
+    selectAirChords(rows, now, rules);
+    updatePalmMute(rows, now);
+    if ($('strings').checked && !stringsMuted) {
+      for (const row of rows) {
+        if (row.id !== chordGrip?.id) detectPlucks(row, now, seen, rules);
+      }
+    }
+    showStringGesture();
+  }
+  for (const key of history.keys()) if (!seen.has(key)) history.delete(key);
+  for (const key of cooldowns.keys()) if (!seen.has(key.slice(0, key.lastIndexOf(':')))) cooldowns.delete(key);
+  reportTracking(rows, r, now);
+}
+
+function drawCameraOverlay(now) {
+  drawVideo();
+  drawStrings(now);
+  drawPads();
+  if (result && $('bones').checked) {
+    const mirrored = $('mirror').checked, indices = $('indices').checked;
+    result.landmarks.forEach((hand, i) => drawHand(hand, handLabel(result, i), mirrored, indices));
+  }
+}
+
+function cancelCameraFrame() {
+  frameEpoch++;
+  if (frameId === null) return;
+  if (cameraUsesVideoFrames) video.cancelVideoFrameCallback(frameId);
+  else cancelAnimationFrame(frameId);
+  frameId = null;
+}
+
+function queueCameraFrame() {
+  if (!running || document.hidden || frameId !== null) return;
+  const epoch = frameEpoch;
+  const render = (_now, metadata) => {
+    if (epoch !== frameEpoch) return;
+    frameId = null;
+    if (!running || document.hidden) return;
+    try {
+      const mediaTime = metadata?.mediaTime ?? video.currentTime;
+      if (video.readyState >= 2 && mediaTime !== lastVideo) {
+        lastVideo = mediaTime;
+        if (video.videoWidth && video.videoHeight &&
+            (cv.width !== video.videoWidth || cv.height !== video.videoHeight)) {
+          cv.width = video.videoWidth;
+          cv.height = video.videoHeight;
+          resetMotion();
+        }
+        if (!testOnly) {
+          lastTimestamp = Math.max(performance.now(), lastTimestamp + .01);
+          result = detector.detectForVideo(video, lastTimestamp);
+          report(result, performance.now());
+        }
+        drawCameraOverlay(performance.now());
+      }
+      queueCameraFrame();
+    } catch (error) {
+      stop();
+      status('追蹤中斷：' + explain(error), true);
+      console.error(error);
+    }
+  };
+  frameId = cameraUsesVideoFrames ? video.requestVideoFrameCallback(render) : requestAnimationFrame(render);
+}
+function unlockStrings() {
+  return enableSound().then(restoreStringOutput).catch(error => {
+    status('音效啟動失敗：' + explain(error), true);
+  });
+}
+
+$('start').onclick = () => start(false);
+$('test').onclick = () => start(true);
+$('stop').onclick = stop;
+$('diagnose').onclick = diagnostics;
+$('scan').onclick = () => scan();
+cameraMenu.onchange = () => {
+  try {
+    if (preferredDirections.has(cameraMenu.value)) window.localStorage.setItem(cameraPreferenceKey, cameraMenu.value);
+    else window.localStorage.removeItem(cameraPreferenceKey); // Never store opaque device IDs.
+  } catch {}
+  $('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
+};
+$('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
+for (const id of ['mirror','swap','role','pinch','airChords','palmMute','chordVibrato']) {
+  $(id).onchange = () => {
+    resetMotion();
+    if (!running) drawIdle();
+  };
+}
+for (const id of ['anyHand','anyFinger']) {
+  $(id).onclick = () => {
+    const button = $(id), value = button.getAttribute('aria-pressed') !== 'true';
+    button.setAttribute('aria-pressed', String(value));
+    button.textContent = (id === 'anyHand' ? '不限制左右手' : '不限制手指') + '：' + (value ? '開' : '關');
+    resetMotion();
+  };
+}
+$('pluckCooldown').onchange = () => cooldowns.clear();
+$('strings').onchange = () => {
+  resetMotion();
+  if ($('strings').checked) {
+    if (!flute) unlockStrings();
+  } else silenceStrings();
+};
+$('audition').onclick = async () => {
+  if (stringsMuted || flute) return;
+  try {
+    await enableSound();
+    if (stringsMuted || flute) return;
+    restoreStringOutput();
+    const now = performance.now();
+    notes.slice().reverse().forEach((note, i) => sound(note[1], .45, i * .065));
+    flash.fill(now);
+    if (!running) drawIdle();
+  } catch (error) {
+    status('試聽失敗：' + explain(error), true);
+  }
+};
+cv.addEventListener('pointerup', event => {
+  if (!$('airChords').checked) return;
+  const box = cv.getBoundingClientRect();
+  const point = {x:(event.clientX - box.left) / box.width, y:(event.clientY - box.top) / box.height};
+  const pad = geometry.pads.find(pad => inRect(point, pad));
+  if (pad) setChord(pad.name, '畫面觸控');
+});
+if (typeof orientation.addEventListener === 'function') orientation.addEventListener('change', updateGeometry);
+else window.addEventListener('resize', updateGeometry);
+window.addEventListener('pagehide', () => {
+  if ($('startMic').disabled) stopFlute();
+  if (running || starting) stop();
+  else silenceStrings();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    clearFluteTouches();
+    if ($('startMic').disabled) stopFlute('離開頁面，麥克風已停止。');
+    cancelCameraFrame();
+  } else if (running) {
+    resetFrameTracking();
+    if (!testOnly && $('strings').checked && audio && audio.state !== 'running') {
+      audio.resume().then(restoreStringOutput).catch(() => {});
+    }
+    queueCameraFrame();
+  }
+});
+window.addEventListener('blur', clearFluteTouches);
+for (const type of ['contextmenu', 'selectstart', 'dragstart']) {
+  document.addEventListener(type, suppressTouchLongPress, {capture:true, passive:false});
+}
+window.addEventListener('resize', () => {
+  clearFluteTouches();
+  positionTouchStageControls();
+});
+$('startMic').onclick = startFlute;
+$('stopMic').onclick = () => stopFlute(undefined, true);
+$('fluteCalibrate').onclick = () => { if (flute) calibrateFlute(performance.now()); };
+$('fluteFingering').onchange = () => {
+  refreshFluteMode();
+  openTouchStage();
+};
+$('flutePanel').addEventListener('toggle', () => {
+  if (!$('flutePanel').open) closeTouchStage();
+  if (!$('flutePanel').open && $('startMic').disabled) stopFlute('曲笛已關閉，麥克風已停止。', true);
+});
+drawSpectrum(null);
+initFluteHoles();
+initChords();
+drawIdle();
+scan();
+diagnostics();
+</script></body></html>

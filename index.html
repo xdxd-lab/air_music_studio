@@ -1,9 +1,13 @@
 <!doctype html>
-<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.3</title>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Air-Music Studio · v0.4.4</title>
 <style>
 :root{color-scheme:dark;--bg:#0a101a;--panel:#111b2a;--line:#25364b;--text:#e8f0fa;--muted:#9aadc1;--cyan:#51e2ce;--orange:#ffad73}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top left,#172c40,var(--bg) 52%);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:28px 22px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}h1{font-size:35px;letter-spacing:-1.5px;margin:0}h1 span{color:var(--cyan)}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}.sub{color:var(--muted);margin:4px 0}.pill{border:1px solid var(--line);border-radius:100px;padding:7px 13px;color:var(--cyan);white-space:nowrap;font-size:12px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}button,select{border:1px solid var(--line);background:#18283c;color:var(--text);border-radius:9px;padding:10px 12px;font:inherit}button{cursor:pointer}button.primary{background:var(--cyan);color:#07251f;border:0;font-weight:700}button:disabled{opacity:.4;cursor:not-allowed}select{max-width:100%;min-width:0}#camera{flex:1}canvas{display:block;width:100%;height:auto;border-radius:12px;background:#080e16}#video{display:none}.stage{position:relative}.placeholder{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:20px;color:var(--muted)}.placeholder strong{font-size:22px;color:var(--text)}.placeholder[hidden]{display:none}.status{padding:10px 2px 0;color:var(--muted);overflow-wrap:anywhere}.status.error{color:#ff9e9e}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.metric{padding:10px;background:#0c1521;border-radius:10px}.metric b{font-size:24px;display:block;font-variant-numeric:tabular-nums}.metric small{color:var(--muted)}h2{font-size:16px;margin:0 0 12px}h3{font-size:13px;color:var(--muted);margin:16px 0 8px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;cursor:pointer}input[type=checkbox]{accent-color:var(--cyan);width:17px;height:17px}.hand{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;color:var(--muted);font-size:13px}.hand b{display:block;margin-bottom:4px}.left{color:var(--cyan)}.right{color:var(--orange)}.help{color:var(--muted);font-size:13px;margin:10px 0}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}.hand span{white-space:pre-line}#note{font-size:22px;color:var(--cyan);font-weight:700}footer{color:var(--muted);font-size:12px;margin-top:16px}label.field{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;color:var(--muted);font-size:13px}@media(max-width:850px){.layout{grid-template-columns:1fr}main{padding:16px}h1{font-size:29px}}
 .toggles{display:grid;gap:7px;margin:10px 0}.toggles button[aria-pressed=true],.chordbuttons button[aria-pressed=true]{background:var(--cyan);color:#07251f;border-color:var(--cyan);font-weight:700}.chordpanel{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.chordhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between}.chordhead h2{margin:0}.chordbuttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(53px,1fr));gap:6px;margin-top:8px}.chordbuttons button{padding:8px 4px}.tuning{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:9px}.tuning span{font-size:11px;text-align:center;background:#0b1420;padding:5px 2px;border-radius:5px}.tuning b{display:block;color:var(--cyan);font-size:13px}.placeholder{inset:5px 5px auto;display:block;background:#08101bcc;border-radius:6px;padding:5px;color:#bdc9d8}.placeholder strong{font-size:12px}.placeholder span{display:none}.placeholder[hidden]{display:none}canvas{touch-action:manipulation}@media(max-width:480px){.panel{padding:10px}.tuning{grid-template-columns:repeat(3,1fr)}header .pill{display:none}}
 #chordButtons button{touch-action:none}.flute{margin-top:14px}.flute summary{cursor:pointer;font-weight:bold}
+@media (pointer:coarse){
+  main,footer,#fluteTouchStage{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+  :is(main,footer,#fluteTouchStage) :is(textarea,[contenteditable]:not([contenteditable="false"])){user-select:text;-webkit-user-select:text}
+}
 .flute .bar{margin-top:10px}
 .flute-holes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
 .flute-holes span{min-width:0;padding:5px 1px;border:1px solid var(--line);border-radius:7px;text-align:center;font-size:11px}
@@ -88,11 +92,11 @@
 @media (orientation:portrait){.flute-touch-stage[data-compact="true"]{justify-content:flex-end}}
 @media (max-height:275px){.flute-stage-bar button,.flute-stage-bar select{min-height:32px}.flute-mouthpiece{font-size:11px}}
 </style></head><body><main>
-<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.3</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
-<div class="layout"><section class="panel"><div class="bar"><button class="primary" id="start">啟動相機</button><button id="test">僅測試相機</button><button id="stop" disabled>停止</button><select id="camera" aria-label="選擇相機"><option value="">預設相機</option></select><button id="scan" title="重新列出相機">重新掃描</button></div><div class="stage"><video id="video" autoplay playsinline muted></video><canvas id="view" width="960" height="540" aria-label="相機影像與雙手骨架"></canvas><div class="placeholder" id="placeholder"><strong>等待相機啟動</strong><span>按下「啟動相機」並允許瀏覽器使用相機</span></div></div><section class="chordpanel"><div class="chordhead"><h2>和弦測試 · <span id="activeChord">C</span></h2><label class="check"><input id="airChords" type="checkbox" checked>空中選和弦</label><button id="audition" type="button">試聽六弦</button></div><div id="chordButtons" class="chordbuttons"></div><div id="tuning" class="tuning" aria-live="polite"></div><p class="help" id="chordhelp">直式下方、橫式左方為空中和弦區。指尖停留約 140 ms 選擇；移開後保留和弦。</p></section><div class="status" id="status" role="status">尚未啟動。初次載入需連線下載 AI 模型。</div><details open style="margin-top:12px"><summary>相機環境診斷</summary><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:12px;margin:8px 0"></pre><button id="diagnose">重新檢查環境</button><p class="help">若相機權限遭拒，請用獨立 HTTPS 網頁或 localhost；Android content:// 本機檔案曾實測遭拒。測試相機不會下載 AI 模型。</p></details><div class="metrics"><div class="metric"><small>偵測手數</small><b id="count">0 / 2</b></div><div class="metric"><small>骨架點數</small><b id="points">0 / 42</b></div><div class="metric"><small>推論 FPS</small><b id="fps">—</b></div></div></section>
+<header><div><div class="eyebrow">COMPUTER VISION / VIRTUAL INSTRUMENT</div><h1>Air-Music <span>Studio</span></h1><p class="sub">虛擬六弦與曲笛實驗 · v0.4.4</p></div><div class="pill">LOCAL AI · PROTOTYPE</div></header>
+<div class="layout"><section class="panel"><div class="bar"><button class="primary" id="start">啟動相機</button><button id="test">僅測試相機</button><button id="stop" disabled>停止</button><select id="camera" aria-label="選擇相機" aria-describedby="cameraHelp"><option value="">自動（裝置預設）</option><option value="facing:user">前鏡頭優先</option><option value="facing:environment">後鏡頭優先</option></select><button id="scan" title="重新列出相機">重新掃描</button></div><p class="help" id="cameraHelp">不必先測試，可直接選前／後鏡頭再啟動。若沒有對應鏡頭，瀏覽器可能改用其他鏡頭；授權後可從清單指定裝置。</p><div class="stage"><video id="video" autoplay playsinline muted></video><canvas id="view" width="960" height="540" aria-label="相機影像與雙手骨架"></canvas><div class="placeholder" id="placeholder"><strong>等待相機啟動</strong><span>按下「啟動相機」並允許瀏覽器使用相機</span></div></div><section class="chordpanel"><div class="chordhead"><h2>和弦測試 · <span id="activeChord">C</span></h2><label class="check"><input id="airChords" type="checkbox" checked>空中選和弦</label><button id="audition" type="button">試聽六弦</button></div><div id="chordButtons" class="chordbuttons"></div><div id="tuning" class="tuning" aria-live="polite"></div><p class="help" id="chordhelp">直式下方、橫式左方為空中和弦區。指尖停留約 140 ms 選擇；移開後保留和弦。</p></section><div class="status" id="status" role="status">尚未啟動。初次載入需連線下載 AI 模型。</div><details open style="margin-top:12px"><summary>相機環境診斷</summary><p class="help" id="cameraInfo"></p><pre id="diagnostics" style="white-space:pre-wrap;overflow-wrap:anywhere;color:var(--muted);font-size:12px;margin:8px 0"></pre><button id="diagnose">重新檢查環境</button><p class="help">若相機權限遭拒，請用獨立 HTTPS 網頁或 localhost；Android content:// 本機檔案曾實測遭拒。測試相機不會下載 AI 模型。</p></details><div class="metrics"><div class="metric"><small>偵測手數</small><b id="count">0 / 2</b></div><div class="metric"><small>骨架點數</small><b id="points">0 / 42</b></div><div class="metric"><small>推論 FPS</small><b id="fps">—</b></div></div></section>
 <aside class="panel"><h2>追蹤設定</h2><label class="check"><input id="mirror" type="checkbox">鏡像顯示</label><label class="check"><input id="bones" type="checkbox" checked>顯示手部骨架</label><label class="check"><input id="indices" type="checkbox" checked>顯示關節編號 0–20</label><label class="check"><input id="swap" type="checkbox">交換左右手標籤</label><div class="toggles"><button id="anyHand" type="button" aria-pressed="true">不限制左右手：開</button><button id="anyFinger" type="button" aria-pressed="true">不限制手指：開</button></div><p class="help">兩個全域開關各自控制撥弦與選和弦。關閉時，指定手的食指撥弦、左手食指選和弦。</p><div class="hand"><b class="left">LEFT · 左手</b><span id="left">尚未偵測</span></div><div class="hand"><b class="right">RIGHT · 右手</b><span id="right">尚未偵測</span></div><div class="help">食指尖座標以畫面左上為原點，X/Y 為正規化位置；Z 為模型相對深度，不代表相機距離。</div><hr class="sep"><h2>六弦</h2>
 <label class="check"><input id="strings" type="checkbox" checked>啟用撥弦音效</label>
-<label class="check"><input id="pluckCooldown" type="checkbox">同一指撥同一弦間隔 55 ms</label>
+<label class="check"><input id="pluckCooldown" type="checkbox">限制同一指、同一弦至少間隔 55 ms（預設不限制）</label>
 <label class="check"><input id="palmMute" type="checkbox" checked>張掌止弦</label>
 <label class="check"><input id="chordVibrato" type="checkbox" checked>按弦搖韻</label>
 <p class="help">在弦區張開手掌並維持 0.5 秒，止住六弦。用左手停在空中和弦格內並輕輕左右搖，右手撥弦。也可按住螢幕上的和弦鍵左右拖動。</p>
@@ -112,11 +116,12 @@
 <div id="registerReadout">麥克風未啟用</div>
 </figure>
 <label class="field">高八度門檻（高頻／中頻）<select id="octaveThreshold">
-<option value="2">1/2</option><option value="3" selected>1/3</option><option value="4">1/4</option><option value="5">1/5</option><option value="6">1/6</option><option value="7">1/7</option><option value="8">1/8</option>
+<option value="4" selected>1/4</option><option value="8">1/8</option><option value="12">1/12</option><option value="16">1/16</option>
+<option value="20">1/20</option><option value="24">1/24</option><option value="28">1/28</option><option value="32">1/32</option>
 </select></label>
 <div class="field">目前音高 <b id="fluteNote">—</b></div>
 <p class="help" id="micStatus" role="status">麥克風未啟用。</p>
-<p class="help">按孔決定音名，氣量控制音量。吹氣時，高頻相對中頻達門檻並稍微保持，同一指法就會高一個八度。1/8 比 1/2 更容易升八度。圖上是各區峰值，判定比值則用扣除背景後的平均功率。麥克風資料在本機分析。啟用麥克風後暫停手勢撥弦，建議戴耳機。</p>
+<p class="help">按孔決定音名，氣量控制音量。吹氣時，高頻相對中頻達門檻並稍微保持，同一指法就會高一個八度。預設 1/4；分母愈大（如 32），愈容易升八度。圖上是各區峰值，判定比值則用扣除背景後的平均功率。麥克風資料在本機分析。啟用麥克風後暫停手勢撥弦，建議戴耳機。</p>
 </details></aside></div><footer>MediaPipe Hand Landmarker · Web Audio API · 不錄影、不錄音、不上傳相機或麥克風資料；模型與程式庫從 CDN 下載。請以 Chrome / Edge 開啟，建議 localhost 或 HTTPS。</footer>
 <dialog class="flute-touch-stage" id="fluteTouchStage" aria-label="曲笛螢幕演奏區">
 <div class="flute-stage-controls">
@@ -131,7 +136,7 @@
 </select></label>
 <span class="flute-width-label flute-stage-note">目前音高 <b id="fluteStageNote">—</b></span>
 </div>
-<p class="flute-mouthpiece"><span class="flute-landscape-hint">← 吹氣端 · 主麥克風朝左。</span><span class="flute-portrait-hint">↓ 吹氣端 · 主麥克風朝下。</span>按住色帶遮孔，放開即開。空間不足時，色帶不會縮小，超出螢幕的部分會被裁切。</p>
+<p class="flute-mouthpiece"><span class="flute-landscape-hint">← 吹氣端 · 主麥克風朝左。</span><span class="flute-portrait-hint">↓ 吹氣端 · 主麥克風朝下。</span>按住色帶遮孔，放開即開。色帶被裁切時，可調低寬度。</p>
 </div>
 <section class="flute-touch-bands" id="fluteTouchBands" aria-label="六條觸控指孔；也可按住數字 1 到 6 鍵"></section>
 </dialog>
@@ -263,23 +268,55 @@ function resetMotion() {
   showStringGesture();
 }
 function resetUI(){for(const k of ['left','right'])$(k).textContent='尚未偵測';$('count').textContent='0 / 2';$('points').textContent='0 / 42';$('fps').textContent='—';$('note').textContent='—';$('notehelp').textContent='尚未撥弦';$('placeholder').hidden=false;drawIdle()}
+// These three choices exist even when device enumeration is empty, restricted, or delayed.
+const cameraMenu = $('camera'), cameraPresets = [...cameraMenu.children];
+const preferredDirections = new Map([['facing:user','user'], ['facing:environment','environment']]);
+const directionNames = new Map([['user','前鏡頭'], ['environment','後鏡頭'], ['left','左側鏡頭'], ['right','右側鏡頭']]);
+const cameraPreferenceKey = 'airMusicStudio.cameraFacing';
+try {
+  const saved = window.localStorage.getItem(cameraPreferenceKey);
+  if (preferredDirections.has(saved)) cameraMenu.value = saved;
+} catch { /* Storage can be unavailable in private or embedded contexts. */ }
+
+function cameraConstraints(choice) {
+  const video = {width:{ideal:960}, height:{ideal:540}, frameRate:{ideal:30}};
+  if (preferredDirections.has(choice)) video.facingMode = {ideal:preferredDirections.get(choice)};
+  else if (choice.startsWith('device:')) video.deviceId = {exact:choice.slice(7)};
+  return {audio:false, video};
+}
+function cameraReport(choice, track) {
+  const requested = preferredDirections.get(choice), wanted = directionNames.get(requested);
+  const selection = wanted ? wanted + '優先' : choice.startsWith('device:') ? '指定裝置' : '自動';
+  if (!track) return '相機選擇：' + selection + '；尚未啟動';
+  const actual = track.getSettings?.().facingMode, actualName = directionNames.get(actual);
+  if (!actualName) return '相機選擇：' + selection + '；瀏覽器未回報實際方向';
+  if (requested && actual !== requested) return '未使用' + wanted + '；實際使用：' + actualName;
+  return '實際使用：' + actualName;
+}
+
+let cameraScanRevision = 0;
 async function scan(isCurrent = () => true) {
+  const revision = ++cameraScanRevision;
+  const mayApply = () => revision === cameraScanRevision && isCurrent();
   if (!navigator.mediaDevices?.enumerateDevices) {
     status('無法列出相機：請使用 localhost / HTTPS 並確認瀏覽器支援。', true);
     return;
   }
   try {
     const devices = (await navigator.mediaDevices.enumerateDevices()).filter(device => device.kind === 'videoinput');
-    if (!isCurrent()) return;
-    const select = $('camera'), previous = select.value;
-    const choices = [new Option('預設相機', '')];
+    if (!mayApply()) return;
+    const previous = cameraMenu.value, choices = [...cameraPresets];
     devices.forEach((device, i) => {
-      if (device.deviceId) choices.push(new Option(device.label || '相機 ' + (i + 1), device.deviceId));
+      if (device.deviceId) choices.push(new Option(device.label || '相機 ' + (i + 1), 'device:' + device.deviceId));
     });
-    select.replaceChildren(...choices);
-    if (choices.some(option => option.value === previous)) select.value = previous;
+    // If a chosen device disappears, never silently open a different camera.
+    if (previous.startsWith('device:') && !choices.some(option => option.value === previous)) {
+      choices.push(new Option('先前選用的鏡頭（目前未列出）', previous));
+    }
+    cameraMenu.replaceChildren(...choices);
+    cameraMenu.value = previous;
   } catch (error) {
-    if (isCurrent()) status('無法列出相機：' + error.message, true);
+    if (mayApply()) status('無法列出相機：' + error.message, true);
   }
 }
 async function loadDetector() {
@@ -307,7 +344,7 @@ async function init() {
   }
   await detectorLoading;
 }
-function explain(e){return ({NotAllowedError:'相機遭瀏覽器、作業系統或內嵌網頁政策阻擋。請查看下方診斷，並在獨立 Chrome / Edge 網頁允許相機。',NotFoundError:'找不到相機。',NotReadableError:'相機無法讀取，可能被其他程式占用。',OverconstrainedError:'所選相機無法使用，請切換預設相機。'})[e.name]||e.message||String(e)}
+function explain(e){return ({NotAllowedError:'相機遭瀏覽器、作業系統或內嵌網頁政策阻擋。請查看下方診斷，並在獨立 Chrome / Edge 網頁允許相機。',NotFoundError:'找不到可用的相機裝置。',NotReadableError:'相機無法讀取，可能被其他程式占用。',OverconstrainedError:'所選相機無法使用，請切換「自動」或其他鏡頭。'})[e.name]||e.message||String(e)}
 async function diagnostics(){let policy='無法查詢',permission='無法查詢',devices='無法查詢';try{const p=document.permissionsPolicy||document.featurePolicy;if(p?.allowsFeature)policy=p.allowsFeature('camera')?'允許':'禁止'}catch{}try{permission=(await navigator.permissions.query({name:'camera'})).state}catch{}try{devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput').length}catch{}$('diagnostics').textContent=`執行位置：${location.protocol} (${location.hostname||'本機檔案 / 未知來源'})\n獨立網頁：${window.self===window.top?'是':'否（內嵌 iframe）'}\n安全環境：${window.isSecureContext?'是':'否'}\n相機 API：${navigator.mediaDevices?.getUserMedia?'可用':'不可用'}\n網頁相機政策：${policy}\n相機權限：${permission}\n可列出的相機數：${devices}（授權前可能為 0）`;}
 async function start(only = false) {
   if (running || starting) return;
@@ -324,11 +361,8 @@ async function start(only = false) {
       throw new Error('此網頁的 Permissions Policy 禁止相機，請用獨立網頁開啟。');
     }
     status('正在要求相機權限…');
-    const id = $('camera').value;
-    const acquired = await navigator.mediaDevices.getUserMedia({
-      video:{...(id ? {deviceId:{exact:id}} : {facingMode:{ideal:'user'}}),
-        width:{ideal:960}, height:{ideal:540}, frameRate:{ideal:30}}, audio:false
-    });
+    const choice = cameraMenu.value;
+    const acquired = await navigator.mediaDevices.getUserMedia(cameraConstraints(choice));
     if (!isCurrent()) {
       acquired.getTracks().forEach(track => track.stop());
       return;
@@ -361,8 +395,10 @@ async function start(only = false) {
     running = true;
     resetFrameTracking();
     $('stop').disabled = false;
-    status(only ? `相機測試成功 · ${cv.width} × ${cv.height} · 尚未載入 AI` :
-      `追蹤中 · ${delegate} · ${cv.width} × ${cv.height}`);
+    const report = cameraReport(choice, track);
+    $('cameraInfo').textContent = report;
+    status((only ? `相機測試成功 · ${cv.width} × ${cv.height} · 尚未載入 AI` :
+      `追蹤中 · ${delegate} · ${cv.width} × ${cv.height}`) + ' · ' + report);
     queueCameraFrame();
   } catch (error) {
     if (!isCurrent()) return;
@@ -400,6 +436,7 @@ function stop() {
   resetUI();
   $('start').disabled = $('test').disabled = $('camera').disabled = false;
   $('stop').disabled = true;
+  $('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
   status('相機已停止。');
 }
 function drawVideo() {
@@ -699,6 +736,16 @@ function passesCooldown(key, now) {
   return true;
 }
 
+function suppressTouchLongPress(event) {
+  const target = event.target;
+  if (!target?.closest?.('main, footer, #fluteTouchStage') ||
+      target.closest('input, textarea, select, option, [contenteditable]:not([contenteditable="false"])')) return;
+  const touch = event.pointerType
+    ? event.pointerType === 'touch'
+    : event.sourceCapabilities?.firesTouchEvents ?? matchMedia('(pointer:coarse)').matches;
+  if (touch) event.preventDefault();
+}
+
 function pluck(i, velocity, now, key, label, finger) {
   if (!passesCooldown(key + ':' + i, now)) return;
   flash[i] = now;
@@ -709,7 +756,7 @@ function pluck(i, velocity, now, key, label, finger) {
 
 const fluteScale = [67, 69, 71, 72, 74, 76, 78];
 // Calibrated nominal width of any of the five identical bands at 100%.
-const FLUTE_BAND_BASE_PX = 48;
+const FLUTE_BAND_BASE_PX = 48 * 3.10;
 const FLUTE_WIDTH_UNITS = 5 + 1.5;
 let fluteBandSpan = FLUTE_BAND_BASE_PX * FLUTE_WIDTH_UNITS;
 const holeFingers = [8, 12, 16];
@@ -1128,7 +1175,7 @@ function fluteFrame(session, now) {
     }
     if (uiDue) {
       const register = session.gate ? (shift ? '高八度' : '本音') : '未發聲';
-      $('registerReadout').textContent = '高／中頻功率 ' + (ratio == null ? '—' : ratio.toFixed(2)) + ' · ' + register;
+      $('registerReadout').textContent = '高／中頻功率 ' + (ratio == null ? '—' : ratio.toFixed(3)) + ' · ' + register;
       showHoles(holes);
       $('breathMeter').value = level;
       setFluteNote(session.gate ? midiNote(midi)[0] : '—');
@@ -1322,6 +1369,14 @@ $('test').onclick = () => start(true);
 $('stop').onclick = stop;
 $('diagnose').onclick = diagnostics;
 $('scan').onclick = () => scan();
+cameraMenu.onchange = () => {
+  try {
+    if (preferredDirections.has(cameraMenu.value)) window.localStorage.setItem(cameraPreferenceKey, cameraMenu.value);
+    else window.localStorage.removeItem(cameraPreferenceKey); // Never store opaque device IDs.
+  } catch {}
+  $('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
+};
+$('cameraInfo').textContent = cameraReport(cameraMenu.value, null);
 for (const id of ['mirror','swap','role','pinch','airChords','palmMute','chordVibrato']) {
   $(id).onchange = () => {
     resetMotion();
@@ -1385,6 +1440,9 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 window.addEventListener('blur', clearFluteTouches);
+for (const type of ['contextmenu', 'selectstart', 'dragstart']) {
+  document.addEventListener(type, suppressTouchLongPress, {capture:true, passive:false});
+}
 window.addEventListener('resize', () => {
   clearFluteTouches();
   positionTouchStageControls();
