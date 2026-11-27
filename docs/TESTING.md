@@ -31,7 +31,7 @@ Control: https://webrtc.github.io/samples/src/content/getusermedia/gum/ displaye
 
 - Open the page in a fresh session and verify pluck audio is selected and the 55 ms limit is clear. Start hand tracking and pluck without a second audio toggle. Try the camera-only diagnostic independently.
 - Sweep and repeat through one string with one finger with the limit on and off. Pluck the same string with two fingers to check independent triggering.
-- Pluck a chord, spread a palm briefly over the strings, and verify ringing stops and new notes are blocked until release. Check normal open-hand strums and loss of tracking for unintended stops or notes.
+- Pluck a chord, hold an open palm over the strings, and verify that the gesture neither cuts ringing notes nor blocks new plucks before 500 ms. At or after 500 ms of continuous hold, ringing stops and new notes are blocked until release. Check normal open-hand strums and loss of tracking for unintended stops or notes.
 - Hold an air chord with the left hand, pluck with the right and gently rock the left hand. Check pitch in both directions, return to neutral after release, and repeat with screen press and drag. Test mirror, handedness swap and both orientations.
 - Run the [microphone and flute device checks](FLUTE.md#實機驗收).
 
