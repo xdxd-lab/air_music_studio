@@ -40,14 +40,15 @@ function parseSelect(id) {
   ids[id].value = (choices.find(m => m[2]) || choices[0])[1];
   return choices.map(m => m[1]);
 }
-assert.deepEqual(parseSelect('octaveThreshold'), ['4','8','12','16','20','24','28','32']);
-assert.equal(ids.octaveThreshold.value, '4');
+assert.deepEqual(parseSelect('octaveThreshold'), ['2','3','4','5','6','7','8','9','10']);
+assert.equal(ids.octaveThreshold.value, '8');
 assert.deepEqual(parseSelect('stageWidth'), ['50','60','70','80','90','100','110','120','130','140','150']);
 assert.equal(ids.stageWidth.value, '100');
 assert.match(html,/flex:0 0 var\(--flute-band-span\);/);
-assert.match(html,/grid-template-columns:minmax\(0,1\.5fr\) repeat\(5,minmax\(0,1fr\)\)/);
-assert.match(html,/grid-template-rows:repeat\(5,minmax\(0,1fr\)\) minmax\(0,1\.5fr\)/);
+assert.match(html,/inset:0 auto 0 var\(--band-start\); width:var\(--band-width\)/);
+assert.match(html,/inset:auto 0 var\(--band-start\);width:auto;height:var\(--band-width\)/);
 parseSelect('fluteFingering');
+assert.equal(ids.fluteFingering.value, 'touch');
 function param(){return {value:0,setTargetAtTime(v){this.value=v;}};}
 class Audio {
   constructor(){this.sampleRate=48000; this.state='running'; this.destination={};}
@@ -55,7 +56,9 @@ class Audio {
   node(){return {connect(n){return n;},disconnect:noop};}
   createDynamicsCompressor(){return {...this.node(), threshold:param(),ratio:param()};}
   createGain(){return {...this.node(),gain:param()};}
-  createBiquadFilter(){return {...this.node(),frequency:param()};}
+  createBiquadFilter(){return {...this.node(),frequency:param(),Q:param()};}
+  createBuffer(_,count){return {getChannelData:()=>new Float32Array(count)};}
+  createBufferSource(){return {...this.node(),start:noop,stop:noop};}
   createPeriodicWave(){}
   createOscillator(){const o={...this.node(), frequency:param(), start:noop, stop:noop,setPeriodicWave:noop}; oscillators.push(o); return o;}
   createMediaStreamSource(){return this.node();}
@@ -108,29 +111,42 @@ assert.ok(ids.flutePanel.open);
 assert.equal(micStarts,0,'opening page must not request a mic');
 assert.ok(!ids.fluteHalfHoles && !ids.fluteTouchDock && !stage.open);
 assert.deepEqual(bands.children.map(band => band.dataset.hole), [0,1,2,3,4,5]);
-assert.deepEqual(bands.children.map(band => band.style.get('--portrait-row')), ['6','5','4','3','2','1']);
-assert.equal(requestedSpan(),'967.200px');
-for (const [choice, span] of [
-  ['50','483.600px'], ['60','580.320px'], ['70','677.040px'], ['80','773.760px'],
-  ['90','870.480px'], ['100','967.200px'], ['110','1063.920px'], ['120','1160.640px'],
-  ['130','1257.360px'], ['140','1354.080px'], ['150','1450.800px'],
-]) {
-  width(choice);
-  assert.equal(requestedSpan(),span);
+const numeric = value => Number.parseFloat(value);
+const requestedAt = scale => (1331.158235294 * scale).toFixed(3)+'px';
+const nearLayout = (a,b) => assert.ok(Math.abs(a-b)<.003,a+' vs '+b);
+function checkBands(scale) {
+  const parts = bands.children.map(band => ({start:numeric(band.style.get('--band-start')),w:numeric(band.style.get('--band-width'))}));
+  assert.equal(parts[0].start,0);
+  assert.ok(parts[0].w>parts[1].w);
+  const measurements = [21,28,34.5,18,34.5];
+  for (let i=1;i<parts.length;i++) {
+    const a=parts[i-1], b=parts[i];
+    assert.ok(a.start+a.w < b.start);
+    nearLayout(b.start+b.w/2-a.start-a.w/2, measurements[i-1]/27.2*223.2*scale);
+  }
+}
+assert.equal(requestedSpan(),requestedAt(1));
+for (let choice=50;choice<=150;choice+=10) {
+  width(String(choice));
+  assert.equal(requestedSpan(),requestedAt(choice/100));
+  checkBands(choice/100);
 }
 width('100');
-ids.fluteFingering.value='touch'; ids.fluteFingering.onchange();
+stage.clientWidth=1520;
+assert.ok(!ids.openTouchStage.hidden);
+ids.openTouchStage.onclick();
 assert.ok(stage.open);
 assert.equal(stage.dataset.compact,'false');
 stage.clientWidth=667; win.events.resize();
-assert.equal(requestedSpan(),'967.200px'); assert.equal(stage.dataset.compact,'true');
-width('50'); assert.equal(requestedSpan(),'483.600px'); assert.equal(stage.dataset.compact,'false');
+assert.equal(requestedSpan(),requestedAt(1)); assert.equal(stage.dataset.compact,'true');
+stage.clientWidth=810;
+width('50'); assert.equal(requestedSpan(),requestedAt(.5)); assert.equal(stage.dataset.compact,'false');
 stage.clientWidth=440;
-width('150'); assert.equal(requestedSpan(),'1450.800px'); assert.equal(stage.dataset.compact,'true');
-stage.clientWidth=1600; win.events.resize();
-assert.equal(requestedSpan(),'1450.800px'); assert.equal(stage.dataset.compact,'false');
+width('150'); assert.equal(requestedSpan(),requestedAt(1.5)); assert.equal(stage.dataset.compact,'true');
+stage.clientWidth=2200; win.events.resize();
+assert.equal(requestedSpan(),requestedAt(1.5)); assert.equal(stage.dataset.compact,'false');
 media.matches=true; stage.clientHeight=400; win.events.resize();
-assert.equal(requestedSpan(),'1450.800px'); assert.equal(stage.dataset.compact,'true');
+assert.equal(requestedSpan(),requestedAt(1.5)); assert.equal(stage.dataset.compact,'true');
 media.matches=false; win.events.resize(); width('100');
 assert.equal(micStarts,0,'entering touch mode and resizing must not request a mic');
 assert.ok(!ids.openTouchStage.hidden);
@@ -138,7 +154,7 @@ let menuSuppressed = false;
 bands.events.contextmenu({preventDefault:()=>{menuSuppressed=true;}});
 assert.ok(menuSuppressed);
 pressReference(); state(.5,1,1,0,0,0);
-width('90'); assert.equal(requestedSpan(),'870.480px'); state(0,0,0,0,0,0);
+width('90'); assert.equal(requestedSpan(),requestedAt(.9)); state(0,0,0,0,0,0);
 assert.ok(stage.open && micStarts === 0,'resizing never activates the mic');
 contact('pointermove',1,4); state(0,0,0,0,0,0);
 pressReference(); win.events.resize(); state(0,0,0,0,0,0);
@@ -162,24 +178,21 @@ await ids.stageMic.onclick(); assert.equal(micStarts,1);
 assert.equal(ids.stageMic.textContent,'停用麥克風');
 step(60); // calibrate in quiet
 const quietReads=fftReads; step(20); assert.ok(fftReads>quietReads && fftReads-quietReads<10,'live but throttled quiet spectrum');
-level=.045; mid=1e-6; high=mid*.15; step(12);
+level=.045; mid=1e-6; high=mid*.08; step(12);
 near(freq(),c5); assert.equal(ids.fluteNote.textContent,'C5');
-high=mid*.30; step(2); near(freq(),c5); // very brief spike
-high=mid*.15; step(7); near(freq(),c5);
-high=mid*.30; step(11);
-near(freq(),2*c5); near(oscillators.at(-1).frequency.value,4*c5);
-assert.equal(ids.fluteNote.textContent,'C6'); assert.match(ids.registerReadout.textContent,/0\.300.*高八度/);
-high=mid*.20; step(10); near(freq(),2*c5); // stable lower return threshold
-high=mid*.15; step(10); near(freq(),c5);
-ids.octaveThreshold.value='8'; step(10); near(freq(),2*c5);
-ids.octaveThreshold.value='4'; step(10); near(freq(),c5);
-// 3.3% high-band power clears 1/32 but not 1/28. Reset the sustained
-// register between the two choices since release hysteresis is intentional.
-high=mid*.033;
-ids.octaveThreshold.value='28'; step(10); near(freq(),c5);
-ids.octaveThreshold.value='32'; step(10); near(freq(),2*c5);
-assert.match(ids.registerReadout.textContent,/0\.033.*高八度/);
-high=mid*.02; step(10); near(freq(),c5);
+high=mid*.18; step(2); near(freq(),c5); // very brief spike
+high=mid*.08; step(7); near(freq(),c5);
+high=mid*.18; step(11);
+near(freq(),2*c5); near(oscillators.at(-1).frequency.value,2*c5); // membrane shares the note fundamental
+assert.equal(ids.fluteNote.textContent,'C6'); assert.match(ids.registerReadout.textContent,/0\.180.*高八度/);
+high=mid*.11; step(10); near(freq(),2*c5); // stable lower return threshold
+high=mid*.08; step(10); near(freq(),c5);
+// 10.5% high-band power clears 1/10 but not 1/9.
+high=mid*.105;
+ids.octaveThreshold.value='9'; step(10); near(freq(),c5);
+ids.octaveThreshold.value='10'; step(10); near(freq(),2*c5);
+assert.match(ids.registerReadout.textContent,/0\.105.*高八度/);
+high=mid*.05; step(10); near(freq(),c5);
 level=0; step(10); assert.equal(ids.fluteNote.textContent,'—');
 assert.match(ids.registerReadout.textContent,/未發聲/);
 assert.ok(graphPaints>10);

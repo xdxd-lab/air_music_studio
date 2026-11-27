@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.4.5
+- Default to touch fingering without opening the playing overlay or requesting a microphone automatically.
+- Map six touch-band centers and widths to the relative gaps of one measured D-key qudi. Increase the baseline spacing by 50%, keeping the existing adjustment menu.
+- Offer octave thresholds 1/2 to 1/10, defaulting to 1/8. Document device-specific breath calibration as future work.
+- Synthesize a warmer qudi-like normal register and a brighter bangdi-like upper register, keeping true octave transposition.
+
 ## v0.4.4
 - Set flute touch width at 100% to 148.8 CSS px per normal band and 223.2 px for the left index. Preserve the 50–150% engineering adjustment and intentional overflow.
 - Replace octave thresholds with 1/4 to 1/32 in steps of four in the denominator; default to 1/4.
