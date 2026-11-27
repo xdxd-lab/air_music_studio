@@ -10,6 +10,8 @@
 4. Kevin Karplus and Alex Strong (1983). Digital Synthesis of Plucked-String and Drum Timbres. Computer Music Journal 7(2), 43–55. [DOI: 10.2307/3680062](https://doi.org/10.2307/3680062)。原型採用此類延遲線與低通回授撥弦合成；論文為演算法學術來源，並不表示直接複製其程式。
 5. GitHub — [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。部署參考。
 
+6. Chen-Gia Tsai 等，〈[Relating the harmonic-rich sound of the Chinese flute (dizi) to the cubic nonlinearity of its membrane](https://scholars.lib.ntu.edu.tw/entities/publication/3ce026f4-6100-4057-9841-761e48325a1c)〉；Xinmeng Luan 等，〈[Acoustic characterization of the resonator in the Chinese transverse flute (dizi)](https://doi.org/10.1121/10.0036742)〉。笛膜共鳴與泛音的學術參考。本站使用自製的竹管主音、奇次泛音為主的笛膜聲與合成的吹氣聲，為音色近似，不是實錄取樣或完整聲學模擬。
+
 ## B. 相關先行作品與致謝（本次調查發現）
 
 We acknowledge these related independent works with respect. They were identified in the post-prototype literature/project search on 2026-11-24. They are references for comparison and future development, not evidence that their code or assets were used in v0.1/v0.2. Dates are supplied only where verified.
