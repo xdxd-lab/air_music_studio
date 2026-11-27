@@ -5,21 +5,22 @@
 A browser-based gesture-controlled music studio with local hand tracking and experimental virtual strings.
 
 ## 開始使用
-- 網頁入口：[index.html](index.html)（v0.4.1）。
+- 網頁入口：[index.html](index.html)（v0.4.2）。
 - 請透過 HTTPS 網頁或 localhost 使用。GitHub 的原始碼預覽不等於可執行網站。
 - Android Chrome：先關閉其他使用相機的分頁，再按「僅測試相機」。成功後停止，按「啟動相機」，授權並等待模型下載。將雙手放進畫面，確認 2/2 hands、42/42 points，即可試撥六弦。
 - 桌面本機：在 repo 根目錄執行 `python -m http.server 8000`，瀏覽 http://localhost:8000/。
-- 正式網站：[GitHub Pages](https://xdxd-lab.github.io/air_music_studio/)（v0.4.1）。由 `main` 根目錄自動部署。
+- 正式網站：[GitHub Pages](https://xdxd-lab.github.io/air_music_studio/)（v0.4.2）。由 `main` 根目錄自動部署。
 
-## v0.4.1 使用方式
+## v0.4.2 使用方式
 - 預設關閉鏡像、顯示關節編號、兩個全域解除限制開關均開啟。
 - 預設 C 和弦；14 組調弦選項（13 和弦＋標準吉他調弦），螢幕按鍵與空中區同步。六弦均發聲，不是實體吉他含消音弦的指法譜。
 - 空中選和弦：直式底部、橫式左方，指尖停留約 140 ms，選定後保持；預設兩手十指都可。關閉手別／手指限制後的嚴格規則為左手食指選和弦、右手食指撥弦（撥弦手可另選）。
 - 撥弦音效預設開啟，啟動相機時解鎖音訊。各指尖獨立撥弦。55 ms 同指同弦間隔預設關閉，需要時可勾選。
 - 張掌在弦區稍停可止住六弦。左手停在空中和弦格內左右輕搖，右手撥弦可產生搖韻。也可在螢幕長按和弦鍵左右拖動。
-- 展開「曲笛實驗」，啟用麥克風並等背景校正。相機模式用兩手食指、中指、無名指開、半按或閉孔，也可切成螢幕按孔。輕吹控制發聲，強吹可試高八度。
+- 展開「曲笛實驗」，啟用麥克風並等背景校正。相機模式用兩手食指、中指、無名指開、半按或閉孔，也可切成螢幕按孔，按住畫面底部的六個色塊來閉孔，放開後恢復面板按鈕的設定。半孔預設關閉，勾選後可按色塊上段。孔位控制基音，吹氣強弱控制音量和八度泛音。停用麥克風或收合曲笛可回六弦。
 
 ## 版本與文件
+- [v0.4.2](versions/Air-Music_Studio_v0.4.2.html)：底部六孔即時觸控、選用半孔、固定基音與改善六弦切換。
 - [v0.4.1](versions/Air-Music_Studio_v0.4.1.html)：減少重複影格繪製、手勢配置與氣聲分析的工作量。
 - [v0.4](versions/Air-Music_Studio_v0.4.html)：張掌止弦、按弦搖韻、可切換撥弦間隔、麥克風曲笛原型。
 - [曲笛原型設計與實測清單](docs/FLUTE.md)
