@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.3
+- Open the experimental flute panel by default without requesting microphone access.
+- Show the live microphone spectrum and a configurable high-to-mid frequency power threshold for sounding an octave higher with the same fingering.
+- Use six translucent touch bands from the microphone edge, left to right in landscape. Temporarily scale all band widths from 50% to 150%; the left-index band remains 1.5× the width of each other band.
+- Use a half-covered left-index hole and fully cover the other five while held, without a separate half-hole switch or latching touch buttons.
+- Require a continuous 500 ms open-palm hold to stop the strings; allow plucking while the hold is still being timed.
+
 ## v0.4.2
 - Add a bottom six-hole touch surface. Multi-touch presses update the panel buttons while the fingers are held, then restore the selected hole positions.
 - Make half holes optional and off by default in both camera and screen modes.
